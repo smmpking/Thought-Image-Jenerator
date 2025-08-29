@@ -3,526 +3,479 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>पोस्ट जनरेटर </title>
-  <!-- Devanagari-friendly fonts -->
+  <title>Post Maker — Clean UI</title>
+
+  <!-- Base font (fallbacks) -->
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600;800&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+
   <style>
     :root{
-      --bg:#0b0b0b; --panel:#111; --ink:#eaeaea; --muted:#a7a7a7; --accent:#2dd4bf;
-      --gap:12px;
+      --bg:#0b0c10; --panel:#0f131a; --ink:#e8ecf1; --muted:#9aa3ad; --line:#1f2630;
+      --accent:#76e4f7;
     }
     *{box-sizing:border-box}
-    body{
-      margin:0; background:linear-gradient(180deg,#0b0b0b, #0e1015); color:var(--ink);
-      font-family:"Noto Sans Devanagari","Poppins",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+    html,body{height:100%}
+    body{margin:0;background:linear-gradient(180deg,#0a0c10,#0c1017);color:var(--ink);font-family:"Noto Sans Devanagari","Poppins",system-ui,Segoe UI,Roboto,Arial,sans-serif}
+
+    /* Layout */
+    .container{max-width:1200px;margin-inline:auto;padding:12px}
+    .previewCard{
+      background:rgba(255,255,255,.03);
+      border:1px solid var(--line);
+      border-radius:16px;padding:12px;
+      backdrop-filter: blur(6px);
     }
-    .wrap{display:grid; grid-template-columns: 360px 1fr; gap:var(--gap); padding:var(--gap);}
-    @media (max-width: 980px){ .wrap{grid-template-columns:1fr} }
-    .panel{
-      background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08);
-      border-radius:16px; padding:16px; backdrop-filter: blur(6px);
+    .topRow{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-top:10px;flex-wrap:wrap}
+    .btn{
+      background:#121a24;border:1px solid #24303f;color:var(--ink);
+      padding:10px 14px;border-radius:12px;cursor:pointer;font-weight:700
     }
-    .panel h2{margin:6px 0 10px; font-size:18px}
-    .panel .row{display:grid; grid-template-columns: 1fr 1fr; gap:8px}
-    .panel label{font-size:12px; color:var(--muted)}
-    input, select, textarea, button{
-      width:100%; background:#0e1014; color:var(--ink); border:1px solid #2a2f3a;
-      border-radius:10px; padding:10px; outline:none; font-size:14px;
+    .btn.primary{background:linear-gradient(135deg,#60a5fa,#34d399);color:#081017;border:none}
+    .btn:active{transform:translateY(1px)}
+    .controls{
+      margin-top:14px;
+      display:grid;gap:12px;
+      grid-template-columns: 1fr;
     }
-    textarea{min-height:78px; resize:vertical}
-    input[type="color"]{padding:0; height:40px}
-    .controls-sep{height:1px; background:#23262f; margin:14px 0}
-    .btn-primary{
-      background: linear-gradient(135deg,#34d399,#60a5fa); border:none; color:#0b1020;
-      font-weight:800; cursor:pointer;
+    .section{
+      background:rgba(255,255,255,.03);
+      border:1px solid var(--line);
+      border-radius:16px;padding:14px;
     }
-    .btn-line{display:flex; gap:8px; align-items:center}
-    .canvasWrap{
-      background:#0b0c10; border:1px solid rgba(255,255,255,0.08); border-radius:16px;
-      padding:10px; display:flex; flex-direction:column; gap:10px; height:calc(100dvh - 2*var(--gap));
+    .section h3{margin:2px 0 10px;font-size:16px}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+    .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+    @media (min-width:900px){
+      .controls{grid-template-columns: 1fr 1fr}
+      .full{grid-column:1 / -1}
     }
-    .stage{flex:1; display:grid; place-items:center; position:relative}
-    canvas{max-width:100%; max-height:100%; background:#000; border-radius:12px}
-    .hint{font-size:12px; color:#9aa0aa}
-    .badge{display:inline-block; padding:4px 8px; background:#17202a; border:1px solid #293241; border-radius:999px; font-size:12px; color:#b8c0cc}
-    .logo-chip{display:flex; align-items:center; gap:8px; padding:6px; border:1px dashed #2b3240; border-radius:12px}
-    .grid2{display:grid; grid-template-columns: 1fr 1fr; gap:8px}
-    .small{font-size:11px; color:#9aa0aa}
-    .drag-tip{position:absolute; bottom:10px; right:14px; font-size:12px; opacity:.7}
+    label{font-size:12px;color:var(--muted)}
+    input,select,textarea{
+      width:100%;background:#0f141c;border:1px solid #273342;color:var(--ink);
+      border-radius:10px;padding:10px;font-size:14px;outline:none
+    }
+    input[type=color]{padding:0;height:40px}
+    textarea{min-height:70px;resize:vertical}
+    .hint{font-size:12px;color:#93a1af}
+    .badge{font-size:12px;color:#b7c1cc;border:1px solid #2a3646;border-radius:999px;padding:4px 8px}
+
+    /* Canvas holder */
+    .stage{display:grid;place-items:center;position:relative;min-height:40vh}
+    canvas{max-width:100%;border-radius:14px;background:#000;display:block}
+
+    .chip{display:flex;align-items:center;gap:8px;border:1px dashed #2a3443;border-radius:12px;padding:6px}
+    .small{font-size:11px;color:#9aa3ad}
+    .dragTip{font-size:12px;color:#9aa3ad;margin-top:6px;text-align:right}
+
+    .stack{display:flex;flex-wrap:wrap;gap:8px}
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <!-- Controls -->
-    <section class="panel" id="controls">
-      <div class="btn-line" style="justify-content:space-between">
-        <div class="badge">Post Generator</div>
-        <button id="download" class="btn-primary">⬇️ Download</button>
-      </div>
-
-      <h2>1) Size Preset</h2>
-      <div class="row">
-        <select id="preset">
-          <option value="1080x1080">Instagram/Facebook Square — 1080×1080</option>
-          <option value="1080x1920">Story/Reel — 1080×1920</option>
-          <option value="1080x1350">Instagram Portrait — 1080×1350</option>
-          <option value="1640x924">Facebook Cover — 1640×924</option>
-          <option value="1280x720">YouTube/Telegram 16:9 — 1280×720</option>
-          <option value="1280x1280">Telegram Square — 1280×1280</option>
-          <option value="custom">Custom…</option>
-        </select>
-        <div class="row">
-          <input id="cw" type="number" min="320" value="1080" title="Width (px)" />
-          <input id="ch" type="number" min="320" value="1080" title="Height (px)" />
-        </div>
-      </div>
-
-      <div class="controls-sep"></div>
-      <h2>2) Background Gradient</h2>
-      <div class="row">
-        <div><label>Top</label><input type="color" id="bg1" value="#ffffff"></div>
-        <div><label>Middle</label><input type="color" id="bg2" value="#1e90ff"></div>
-        <div><label>Bottom</label><input type="color" id="bg3" value="#000000"></div>
-        <div>
-          <label>Angle (°)</label>
-          <input type="range" id="bgAngle" min="0" max="360" value="90">
-        </div>
-      </div>
-      <div class="row">
-        <div>
-          <label>Vignette</label>
-          <input type="range" id="vignette" min="0" max="100" value="25">
-          <div class="small">किनारों पर हल्का डार्क</div>
-        </div>
-        <div>
-          <label>Padding (safe area %)</label>
-          <input type="range" id="padding" min="0" max="15" value="6">
-        </div>
-      </div>
-
-      <div class="controls-sep"></div>
-      <h2>3) Main Heading</h2>
-      <textarea id="title">  </textarea>
-      <div class="row">
-        <div><label>Font</label>
-          <select id="font">
-            <option value="Noto Sans Devanagari">Noto Sans Devanagari</option>
-            <option value="Poppins">Poppins</option>
-          </select>
-        </div>
-        <div><label>Weight</label>
-          <select id="weight">
-            <option>600</option><option selected>800</option><option>400</option>
-          </select>
-        </div>
-      </div>
-      <div class="row">
-        <div><label>Base Size</label><input type="range" id="titleSize" min="32" max="160" value="96"></div>
-        <div><label>Line Height</label><input type="range" id="lineHeight" min="0.9" max="1.6" step="0.02" value="1.15"></div>
-      </div>
-      <div class="row">
-        <div><label>Letter Spacing</label><input type="range" id="letter" min="-2" max="4" step="0.1" value="0"></div>
-        <div><label>Alignment</label>
-          <select id="align">
-            <option>center</option><option>left</option><option>right</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="row">
-        <div>
-          <label>Text Gradient A</label><input type="color" id="t1" value="#40c9ff">
-        </div>
-        <div>
-          <label>Text Gradient B</label><input type="color" id="t2" value="#f7b733">
-        </div>
-        <div>
-          <label>Text Gradient C</label><input type="color" id="t3" value="#7cffcb">
-        </div>
-        <div>
-          <label>Gradient Angle</label><input type="range" id="tAngle" min="0" max="360" value="0">
-        </div>
-      </div>
-
-      <div class="row">
-        <div>
-          <label>Fading Border (Outline)</label>
-          <input type="range" id="outline" min="0" max="20" value="6">
-        </div>
-        <div>
-          <label>Glow (Shadow)</label>
-          <input type="range" id="glow" min="0" max="60" value="22">
-        </div>
-      </div>
-
-      <div class="controls-sep"></div>
-      <h2>4) Bottom Branding</h2>
-      <input id="brand" value=" />
-      <div class="row">
-        <div><label>Size</label><input type="range" id="brandSize" min="18" max="72" value="40"></div>
-        <div><label>Offset from bottom</label><input type="range" id="brandOffset" min="2" max="15" value="6"></div>
-      </div>
-      <div class="row">
-        <div><label>Brand Grad A</label><input type="color" id="b1" value="#ff8a00"></div>
-        <div><label>Brand Grad B</label><input type="color" id="b2" value="#ffd000"></div>
-        <div><label>Brand Grad C</label><input type="color" id="b3" value="#ffa24c"></div>
-        <div><label>Glow</label><input type="range" id="bGlow" min="0" max="50" value="10"></div>
-      </div>
-
-      <div class="controls-sep"></div>
-      <h2>5) Logos</h2>
-      <div class="small">कई लोगो जोड़ें, कैनवास पर <b>drag</b> करें। नीचे sliders से size/opacity बदलिए.</div>
-      <div class="btn-line" style="margin:8px 0">
-        <input type="file" id="logoInput" accept="image/*" multiple />
-        <button id="clearLogos">❌ Remove All</button>
-      </div>
-      <div id="logoList" class="grid2"></div>
-
-      <div class="controls-sep"></div>
-      <h2>6) Extras</h2>
-      <div class="row">
-        <div>
-          <label>Show Top “?” Icon</label>
-          <select id="showQ"><option value="yes">Yes</option><option value="no">No</option></select>
-        </div>
-        <div><label>Export Format</label>
-          <select id="format"><option>png</option><option>jpeg</option><option>webp</option></select>
-        </div>
-      </div>
-      <div class="row">
-        <div><label>JPEG/WebP Quality</label><input type="range" id="quality" min="0.6" max="1" step="0.01" value="0.95"></div>
-        <div><label>Export Scale (sharpness)</label><input type="range" id="scale" min="1" max="3" step="0.25" value="2"></div>
-      </div>
-    </section>
-
-    <!-- Canvas -->
-    <section class="canvasWrap">
+  <div class="container">
+    <!-- PREVIEW FIRST -->
+    <div class="previewCard">
       <div class="stage">
         <canvas id="c" width="1080" height="1080"></canvas>
-        <div class="drag-tip">🖱️ Logos are draggable • Shift+Wheel = resize</div>
       </div>
-      <div class="hint"> </div>
-    </section>
+      <div class="topRow">
+        <div class="stack">
+          <span class="badge">Preview</span>
+          <span class="hint">Tip: Shift + Mouse Wheel = Logo resize • Drag logos on canvas</span>
+        </div>
+        <div class="stack">
+          <select id="format">
+            <option value="png">PNG</option>
+            <option value="jpeg">JPEG</option>
+            <option value="webp">WebP</option>
+          </select>
+          <select id="scale">
+            <option value="1">1×</option>
+            <option value="2" selected>2×</option>
+            <option value="3">3×</option>
+          </select>
+          <input type="range" id="quality" min="0.7" max="1" step="0.01" value="0.95" title="Quality (JPEG/WebP)">
+          <button class="btn primary" id="download">⬇️ Download</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOOLS BELOW -->
+    <div class="controls">
+      <div class="section full">
+        <h3>Size Preset</h3>
+        <div class="grid2">
+          <select id="preset">
+            <option value="1080x1080" selected>Instagram / Facebook Square — 1080×1080</option>
+            <option value="1080x1920">Story / Reel — 1080×1920</option>
+            <option value="1080x1350">Instagram Portrait — 1080×1350</option>
+            <option value="1640x924">Facebook Cover — 1640×924</option>
+            <option value="1280x720">YouTube / Telegram 16:9 — 1280×720</option>
+            <option value="1280x1280">Telegram Square — 1280×1280</option>
+            <option value="custom">Custom…</option>
+          </select>
+          <div class="grid2">
+            <input id="cw" type="number" min="320" value="1080" title="Width (px)">
+            <input id="ch" type="number" min="320" value="1080" title="Height (px)">
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3>Background Gradient</h3>
+        <div class="grid3">
+          <div><label>Top</label><input type="color" id="bg1" value="#ffffff"></div>
+          <div><label>Middle</label><input type="color" id="bg2" value="#1976D2"></div>
+          <div><label>Bottom</label><input type="color" id="bg3" value="#000000"></div>
+        </div>
+        <div class="grid3" style="margin-top:8px">
+          <div><label>Angle (°)</label><input type="range" id="bgAngle" min="0" max="360" value="90"></div>
+          <div><label>Vignette</label><input type="range" id="vignette" min="0" max="100" value="20"></div>
+          <div><label>Safe Padding (%)</label><input type="range" id="padding" min="0" max="15" value="5"></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3>Main Heading</h3>
+        <textarea id="title" placeholder="(अपना टेक्स्ट लिखें)…"></textarea>
+        <div class="grid3" style="margin-top:8px">
+          <div>
+            <label>Font Family</label>
+            <select id="font"></select>
+          </div>
+          <div><label>Weight</label>
+            <select id="weight"><option>400</option><option selected>600</option><option>800</option></select>
+          </div>
+          <div><label>Base Size</label><input type="range" id="titleSize" min="28" max="160" value="96"></div>
+        </div>
+        <div class="grid3" style="margin-top:8px">
+          <div><label>Line Height</label><input type="range" id="lineHeight" min="0.9" max="1.6" step="0.02" value="1.15"></div>
+          <div><label>Letter Spacing</label><input type="range" id="letter" min="-2" max="4" step="0.1" value="0"></div>
+          <div><label>Align</label><select id="align"><option>center</option><option>left</option><option>right</option></select></div>
+        </div>
+        <div class="grid3" style="margin-top:8px">
+          <div><label>Text Grad A</label><input type="color" id="t1" value="#40c9ff"></div>
+          <div><label>Text Grad B</label><input type="color" id="t2" value="#f7b733"></div>
+          <div><label>Text Grad C</label><input type="color" id="t3" value="#7cffcb"></div>
+        </div>
+        <div class="grid3" style="margin-top:8px">
+          <div><label>Text Grad Angle</label><input type="range" id="tAngle" min="0" max="360" value="0"></div>
+          <div><label>Fading Border (px)</label><input type="range" id="outline" min="0" max="20" value="6"></div>
+          <div><label>Glow</label><input type="range" id="glow" min="0" max="60" value="22"></div>
+        </div>
+        <div class="grid2" style="margin-top:8px">
+          <div><label>Show top “?”</label><select id="showQ"><option value="no" selected>No</option><option value="yes">Yes</option></select></div>
+          <div><label>Title Y-position (%)</label><input type="range" id="titleY" min="20" max="65" value="38"></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3>Bottom Branding</h3>
+        <input id="brand" placeholder=" " />
+        <div class="grid3" style="margin-top:8px">
+          <div><label>Size</label><input type="range" id="brandSize" min="18" max="72" value="40"></div>
+          <div><label>Offset from bottom</label><input type="range" id="brandOffset" min="2" max="15" value="6"></div>
+          <div><label>Glow</label><input type="range" id="bGlow" min="0" max="50" value="10"></div>
+        </div>
+        <div class="grid3" style="margin-top:8px">
+          <div><label>Brand Grad A</label><input type="color" id="b1" value="#ff8a00"></div>
+          <div><label>Brand Grad B</label><input type="color" id="b2" value="#ffd000"></div>
+          <div><label>Brand Grad C</label><input type="color" id="b3" value="#ffa24c"></div>
+        </div>
+      </div>
+
+      <div class="section full">
+        <h3>Logos (Auto Circle Mask + Border)</h3>
+        <div class="stack" style="margin-bottom:8px">
+          <input type="file" id="logoInput" accept="image/*" multiple />
+          <button class="btn" id="clearLogos">❌ Remove All</button>
+        </div>
+        <div id="logoList" class="grid2"></div>
+        <div class="dragTip">Drag on canvas • Shift + Wheel to resize • Snap from chip dropdown</div>
+      </div>
+    </div>
   </div>
 
   <script>
-  // ---------- Utilities ----------
-  const $ = (id)=>document.getElementById(id);
-  const ctx = $('c').getContext('2d');
+  // --------- Font families (Hindi + English) ----------
+  const fontFamilies = [
+    // Hindi/Devanagari
+    "Noto Sans Devanagari","Hind","Hind Siliguri","Hind Guntur","Hind Madurai","Hind Vadodara",
+    "Mukta","Mukta Malar","Mukta Mahee","Tiro Devanagari Hindi","Yatra One","Karma","Martel",
+    "Baloo 2","Palanquin","Rajdhani","Tiro Devanagari Marathi",
+    // English
+    "Poppins","Inter","Roboto","Montserrat","Merriweather","Playfair Display","Lora","Oswald",
+    "Nunito","IBM Plex Sans","Source Sans 3","Work Sans","Cabin","Manrope","Raleway","Bebas Neue"
+  ];
+  // Populate font dropdown
+  const fontSel = document.getElementById('font');
+  fontFamilies.forEach(f=>{ const o=document.createElement('option'); o.textContent=f; o.value=f; fontSel.appendChild(o); });
+  fontSel.value="Noto Sans Devanagari";
 
-  const state = {
-    logos: [], // {img,x,y,scale,opacity}
-    drag:{active:false, idx:-1, dx:0, dy:0},
+  // Lazy-load selected font from Google Fonts
+  function loadFont(family){
+    const id = 'gf_'+family.replace(/\s+/g,'_');
+    if(document.getElementById(id)) return;
+    const link = document.createElement('link');
+    link.id = id;
+    link.rel = 'stylesheet';
+    link.href = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(family)}:wght@400;600;800&display=swap`;
+    document.head.appendChild(link);
+  }
+  loadFont(fontSel.value);
+
+  // ---------- Canvas setup ----------
+  const c = document.getElementById('c');
+  const ctx = c.getContext('2d');
+  const $ = id=>document.getElementById(id);
+
+  // state
+  const S = {
+    logos: [], // {img,x,y,scale,opacity,bw,bcolor,shadow}
+    drag:{on:false, idx:-1, dx:0, dy:0}
   };
 
-  function hexToRgba(hex, a=1){
-    const h = hex.replace('#','');
-    const bigint = parseInt(h.length===3? h.split('').map(c=>c+c).join(''):h,16);
-    const len = h.length===3?12:24;
-    const r = (bigint >> 16) & 255, g = (bigint >> 8) & 255, b = bigint & 255;
-    return `rgba(${r},${g},${b},${a})`;
+  // helpers
+  function makeLinGrad(w,h,angle,stops){
+    const rad=angle*Math.PI/180, vx=Math.cos(rad), vy=Math.sin(rad);
+    const x0=w*(.5-.5*vx), y0=h*(.5-.5*vy), x1=w*(.5+.5*vx), y1=h*(.5+.5*vy);
+    const g=ctx.createLinearGradient(x0,y0,x1,y1); stops.forEach(s=>g.addColorStop(s.pos,s.c)); return g;
   }
-  function makeLinearGradient(w,h,angle,stops){ // stops: [{c, pos(0..1)}]
-    const rad = angle*Math.PI/180;
-    const x = Math.cos(rad), y = Math.sin(rad);
-    // map [-1..1] to canvas span
-    const x0 = w*(0.5 - 0.5*x), y0 = h*(0.5 - 0.5*y);
-    const x1 = w*(0.5 + 0.5*x), y1 = h*(0.5 + 0.5*y);
-    const g = ctx.createLinearGradient(x0,y0,x1,y1);
-    stops.forEach(s=>g.addColorStop(s.pos, s.c));
-    return g;
-  }
+  function hexToRgb(h){h=h.replace('#',''); if(h.length===3) h=[...h].map(x=>x+x).join(''); const n=parseInt(h,16); return [n>>16 &255, n>>8 &255, n&255];}
+  function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
 
-  // ---------- Drawing ----------
-  function draw(){
-    const cw = +$('cw').value, ch = +$('ch').value;
-    const padPct = +$('padding').value/100;
-    const pad = Math.round(Math.min(cw,ch)*padPct);
-    $('c').width=cw; $('c').height=ch;
-
-    // BG Gradient
-    ctx.clearRect(0,0,cw,ch);
-    ctx.fillStyle = makeLinearGradient(cw,ch,+$('bgAngle').value,[
-      {c:$('bg1').value, pos:0},
-      {c:$('bg2').value, pos:0.5},
-      {c:$('bg3').value, pos:1}
-    ]);
-    ctx.fillRect(0,0,cw,ch);
-
-    // Vignette
-    const vig = +$('vignette').value/100;
-    if(vig>0){
-      const grd = ctx.createRadialGradient(cw/2,ch/2, Math.min(cw,ch)*(0.5 - 0.5*vig),
-                                           cw/2,ch/2, Math.max(cw,ch)*0.7);
-      grd.addColorStop(0,'rgba(0,0,0,0)');
-      grd.addColorStop(1,`rgba(0,0,0,${0.55*vig})`);
-      ctx.fillStyle = grd; ctx.fillRect(0,0,cw,ch);
-    }
-
-    // Top Question icon
-    if($('showQ').value==='yes'){
-      const r = Math.min(cw,ch)*0.07;
-      const cy = pad + r + 10;
-      ctx.lineWidth = Math.max(3, r*0.12);
-      ctx.strokeStyle = 'rgba(0,0,0,0.85)';
-      ctx.beginPath(); ctx.arc(cw/2, cy, r, 0, Math.PI*2); ctx.stroke();
-      ctx.font = `${Math.round(r*1.4)}px ${$('font').value}`;
-      ctx.textAlign='center'; ctx.textBaseline='middle';
-      ctx.fillStyle='rgba(0,0,0,0.9)';
-      ctx.fillText('?', cw/2, cy);
-    }
-
-    // Main Title
-    const lines = $('title').value.split('\n').map(s=>s.trim());
-    const base = +$('titleSize').value;
-    const f = $('font').value, w = $('weight').value;
-    const lh = +$('lineHeight').value, ls = +$('letter').value;
-    const tAngle = +$('tAngle').value;
-    const tGrad = ctx.createLinearGradient(0,0,cw,0);
-    // angle-based gradient for text
-    const tg = makeLinearGradient(cw,ch,tAngle,[
-      {c:$('t1').value,pos:0},{c:$('t2').value,pos:.5},{c:$('t3').value,pos:1}
-    ]);
-
-    ctx.textAlign = $('align').value;
-    ctx.textBaseline = 'alphabetic';
-    const x = $('align').value==='left' ? pad : ($('align').value==='right' ? cw-pad : cw/2);
-    let yStart = ch*0.35; // reasonable vertical anchor
-    const outline = +$('outline').value;
-    const glow = +$('glow').value;
-
-    ctx.save();
-    ctx.shadowBlur = glow; ctx.shadowColor = 'rgba(0,0,0,0.55)';
-    ctx.lineJoin="round"; ctx.miterLimit=2;
-
-    lines.forEach((line,i)=>{
-      const size = base; // could be per-line scaling if needed
-      ctx.font = `normal ${w} ${size}px ${f}`;
-      // outline (fading border)
-      if(outline>0){
-        ctx.lineWidth = outline;
-        const og = makeLinearGradient(cw,ch,90,[{c:'rgba(0,0,0,0.85)',pos:0},{c:'rgba(0,0,0,0.2)',pos:1}]);
-        ctx.strokeStyle = og;
-        strokeTextWithLetterSpacing(ctx,line,x,yStart + i*size*lh,ls);
-      }
-      // fill gradient
-      ctx.fillStyle = tg;
-      fillTextWithLetterSpacing(ctx,line,x,yStart + i*size*lh,ls);
-    });
-    ctx.restore();
-
-    // Bottom Branding
-    const brand = $('brand').value;
-    const bSize = +$('brandSize').value;
-    const bOff = +$('brandOffset').value/100*ch;
-    const bg = makeLinearGradient(cw,ch,0,[
-      {c:$('b1').value,pos:0},{c:$('b2').value,pos:.5},{c:$('b3').value,pos:1}
-    ]);
-    ctx.save();
-    ctx.textAlign='center'; ctx.textBaseline='bottom';
-    ctx.font = `600 ${bSize}px ${f}`;
-    ctx.shadowBlur = +$('bGlow').value; ctx.shadowColor = 'rgba(0,0,0,0.35)';
-    ctx.fillStyle = bg;
-    ctx.fillText(brand, cw/2, ch - bOff);
-    ctx.restore();
-
-    // Logos (draggable)
-    state.logos.forEach(L=>{
-      if(!L.img.complete) return;
-      const iw = L.img.naturalWidth, ih = L.img.naturalHeight;
-      const s = L.scale;
-      const w = iw*s, h = ih*s;
-      ctx.save();
-      ctx.globalAlpha = L.opacity;
-      ctx.drawImage(L.img, L.x - w/2, L.y - h/2, w, h);
-      ctx.restore();
-    });
-  }
-
-  function fillTextWithLetterSpacing(ctx, text, x, y, spacing){
-    if(!text) return;
-    const align = ctx.textAlign;
-    if(align!=='left'){
-      const width = measureWithLetterSpacing(ctx,text,spacing);
-      if(align==='center') x -= width/2;
-      if(align==='right')  x -= width;
-      ctx.textAlign='left';
-    }
-    for(let i=0;i<text.length;i++){
-      const ch=text[i];
-      ctx.fillText(ch, x, y);
-      x += ctx.measureText(ch).width + spacing;
-    }
-    ctx.textAlign=align;
-  }
-  function strokeTextWithLetterSpacing(ctx, text, x, y, spacing){
-    const align = ctx.textAlign;
-    if(align!=='left'){
-      const width = measureWithLetterSpacing(ctx,text,spacing);
-      if(align==='center') x -= width/2;
-      if(align==='right')  x -= width;
-      ctx.textAlign='left';
-    }
-    for(let i=0;i<text.length;i++){
-      const ch=text[i];
-      ctx.strokeText(ch, x, y);
-      x += ctx.measureText(ch).width + spacing;
-    }
-    ctx.textAlign=align;
-  }
   function measureWithLetterSpacing(ctx,text,spacing){
-    let w=0;
-    for(const ch of text){ w += ctx.measureText(ch).width + spacing; }
-    return w - spacing;
+    let w=0; for(const ch of text){ w += ctx.measureText(ch).width + spacing; } return w-spacing;
+  }
+  function drawTextWithSpacing(ctx,op, text, x, y, spacing){
+    const align = ctx.textAlign;
+    if(align!=='left'){
+      const width = measureWithLetterSpacing(ctx,text,spacing);
+      if(align==='center') x -= width/2;
+      if(align==='right')  x -= width;
+      ctx.textAlign='left';
+    }
+    for(const ch of text){ ctx[op+'Text'](ch,x,y); x += ctx.measureText(ch).width + spacing; }
+    ctx.textAlign=align;
   }
 
-  // ---------- Logos handling ----------
-  $('logoInput').addEventListener('change', e=>{
+  function draw(){
+    // size
+    const W=+$('cw').value, H=+$('ch').value; c.width=W; c.height=H;
+
+    // padding
+    const pad = Math.round(Math.min(W,H) * (+$('padding').value/100));
+
+    // background gradient
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle = makeLinGrad(W,H,+$('bgAngle').value,[
+      {c:$('bg1').value,pos:0},{c:$('bg2').value,pos:.5},{c:$('bg3').value,pos:1}
+    ]);
+    ctx.fillRect(0,0,W,H);
+
+    // vignette
+    const vig=+$('vignette').value/100;
+    if(vig>0){
+      const g=ctx.createRadialGradient(W/2,H/2,Math.min(W,H)*(0.6-0.6*vig),W/2,H/2,Math.max(W,H)*0.8);
+      g.addColorStop(0,'rgba(0,0,0,0)'); g.addColorStop(1,`rgba(0,0,0,${0.55*vig})`);
+      ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+    }
+
+    // top ?
+    if($('showQ').value==='yes'){
+      const r=Math.min(W,H)*0.07, cy=pad + r + 6;
+      ctx.lineWidth=Math.max(3, r*0.12); ctx.strokeStyle='rgba(0,0,0,0.9)';
+      ctx.beginPath(); ctx.arc(W/2,cy,r,0,Math.PI*2); ctx.stroke();
+      ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillStyle='rgba(0,0,0,0.92)';
+      ctx.font=`800 ${Math.round(r*1.28)}px ${$('font').value}`; ctx.fillText('?',W/2,cy);
+    }
+
+    // main title
+    const lines = $('title').value.trim().length ? $('title').value.split('\n') : [];
+    const base=+$('titleSize').value, lh=+$('lineHeight').value, ls=+$('letter').value;
+    const wght=$('weight').value, fam=$('font').value; loadFont(fam);
+
+    if(lines.length){
+      const tg = makeLinGrad(W,H,+$('tAngle').value,[{c:$('t1').value,pos:0},{c:$('t2').value,pos:.5},{c:$('t3').value,pos:1}]);
+      const outline=+$('outline').value, glow=+$('glow').value;
+      ctx.textAlign=$('align').value; ctx.textBaseline='alphabetic'; ctx.font=`${wght} ${base}px ${fam}`;
+      const x = $('align').value==='left'? pad : ($('align').value==='right'? W-pad : W/2);
+      let y = H*(+$('titleY').value/100);
+
+      ctx.save();
+      ctx.shadowBlur=glow; ctx.shadowColor='rgba(0,0,0,0.55)';
+      if(outline>0){
+        ctx.lineWidth=outline;
+        ctx.strokeStyle=makeLinGrad(W,H,90,[{c:'rgba(0,0,0,0.85)',pos:0},{c:'rgba(0,0,0,0.25)',pos:1}]);
+      }
+      ctx.fillStyle=tg;
+      for(let i=0;i<lines.length;i++){
+        const yy = y + i*base*lh;
+        if(outline>0) drawTextWithSpacing(ctx,'stroke',lines[i],x,yy,ls);
+        drawTextWithSpacing(ctx,'fill',lines[i],x,yy,ls);
+      }
+      ctx.restore();
+    }
+
+    // bottom branding
+    const brand = $('brand').value.trim();
+    if(brand){
+      const bSize=+$('brandSize').value, off=+$('brandOffset').value/100*H;
+      const bg = makeLinGrad(W,H,0,[{c:$('b1').value,pos:0},{c:$('b2').value,pos:.5},{c:$('b3').value,pos:1}]);
+      ctx.save();
+      ctx.textAlign='center'; ctx.textBaseline='bottom';
+      ctx.font=`600 ${bSize}px ${$('font').value}`;
+      ctx.shadowBlur=+$('bGlow').value; ctx.shadowColor='rgba(0,0,0,0.3)';
+      ctx.fillStyle=bg; ctx.fillText(brand, W/2, H-off);
+      ctx.restore();
+    }
+
+    // logos (circle mask + border) - draggable
+    S.logos.forEach(L=>{
+      if(!L.img.complete) return;
+      const iw=L.img.naturalWidth, ih=L.img.naturalHeight;
+      const s=L.scale, w=iw*s, h=ih*s;
+      // clamp inside canvas
+      const x= L.x = clamp(L.x, pad + w/2, W - pad - w/2);
+      const y= L.y = clamp(L.y, pad + h/2, H - pad - h/2);
+
+      ctx.save();
+      // circle mask
+      const r=Math.min(w,h)/2;
+      ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.clip();
+
+      ctx.globalAlpha=L.opacity;
+      ctx.drawImage(L.img, x - w/2, y - h/2, w, h);
+      ctx.restore();
+
+      // border
+      if(L.bw>0){
+        ctx.save();
+        ctx.lineWidth=L.bw;
+        ctx.strokeStyle=L.bcolor;
+        ctx.globalAlpha=L.bopac;
+        ctx.shadowBlur=L.shadow; ctx.shadowColor="rgba(0,0,0,.4)";
+        ctx.beginPath(); ctx.arc(x,y,Math.min(w,h)/2 - L.bw/2,0,Math.PI*2); ctx.stroke();
+        ctx.restore();
+      }
+    });
+  }
+
+  // ---------- Controls & events ----------
+  function bindAll(){
+    document.querySelectorAll('input,select,textarea').forEach(el=>{
+      el.addEventListener('input', draw);
+    });
+    $('preset').addEventListener('change',()=>{
+      const v=$('preset').value;
+      if(v!=="custom"){ const [w,h]=v.split('x').map(Number); $('cw').value=w; $('ch').value=h; }
+      draw();
+    });
+    $('font').addEventListener('change', e=> loadFont(e.target.value));
+
+    $('download').addEventListener('click',()=>{
+      const fmt=$('format').value, scale=+$('scale').value, q=+$('quality').value;
+      const tmp=document.createElement('canvas'); tmp.width=c.width*scale; tmp.height=c.height*scale;
+      const t=tmp.getContext('2d'); t.imageSmoothingQuality='high'; t.drawImage(c,0,0,tmp.width,tmp.height);
+      const mime= fmt==='png'?'image/png':(fmt==='jpeg'?'image/jpeg':'image/webp');
+      const url=tmp.toDataURL(mime,q); const a=document.createElement('a'); a.href=url; a.download=`post_${tmp.width}x${tmp.height}.${fmt}`; a.click();
+    });
+  }
+
+  // ---------- Logos ----------
+  $('logoInput').addEventListener('change',e=>{
     for(const file of e.target.files){
-      const img = new Image();
-      img.onload = ()=>{
-        state.logos.push({
-          img, x:$('c').width/2, y:$('c').height*0.15 + Math.random()*100,
-          scale: Math.min(400/img.naturalWidth, 400/img.naturalHeight) * 0.5,
-          opacity:1
-        });
-        addLogoChip(state.logos.length-1);
-        draw();
+      const img=new Image();
+      img.onload=()=>{
+        const s = Math.min(400/img.naturalWidth, 400/img.naturalHeight)*0.6;
+        S.logos.push({img, x:c.width*0.5, y:c.height*0.2 + Math.random()*60, scale:s, opacity:1, bw:6, bcolor:'#ffffff', bopac:1, shadow:6});
+        refreshLogoList(); draw();
       };
-      img.src = URL.createObjectURL(file);
+      img.src=URL.createObjectURL(file);
     }
     e.target.value='';
   });
+  $('clearLogos').onclick=()=>{S.logos=[]; refreshLogoList(); draw();};
 
-  function addLogoChip(idx){
-    const L = state.logos[idx];
-    const row = document.createElement('div');
-    row.className='logo-chip';
-    row.innerHTML = `
-      <span class="small">Logo ${idx+1}</span>
-      <input type="range" min="0.05" max="1.5" step="0.01" value="${L.scale}" data-k="scale">
-      <input type="range" min="0.1" max="1" step="0.01" value="${L.opacity}" data-k="opacity">
-      <select data-k="snap">
-        <option value="">Free</option>
-        <option value="TL">Top-Left</option>
-        <option value="TC">Top-Center</option>
-        <option value="TR">Top-Right</option>
-        <option value="CL">Center-Left</option>
-        <option value="CC">Center</option>
-        <option value="CR">Center-Right</option>
-        <option value="BL">Bottom-Left</option>
-        <option value="BC">Bottom-Center</option>
-        <option value="BR">Bottom-Right</option>
-      </select>
-      <button data-k="up">⬆️</button>
-      <button data-k="down">⬇️</button>
-      <button data-k="del">🗑️</button>
-    `;
-    row.querySelectorAll('input,select,button').forEach(el=>{
-      el.oninput = el.onclick = (ev)=>{
-        const k = el.dataset.k;
-        if(k==='scale'){ L.scale = +el.value; }
-        else if(k==='opacity'){ L.opacity = +el.value; }
-        else if(k==='snap'){ snapLogo(L, el.value); }
-        else if(k==='del'){ state.logos.splice(idx,1); rebuildLogoList(); }
-        else if(k==='up'){ moveLogo(idx,-1); }
-        else if(k==='down'){ moveLogo(idx,1); }
-        draw();
-      };
+  function refreshLogoList(){
+    const wrap=$('logoList'); wrap.innerHTML='';
+    S.logos.forEach((L,i)=>{
+      const row=document.createElement('div');
+      row.className='chip';
+      row.innerHTML=`
+        <span class="small">Logo ${i+1}</span>
+        <input type="range" min="0.05" max="2" step="0.01" value="${L.scale}" data-k="scale" title="Size">
+        <input type="range" min="0.1" max="1" step="0.01" value="${L.opacity}" data-k="opacity" title="Opacity">
+        <select data-k="snap" title="Snap">
+          <option value="">Free</option><option value="TL">TL</option><option value="TC">TC</option><option value="TR">TR</option>
+          <option value="CL">CL</option><option value="CC">Center</option><option value="CR">CR</option>
+          <option value="BL">BL</option><option value="BC">BC</option><option value="BR">BR</option>
+        </select>
+        <input type="color" value="${L.bcolor}" data-k="bcolor" title="Border Color">
+        <input type="range" min="0" max="20" step="1" value="${L.bw}" data-k="bw" title="Border Width">
+        <input type="range" min="0" max="1" step="0.05" value="${L.bopac}" data-k="bopac" title="Border Opacity">
+        <button data-k="up">⬆️</button>
+        <button data-k="down">⬇️</button>
+        <button data-k="del">🗑️</button>
+      `;
+      row.querySelectorAll('input,select,button').forEach(el=>{
+        el.oninput = el.onclick = ()=>{
+          const k=el.dataset.k;
+          if(k==='scale') L.scale=+el.value;
+          else if(k==='opacity') L.opacity=+el.value;
+          else if(k==='bcolor') L.bcolor=el.value;
+          else if(k==='bw') L.bw=+el.value;
+          else if(k==='bopac') L.bopac=+el.value;
+          else if(k==='snap'){ snapLogo(L, el.value); }
+          else if(k==='del'){ S.logos.splice(i,1); refreshLogoList(); }
+          else if(k==='up'){ moveLogo(i,-1); }
+          else if(k==='down'){ moveLogo(i,1); }
+          draw();
+        };
+      });
+      wrap.appendChild(row);
     });
-    $('logoList').appendChild(row);
   }
-  function rebuildLogoList(){
-    $('logoList').innerHTML='';
-    state.logos.forEach((_,i)=>addLogoChip(i));
-  }
-  function moveLogo(i,dir){
-    const j=i+dir; if(j<0||j>=state.logos.length) return;
-    const t=state.logos[i]; state.logos[i]=state.logos[j]; state.logos[j]=t;
-    rebuildLogoList();
-  }
+  function moveLogo(i,dir){ const j=i+dir; if(j<0||j>=S.logos.length) return; [S.logos[i],S.logos[j]]=[S.logos[j],S.logos[i]]; refreshLogoList(); }
   function snapLogo(L, pos){
-    const cw = $('c').width, ch = $('c').height, pad = Math.min(cw,ch)*+$('padding').value/100;
-    const map = {
-      'TL':[pad, pad], 'TC':[cw/2, pad], 'TR':[cw-pad, pad],
-      'CL':[pad, ch/2], 'CC':[cw/2, ch/2], 'CR':[cw-pad, ch/2],
-      'BL':[pad, ch - pad], 'BC':[cw/2, ch - pad], 'BR':[cw - pad, ch - pad]
-    };
+    const W=c.width, H=c.height, pad=Math.min(W,H)*(+$('padding').value/100);
+    const map={TL:[pad,pad],TC:[W/2,pad],TR:[W-pad,pad], CL:[pad,H/2],CC:[W/2,H/2],CR:[W-pad,H/2], BL:[pad,H-pad],BC:[W/2,H-pad],BR:[W-pad,H-pad]};
     if(map[pos]){ L.x=map[pos][0]; L.y=map[pos][1]; }
   }
 
-  // Drag logos
-  const canvas = $('c');
-  canvas.addEventListener('mousedown', (e)=>{
-    const r = canvas.getBoundingClientRect();
-    const mx = (e.clientX - r.left) * (canvas.width / r.width);
-    const my = (e.clientY - r.top) * (canvas.height / r.height);
-    for(let i=state.logos.length-1;i>=0;i--){
-      const L = state.logos[i];
-      const iw=L.img.naturalWidth*L.scale, ih=L.img.naturalHeight*L.scale;
-      if(mx> L.x - iw/2 && mx< L.x + iw/2 && my> L.y - ih/2 && my< L.y + ih/2){
-        state.drag={active:true, idx:i, dx: mx - L.x, dy: my - L.y}; break;
-      }
+  // drag + resize (Shift+wheel)
+  c.addEventListener('mousedown',e=>{
+    const r=c.getBoundingClientRect();
+    const mx=(e.clientX-r.left)*(c.width/r.width), my=(e.clientY-r.top)*(c.height/r.height);
+    for(let i=S.logos.length-1;i>=0;i--){
+      const L=S.logos[i], iw=L.img.naturalWidth*L.scale, ih=L.img.naturalHeight*L.scale;
+      if(mx> L.x-iw/2 && mx< L.x+iw/2 && my> L.y-ih/2 && my< L.y+ih/2){ S.drag={on:true,idx:i,dx:mx-L.x,dy:my-L.y}; break; }
     }
   });
-  window.addEventListener('mousemove',(e)=>{
-    if(!state.drag.active) return;
-    const r = canvas.getBoundingClientRect();
-    const mx = (e.clientX - r.left) * (canvas.width / r.width);
-    const my = (e.clientY - r.top) * (canvas.height / r.height);
-    const L = state.logos[state.drag.idx];
-    L.x = mx - state.drag.dx; L.y = my - state.drag.dy; draw();
+  window.addEventListener('mousemove',e=>{
+    if(!S.drag.on) return;
+    const r=c.getBoundingClientRect();
+    const mx=(e.clientX-r.left)*(c.width/r.width), my=(e.clientY-r.top)*(c.height/r.height);
+    const L=S.logos[S.drag.idx];
+    L.x = mx - S.drag.dx; L.y = my - S.drag.dy; draw();
   });
-  window.addEventListener('mouseup',()=> state.drag.active=false);
-  // Resize logo with Shift+wheel
-  canvas.addEventListener('wheel',(e)=>{
+  window.addEventListener('mouseup',()=> S.drag.on=false);
+  c.addEventListener('wheel',e=>{
     if(!e.shiftKey) return;
-    const r = canvas.getBoundingClientRect();
-    const mx = (e.clientX - r.left) * (canvas.width / r.width);
-    const my = (e.clientY - r.top) * (canvas.height / r.height);
-    for(let i=state.logos.length-1;i>=0;i--){
-      const L = state.logos[i];
-      const iw=L.img.naturalWidth*L.scale, ih=L.img.naturalHeight*L.scale;
-      if(mx> L.x - iw/2 && mx< L.x + iw/2 && my> L.y - ih/2 && my< L.y + ih/2){
-        L.scale = Math.max(0.05, Math.min(2, L.scale * (1 - e.deltaY*0.0015)));
-        draw(); e.preventDefault(); return;
+    const r=c.getBoundingClientRect();
+    const mx=(e.clientX-r.left)*(c.width/r.width), my=(e.clientY-r.top)*(c.height/r.height);
+    for(let i=S.logos.length-1;i>=0;i--){
+      const L=S.logos[i], iw=L.img.naturalWidth*L.scale, ih=L.img.naturalHeight*L.scale;
+      if(mx> L.x-iw/2 && mx< L.x+iw/2 && my> L.y-ih/2 && my< L.y+ih/2){
+        L.scale=clamp(L.scale*(1 - e.deltaY*0.0015), 0.05, 2); draw(); e.preventDefault(); return;
       }
     }
   }, {passive:false});
 
-  // ---------- Events ----------
-  document.querySelectorAll('#controls input,#controls select,#controls textarea')
-    .forEach(el=> el.addEventListener('input', draw));
+  // size preset initial
+  document.getElementById('preset').dispatchEvent(new Event('change'));
 
-  $('preset').addEventListener('change', ()=>{
-    const v = $('preset').value;
-    if(v==='custom') return;
-    const [w,h]=v.split('x').map(Number);
-    $('cw').value=w; $('ch').value=h; draw();
-  });
-
-  $('clearLogos').onclick=()=>{ state.logos=[]; rebuildLogoList(); draw(); };
-
-  $('download').onclick=()=>{
-    const fmt = $('format').value;
-    const scale = +$('scale').value;
-    const q = +$('quality').value;
-    // render to temp canvas at scale
-    const src = $('c');
-    const tmp = document.createElement('canvas');
-    tmp.width = src.width*scale; tmp.height = src.height*scale;
-    const tctx = tmp.getContext('2d');
-    // upscale draw
-    tctx.imageSmoothingQuality = 'high';
-    tctx.drawImage(src,0,0,tmp.width,tmp.height);
-    const mime = fmt==='png' ? 'image/png' : (fmt==='jpeg' ? 'image/jpeg' : 'image/webp');
-    const url = tmp.toDataURL(mime, q);
-    const a = document.createElement('a');
-    a.href=url; a.download=`post_${tmp.width}x${tmp.height}.${fmt}`;
-    a.click();
-  };
-
-  // ---------- Init ----------
+  bindAll();
   draw();
   </script>
 </body>
