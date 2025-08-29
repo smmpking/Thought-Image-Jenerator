@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Post Maker — BG Image + Circle + Logos</title>
+  <title>Post Maker — BG Image + Circle + Logos (Blend Fix)</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600;800&family=Mukta:wght@400;600;800&family=Hind:wght@400;600;700&family=Karma:wght@400;700&family=Martel:wght@400;800&family=Poppins:wght@400;600;800&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
     :root{--line:#1f2630;--ink:#e8ecf1;--muted:#9aa3ad}
@@ -41,7 +41,7 @@
           <select id="format"><option value="png">PNG</option><option value="jpeg">JPEG</option><option value="webp">WebP</option></select>
           <select id="scale"><option value="1">1×</option><option value="2" selected>2×</option><option value="3">3×</option></select>
           <input type="range" id="quality" min="0.7" max="1" step="0.01" value="0.95" title="Quality">
-          <span class="small">Drag BG/Logos • <b>Shift+Wheel</b> = Zoom • <b>Ctrl+Drag</b> = Circle move</span>
+          <span class="small">Drag BG/Logos • <b>Shift+Wheel</b> Zoom • <b>Ctrl+Drag</b> Circle move</span>
         </div>
         <button class="btn primary" id="download">⬇️ Download</button>
       </div>
@@ -69,20 +69,28 @@
             </select>
           </div>
         </div>
+
         <div class="grid3" style="margin-top:8px">
           <div><label>Image Opacity</label><input type="range" id="bgImgOpacity" min="0" max="1" step="0.05" value="1"></div>
           <div><label>Image Scale</label><input type="range" id="bgImgScale" min="0.2" max="3" step="0.02" value="1"></div>
           <div><label>Tint Color</label><input type="color" id="bgImgTint" value="#ffffff"></div>
         </div>
+
         <div class="grid3" style="margin-top:8px">
           <div><label>Tint Mode</label>
-            <select id="bgTintMode"><option value="none" selected>None</option><option value="multiply">Multiply</option><option value="screen">Screen</option><option value="overlay">Overlay</option><option value="soft-light">Soft Light</option></select>
+            <select id="bgTintMode">
+              <option value="none" selected>None</option>
+              <option value="multiply">Multiply</option>
+              <option value="screen">Screen</option>
+              <option value="overlay">Overlay</option>
+              <option value="soft-light">Soft Light</option>
+            </select>
           </div>
           <div><label>Vignette</label><input type="range" id="vignette" min="0" max="100" value="20"></div>
           <div><label>Safe Padding (%)</label><input type="range" id="padding" min="0" max="15" value="5"></div>
         </div>
 
-        <!-- Gradient -->
+        <!-- Gradient colors -->
         <div class="grid3" style="margin-top:12px">
           <div><label>Gradient Top</label><input type="color" id="bg1" value="#ffffff"></div>
           <div><label>Gradient Mid</label><input type="color" id="bg2" value="#1976D2"></div>
@@ -90,7 +98,23 @@
         </div>
         <div class="grid3" style="margin-top:8px">
           <div><label>Gradient Angle</label><input type="range" id="bgAngle" min="0" max="360" value="90"></div>
-          <div><label>Canvas Size</label>
+          <div><label>Gradient Opacity</label><input type="range" id="gradOpacity" min="0" max="1" step="0.05" value="0.6"></div>
+          <div>
+            <label>Gradient Blend</label>
+            <select id="gradBlend">
+              <option value="source-over" selected>Normal</option>
+              <option value="multiply">Multiply</option>
+              <option value="screen">Screen</option>
+              <option value="overlay">Overlay</option>
+              <option value="soft-light">Soft Light</option>
+              <option value="hard-light">Hard Light</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Canvas size -->
+        <div class="grid3" style="margin-top:8px">
+          <div><label>Canvas Preset</label>
             <select id="preset">
               <option value="1080x1080" selected>IG/FB Square — 1080×1080</option>
               <option value="1080x1920">Story/Reel — 1080×1920</option>
@@ -105,6 +129,7 @@
             <input id="cw" type="number" min="320" value="1080" title="Width (px)">
             <input id="ch" type="number" min="320" value="1080" title="Height (px)">
           </div>
+          <div></div>
         </div>
 
         <!-- Circle BG controls -->
@@ -171,7 +196,7 @@
           <button class="btn" id="clearLogos">❌ Remove All</button>
         </div>
         <div id="logoList" class="grid2" style="margin-top:8px"></div>
-        <div class="small" style="margin-top:6px">Drag logos • <b>Shift+Wheel</b> size • Snap from chip dropdown • “Auto Border” ON रहने पर बैकग्राउंड के अनुसार white/black चुनता है</div>
+        <div class="small" style="margin-top:6px">Drag logos • <b>Shift+Wheel</b> size • Snap from chip dropdown • “Auto Border” ON रहने पर background के हिसाब से white/black चुनता है</div>
       </div>
 
       <!-- BRANDING -->
@@ -202,9 +227,9 @@
 
   // BG image + circle state
   const BG={img:null,x:0,y:0,scale:1};
-  let drag={mode:null,dx:0,dy:0}; // 'BG' or 'CIRCLE'
+  let drag={mode:null,dx:0,dy:0}; // 'BG' | 'LOGO:i' | 'CIRCLE'
   // Logos
-  const S={logos:[]}; // {img,x,y,scale,opacity,bw,bcolor,bopac,autoBorder:true}
+  const S={logos:[]}; // {img,x,y,scale,opacity,bw,bcolor,bopac,autoBorder}
 
   // Helpers
   function makeGrad(W,H,a,stops){ const rad=a*Math.PI/180,vx=Math.cos(rad),vy=Math.sin(rad); const x0=W*(.5-.5*vx),y0=H*(.5-.5*vy),x1=W*(.5+.5*vx),y1=H*(.5+.5*vy); const g=ctx.createLinearGradient(x0,y0,x1,y1); stops.forEach(s=>g.addColorStop(s.pos,s.c)); return g; }
@@ -266,7 +291,9 @@
   function rebuildLogoList(){ const wrap=document.getElementById('logoList'); wrap.innerHTML=''; S.logos.forEach((_,i)=>addLogoChip(i)); }
   function moveLogo(i,dir){ const j=i+dir; if(j<0||j>=S.logos.length) return; [S.logos[i],S.logos[j]]=[S.logos[j],S.logos[i]]; rebuildLogoList(); }
   function snapLogo(L,pos){
-    const W=c.width,H=c.height,pad=Math.min(W,H)*(+$('padding').value/100); const map={TL:[pad,pad],TC:[W/2,pad],TR:[W-pad,pad],CL:[pad,H/2],CC:[W/2,H/2],CR:[W-pad,H/2],BL:[pad,H-pad],BC:[W/2,H-pad],BR:[W-pad,H-pad]}; if(map[pos]){L.x=map[pos][0];L.y=map[pos][1];}
+    const W=c.width,H=c.height,pad=Math.min(W,H)*(+$('padding').value/100);
+    const map={TL:[pad,pad],TC:[W/2,pad],TR:[W-pad,pad],CL:[pad,H/2],CC:[W/2,H/2],CR:[W-pad,H/2],BL:[pad,H-pad],BC:[W/2,H-pad],BR:[W-pad,H-pad]};
+    if(map[pos]){L.x=map[pos][0];L.y=map[pos][1];}
   }
 
   // Canvas interactions
@@ -290,7 +317,7 @@
     if(!drag.mode) return;
     const r=c.getBoundingClientRect(), mx=(e.clientX-r.left)*(c.width/r.width), my=(e.clientY-r.top)*(c.height/r.height);
     if(drag.mode==='BG'){ BG.x=mx-drag.dx; BG.y=my-drag.dy; draw(); }
-    else if(drag.mode.startsWith('LOGO:')){ const i=+drag.mode.split(':')[1]; const L=S.logos[i]; L.x=mx-drag.dx; L.y=my-dy= my-drag.dy; draw(); }
+    else if(drag.mode.startsWith('LOGO:')){ const i=+drag.mode.split(':')[1]; const L=S.logos[i]; L.x=mx-drag.dx; L.y=my-drag.dy; draw(); }
     else if(drag.mode==='CIRCLE'){ $('circleX').value = Math.round(100*mx/c.width); $('circleY').value = Math.round(100*my/c.height); draw(); }
   });
   window.addEventListener('mouseup',()=> drag.mode=null);
@@ -320,26 +347,54 @@
     const W=+$('cw').value, H=+$('ch').value; c.width=W; c.height=H;
     const pad=Math.round(Math.min(W,H)*(+$('padding').value/100));
 
-    // bg image scale from slider
+    // update BG scale from slider
     if(BG.img) BG.scale = +$('bgImgScale').value;
 
-    // Gradient background
+    // blend & shape
     const blend=$('bgBlend').value, shape=$('bgShape').value;
+
+    // clear
     ctx.clearRect(0,0,W,H);
+
+    // 1) Image first when 'under' or 'imageOnly'
     if((blend==='under'||blend==='imageOnly')) drawBG(W,H,shape);
+
+    // 2) Gradient (with opacity + blend) unless imageOnly
     if(blend!=='imageOnly'){
-      ctx.fillStyle=makeGrad(W,H,+$('bgAngle').value,[{c:$('bg1').value,pos:0},{c:$('bg2').value,pos:.5},{c:$('bg3').value,pos:1}]);
+      const gradFill = makeGrad(W,H,+$('bgAngle').value,[
+        {c:$('bg1').value,pos:0},
+        {c:$('bg2').value,pos:.5},
+        {c:$('bg3').value,pos:1}
+      ]);
+      ctx.save();
+      ctx.globalAlpha = +$('gradOpacity').value;
+      ctx.globalCompositeOperation = $('gradBlend').value;
+      ctx.fillStyle = gradFill;
       ctx.fillRect(0,0,W,H);
+      ctx.restore();
     }
+
+    // 3) Image over when 'over'
     if(blend==='over') drawBG(W,H,shape);
 
     // Vignette
     const vig=+$('vignette').value/100;
-    if(vig>0){ const g=ctx.createRadialGradient(W/2,H/2,Math.min(W,H)*(0.6-0.6*vig),W/2,H/2,Math.max(W,H)*0.8); g.addColorStop(0,'rgba(0,0,0,0)'); g.addColorStop(1,`rgba(0,0,0,${0.55*vig})`); ctx.fillStyle=g; ctx.fillRect(0,0,W,H); }
+    if(vig>0){
+      const g=ctx.createRadialGradient(W/2,H/2,Math.min(W,H)*(0.6-0.6*vig),W/2,H/2,Math.max(W,H)*0.8);
+      g.addColorStop(0,'rgba(0,0,0,0)'); g.addColorStop(1,`rgba(0,0,0,${0.55*vig})`);
+      ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+    }
 
     // Top title
     const topText=$('topTitle').value.trim();
-    if(topText){ const f=$('topFont').value; loadFont(f); ctx.save(); ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.font=`800 ${+$('topSize').value}px "${f}"`; const tg=makeGrad(W,H,+$('topAngle').value,[{c:$('top1').value,pos:0},{c:$('top2').value,pos:1}]); ctx.fillStyle=tg; ctx.fillText(topText,W/2,H*(+$('topY').value/100)); ctx.restore(); }
+    if(topText){
+      const f=$('topFont').value; loadFont(f);
+      ctx.save(); ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.font=`800 ${+$('topSize').value}px "${f}"`;
+      const tg=makeGrad(W,H,+$('topAngle').value,[{c:$('top1').value,pos:0},{c:$('top2').value,pos:1}]);
+      ctx.fillStyle=tg; ctx.fillText(topText,W/2,H*(+$('topY').value/100));
+      ctx.restore();
+    }
 
     // Main heading (Indic safe)
     const text=$('title').value;
@@ -353,13 +408,20 @@
       const isIndic = $('indicMode').value==='forceOn' ? true : ($('indicMode').value==='forceOff' ? false : HAS_DEV(text));
       const letter = isIndic ? 0 : +$('letter').value;
 
-      ctx.save(); ctx.textAlign=align; ctx.textBaseline='alphabetic'; ctx.shadowBlur=glow; ctx.shadowColor='rgba(0,0,0,0.55)'; ctx.lineJoin="round"; ctx.miterLimit=2;
+      ctx.save(); ctx.textAlign=align; ctx.textBaseline='alphabetic';
+      ctx.shadowBlur=glow; ctx.shadowColor='rgba(0,0,0,0.55)'; ctx.lineJoin="round"; ctx.miterLimit=2;
+
       const lines=text.split('\n');
       for(let i=0;i<lines.length;i++){
         ctx.font=`${wght} ${base}px "${fam}"`;
         const y = y0 + i*base*lh;
-        if(outline>0){ ctx.lineWidth=outline; ctx.strokeStyle=makeGrad(W,H,90,[{c:'rgba(0,0,0,0.85)',pos:0},{c:'rgba(0,0,0,0.25)',pos:1}]); if(letter===0) ctx.strokeText(lines[i],x,y); else drawWithLetterSpacing('stroke',lines[i],x,y,letter,align); }
-        ctx.fillStyle=tg; if(letter===0) ctx.fillText(lines[i],x,y); else drawWithLetterSpacing('fill',lines[i],x,y,letter,align);
+        if(outline>0){
+          ctx.lineWidth=outline;
+          ctx.strokeStyle=makeGrad(W,H,90,[{c:'rgba(0,0,0,0.85)',pos:0},{c:'rgba(0,0,0,0.25)',pos:1}]);
+          if(letter===0) ctx.strokeText(lines[i],x,y); else drawWithLetterSpacing('stroke',lines[i],x,y,letter,align);
+        }
+        ctx.fillStyle=tg;
+        if(letter===0) ctx.fillText(lines[i],x,y); else drawWithLetterSpacing('fill',lines[i],x,y,letter,align);
       }
       ctx.restore();
       $('letter').disabled = isIndic;
@@ -367,19 +429,33 @@
 
     // Branding
     const brand=$('brand').value.trim();
-    if(brand){ const size=+$('brandSize').value, off=+$('brandOffset').value/100*H; const bg=makeGrad(W,H,0,[{c:$('b1').value,pos:0},{c:$('b2').value,pos:.5},{c:$('b3').value,pos:1}]); const fam=$('font').value; loadFont(fam); ctx.save(); ctx.textAlign='center'; ctx.textBaseline='bottom'; ctx.font=`600 ${size}px "${fam}"`; ctx.shadowBlur=+$('bGlow').value; ctx.shadowColor='rgba(0,0,0,0.35)'; ctx.fillStyle=bg; ctx.fillText(brand,W/2,H-off); ctx.restore(); }
+    if(brand){
+      const size=+$('brandSize').value, off=+$('brandOffset').value/100*H;
+      const bg=makeGrad(W,H,0,[{c:$('b1').value,pos:0},{c:$('b2').value,pos:.5},{c:$('b3').value,pos:1}]);
+      const fam=$('font').value; loadFont(fam);
+      ctx.save(); ctx.textAlign='center'; ctx.textBaseline='bottom';
+      ctx.font=`600 ${size}px "${fam}"`; ctx.shadowBlur=+$('bGlow').value; ctx.shadowColor='rgba(0,0,0,0.35)';
+      ctx.fillStyle=bg; ctx.fillText(brand, W/2, H-off); ctx.restore();
+    }
 
     // Logos (circle mask + auto border)
     S.logos.forEach(L=>{
       if(!L.img.complete)return;
       const iw=L.img.naturalWidth*L.scale, ih=L.img.naturalHeight*L.scale;
-      // image circle
-      ctx.save(); const r=Math.min(iw,ih)/2; ctx.beginPath(); ctx.arc(L.x,L.y,r,0,Math.PI*2); ctx.clip(); ctx.globalAlpha=L.opacity; ctx.drawImage(L.img, L.x - iw/2, L.y - ih/2, iw, ih); ctx.restore();
-      // auto border color (contrast)
+      ctx.save();
+      const r=Math.min(iw,ih)/2;
+      ctx.beginPath(); ctx.arc(L.x,L.y,r,0,Math.PI*2); ctx.clip();
+      ctx.globalAlpha=L.opacity; ctx.drawImage(L.img, L.x - iw/2, L.y - ih/2, iw, ih);
+      ctx.restore();
+
+      // auto border: sample background under logo center
       let borderColor=L.bcolor;
       if(L.autoBorder){
-        const sample=ctx.getImageData(Math.round(L.x),Math.round(L.y),1,1).data; const lum=0.2126*sample[0]+0.7152*sample[1]+0.0722*sample[2];
-        borderColor = lum>140 ? '#111111' : '#FFFFFF';
+        try{
+          const px=ctx.getImageData(Math.round(L.x),Math.round(L.y),1,1).data;
+          const lum=0.2126*px[0]+0.7152*px[1]+0.0722*px[2];
+          borderColor = lum>140 ? '#111111' : '#FFFFFF';
+        }catch(e){ borderColor=L.bcolor; }
       }
       if(L.bw>0){ ctx.save(); ctx.lineWidth=L.bw; ctx.strokeStyle=borderColor; ctx.globalAlpha=L.bopac||1; ctx.beginPath(); ctx.arc(L.x,L.y,Math.min(iw,ih)/2 - L.bw/2,0,Math.PI*2); ctx.stroke(); ctx.restore(); }
     });
@@ -392,25 +468,49 @@
 
     if(shape==='circle'){
       const cx=W*(+$('circleX').value/100), cy=H*(+$('circleY').value/100), R=Math.min(W,H)*(+$('circleR').value/100), cop=+$('circleOpacity').value;
-      ctx.save(); ctx.globalAlpha=op*cop; ctx.beginPath(); ctx.arc(cx,cy,R,0,Math.PI*2); ctx.clip(); ctx.drawImage(BG.img, BG.x - iw/2, BG.y - ih/2, iw, ih);
-      if(mode!=='none'){ ctx.globalCompositeOperation=mode; ctx.fillStyle=`rgb(${r},${g},${b})`; ctx.fillRect(cx-R,cy-R,2*R,2*R); ctx.globalCompositeOperation='source-over'; }
+      ctx.save();
+      ctx.globalAlpha=op*cop;
+      ctx.beginPath(); ctx.arc(cx,cy,R,0,Math.PI*2); ctx.clip();
+      ctx.drawImage(BG.img, BG.x - iw/2, BG.y - ih/2, iw, ih);
+      if(mode!=='none'){
+        ctx.globalCompositeOperation=mode;
+        ctx.fillStyle=`rgb(${r},${g},${b})`; ctx.fillRect(cx-R,cy-R,2*R,2*R);
+        ctx.globalCompositeOperation='source-over';
+      }
       ctx.restore();
     }else{
-      ctx.save(); ctx.globalAlpha=op; ctx.drawImage(BG.img, BG.x - iw/2, BG.y - ih/2, iw, ih);
-      if(mode!=='none'){ ctx.globalCompositeOperation=mode; ctx.fillStyle=`rgb(${r},${g},${b})`; ctx.fillRect(0,0,W,H); ctx.globalCompositeOperation='source-over'; }
+      ctx.save(); ctx.globalAlpha=op;
+      ctx.drawImage(BG.img, BG.x - iw/2, BG.y - ih/2, iw, ih);
+      if(mode!=='none'){
+        ctx.globalCompositeOperation=mode;
+        ctx.fillStyle=`rgb(${r},${g},${b})`; ctx.fillRect(0,0,W,H);
+        ctx.globalCompositeOperation='source-over';
+      }
       ctx.restore();
     }
   }
 
   // Inputs binding
-  document.querySelectorAll('input,select,textarea').forEach(el=>el.addEventListener('input',()=>{ if(el.id==='font'||el.id==='topFont') loadFont(el.value); if(el.id==='bgShape'){ document.getElementById('circleControls').style.display = el.value==='circle'?'grid':'none'; } draw(); }));
+  document.querySelectorAll('input,select,textarea').forEach(el=>el.addEventListener('input',()=>{
+    if(el.id==='font'||el.id==='topFont') loadFont(el.value);
+    if(el.id==='bgShape'){ document.getElementById('circleControls').style.display = el.value==='circle'?'grid':'none'; }
+    draw();
+  }));
   document.getElementById('preset').addEventListener('change',()=>{ const v=$('preset').value; if(v!=='custom'){ const [w,h]=v.split('x').map(Number); $('cw').value=w; $('ch').value=h; } draw(); });
 
   // Download
-  $('download').onclick=()=>{ const scale=+$('scale').value, fmt=$('format').value, q=+$('quality').value; const tmp=document.createElement('canvas'); tmp.width=c.width*scale; tmp.height=c.height*scale; const t=tmp.getContext('2d'); t.imageSmoothingQuality='high'; t.drawImage(c,0,0,tmp.width,tmp.height); const mime= fmt==='png'?'image/png':(fmt==='jpeg'?'image/jpeg':'image/webp'); const url=tmp.toDataURL(mime,q); const a=document.createElement('a'); a.href=url; a.download=`post_${tmp.width}x${tmp.height}.${fmt}`; a.click(); };
+  $('download').onclick=()=>{
+    const scale=+$('scale').value, fmt=$('format').value, q=+$('quality').value;
+    const tmp=document.createElement('canvas'); tmp.width=c.width*scale; tmp.height=c.height*scale;
+    const t=tmp.getContext('2d'); t.imageSmoothingQuality='high'; t.drawImage(c,0,0,tmp.width,tmp.height);
+    const mime= fmt==='png'?'image/png':(fmt==='jpeg'?'image/jpeg':'image/webp');
+    const url=tmp.toDataURL(mime,q); const a=document.createElement('a'); a.href=url; a.download=`post_${tmp.width}x${tmp.height}.${fmt}`; a.click();
+  };
 
   // Init
   loadFont("Noto Sans Devanagari"); loadFont("Poppins");
+  // show/hide circle controls on load
+  document.getElementById('circleControls').style.display = $('bgShape').value==='circle'?'grid':'none';
   draw();
   </script>
 </body>
