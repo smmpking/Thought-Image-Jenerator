@@ -9,10 +9,31 @@
     :root{--line:#1f2630;--ink:#e8ecf1;--muted:#9aa3ad}
     *{box-sizing:border-box}
     body{margin:0;background:#0a0c10;color:var(--ink);font-family:"Noto Sans Devanagari","Poppins",system-ui,Segoe UI,Roboto,Arial,sans-serif}
-    .container{max-width:400px;margin:auto;padding:12px}
-    .previewCard{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:16px;padding:12px}
-    .stage{display:grid;place-items:center;position:relative;min-height:10vh}
-    canvas{max-width:50%;border-radius:14px;background:#000;display:block}
+    .container {
+  max-width: 900px;  /* पूरा layout को थोड़ा बड़ा रहने दें */
+  margin: auto;
+  padding: 12px;
+}
+    .previewCard {
+  max-width: 500px;   /* Preview card width limit */
+  margin: auto;
+}
+
+.stage {
+  display: grid;
+  place-items: center;
+  position: relative;
+  min-height: 40vh;
+}
+
+canvas {
+  width: 100%;        /* canvas को card के अंदर फिट कराओ */
+  max-width: 400px;   /* desktop पर ज्यादा बड़ा न हो */
+  height: auto;
+  border-radius: 14px;
+  background: #000;
+  display: block;
+}
     .btn{background:#121a24;border:1px solid #24303f;color:var(--ink);padding:10px 14px;border-radius:12px;cursor:pointer;font-weight:700}
     .btn.primary{background:linear-gradient(135deg,#60a5fa,#34d399);color:#081017;border:none}
     .controls{margin-top:14px;display:grid;gap:12px;grid-template-columns:1fr}
