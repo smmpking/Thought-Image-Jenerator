@@ -232,7 +232,7 @@
       </div>
 
       <!-- LOGOS -->
-      <div class="section full">
+     <!-- <div class="section full">
         <h3>Logos (auto circle + auto-contrast border)</h3>
         <div class="row">
           <input type="file" id="logoInput" accept="image/*" multiple />
@@ -249,7 +249,27 @@
 </select>
 <input type="range" min="0" max="1" step="0.05" value="0.5" data-k="blendStrength" title="Blend Strength">
 
-      </div>
+      </div>-->
+
+<!-- LOGOS -->
+<div class="section full">
+  <h3>Logos (auto circle + auto-contrast border)</h3>
+  <div class="row">
+    <input type="file" id="logoInput" accept="image/*" multiple />
+    <button class="btn" id="clearLogos">❌ Remove All</button>
+  </div>
+
+  <!-- Logo chips dynamically add होंगे -->
+  <div id="logoList" class="grid1" style="margin-top:8px"></div>
+
+  <div class="small" style="margin-top:6px">
+    Drag logos • <b>Shift+Wheel</b> size • हर logo chip में अपने Blend controls होंगे
+  </div>
+</div>
+
+
+
+      
     </div>
   </div>
 
@@ -329,28 +349,41 @@ $('clearLogos').onclick=()=>{ S.logos=[]; rebuildLogoList(); draw(); };
 
 // Logo UI
 function addLogoChip(i){
-  const L=S.logos[i]; 
-  const row=document.createElement('div'); row.className='chip';
+  const L=S.logos[i];
+  const row=document.createElement('div');
+  row.className='chip';
   row.innerHTML=`
     <span class="small">Logo ${i+1}</span>
-    <input type="range" min="0.05" max="2" step="0.01" value="${L.scale}" data-k="scale">
-    <input type="range" min="0.1" max="1" step="0.01" value="${L.opacity}" data-k="opacity">
-    <select data-k="snap">
+    <input type="range" min="0.05" max="2" step="0.01" value="${L.scale}" data-k="scale" title="Size">
+    <input type="range" min="0.1" max="1" step="0.01" value="${L.opacity}" data-k="opacity" title="Opacity">
+    <select data-k="snap" title="Snap">
       <option value="">Free</option><option>TL</option><option>TC</option><option>TR</option>
       <option>CL</option><option selected>CC</option><option>CR</option>
       <option>BL</option><option>BC</option><option>BR</option>
     </select>
     <label class="small"><input type="checkbox" data-k="auto" ${L.autoBorder?'checked':''}/> Auto Border</label>
-    <input type="color" value="${L.bcolor}" data-k="bcolor">
-    <input type="range" min="0" max="20" step="1" value="${L.bw}" data-k="bw">
-    <select data-k="blendDir">
-      <option value="none" selected>None</option>
-      <option value="top">Top</option><option value="bottom">Bottom</option>
-      <option value="left">Left</option><option value="right">Right</option>
-    </select>
-    <input type="range" min="0" max="1" step="0.05" value="${L.blendStrength}" data-k="blendStrength">
-    <button data-k="up">⬆️</button><button data-k="down">⬇️</button><button data-k="del">🗑️</button>
+    <input type="color" value="${L.bcolor}" data-k="bcolor" title="Border Color">
+    <input type="range" min="0" max="20" step="1" value="${L.bw}" data-k="bw" title="Border Width">
+
+    <!-- ✅ Blend Controls per Logo -->
+    <label class="small">Blend Dir
+      <select data-k="blendDir">
+        <option value="none" ${L.blendDir==="none"?"selected":""}>None</option>
+        <option value="top" ${L.blendDir==="top"?"selected":""}>Top</option>
+        <option value="bottom" ${L.blendDir==="bottom"?"selected":""}>Bottom</option>
+        <option value="left" ${L.blendDir==="left"?"selected":""}>Left</option>
+        <option value="right" ${L.blendDir==="right"?"selected":""}>Right</option>
+      </select>
+    </label>
+    <label class="small">Blend Strength
+      <input type="range" min="0" max="1" step="0.05" value="${L.blendStrength}" data-k="blendStrength">
+    </label>
+
+    <button data-k="up">⬆️</button>
+    <button data-k="down">⬇️</button>
+    <button data-k="del">🗑️</button>
   `;
+
   row.querySelectorAll('input,select,button').forEach(el=>{
     el.oninput = el.onclick = ()=>{
       const k=el.dataset.k;
@@ -360,16 +393,18 @@ function addLogoChip(i){
       else if(k==='bw') L.bw=+el.value;
       else if(k==='auto') L.autoBorder=el.checked;
       else if(k==='snap'){ snapLogo(L, el.value); }
-      else if(k==='del'){ S.logos.splice(i,1); rebuildLogoList(); return; }
-      else if(k==='up'){ moveLogo(i,-1); return; }
-      else if(k==='down'){ moveLogo(i,1); return; }
+      else if(k==='del'){ S.logos.splice(i,1); rebuildLogoList(); }
+      else if(k==='up'){ moveLogo(i,-1); }
+      else if(k==='down'){ moveLogo(i,1); }
       else if(k==='blendDir'){ L.blendDir=el.value; }
       else if(k==='blendStrength'){ L.blendStrength=+el.value; }
       draw();
     };
   });
+
   document.getElementById('logoList').appendChild(row);
 }
+
 function rebuildLogoList(){ const wrap=document.getElementById('logoList'); wrap.innerHTML=''; S.logos.forEach((_,i)=>addLogoChip(i)); }
 function moveLogo(i,dir){ const j=i+dir; if(j<0||j>=S.logos.length) return; [S.logos[i],S.logos[j]]=[S.logos[j],S.logos[i]]; rebuildLogoList(); }
 function snapLogo(L,pos){
