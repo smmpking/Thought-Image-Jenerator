@@ -3,433 +3,61 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Post Maker — Enhanced Version with Additional Features</title>
+  <title>Post Maker — BG Image + Circle + Logos</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600;800&family=Mukta:wght@400;600;800&family=Hind:wght@400;600;700&family=Karma:wght@400;700&family=Martel:wght@400;800&family=Poppins:wght@400;600;800&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
-    :root { 
-      --line:#1f2630; 
-      --ink:#e8ecf1; 
-      --muted:#9aa3ad; 
-      --success:#10b981; 
-      --warning:#f59e0b; 
-      --error:#ef4444;
-      --accent:#8b5cf6;
-    }
+    :root { --line:#1f2630; --ink:#e8ecf1; --muted:#9aa3ad; }
     * { box-sizing:border-box; }
-    body { 
-      margin:0; 
-      background:#0a0c10; 
-      color:var(--ink); 
-      font-family:"Noto Sans Devanagari","Poppins",system-ui,Segoe UI,Roboto,Arial,sans-serif; 
-    }
-    
-    .container { 
-      display:flex; 
-      flex-direction:column; 
-      gap:16px; 
-      max-width:1400px; 
-      margin:auto; 
-      padding:12px; 
-    }
-    
+    body { margin:0; background:#0a0c10; color:var(--ink); font-family:"Noto Sans Devanagari","Poppins",system-ui,Segoe UI,Roboto,Arial,sans-serif; }
+    .container { display:flex; flex-direction:column; gap:16px; max-width:1400px; margin:auto; padding:12px; }
     @media (min-width:1000px){
-      .container { 
-        flex-direction:row; 
-        align-items:flex-start; 
-      }
-      .previewCard { 
-        flex:1; 
-        max-width:600px; 
-        position: sticky;
-        top: 20px;
-      }
-      .controls { 
-        flex:1.5; 
-      }
+      .container { flex-direction:row; align-items:flex-start; }
+      .previewCard { flex:1; max-width:600px; }
+      .controls { flex:1.5; }
     }
-    
-    .previewCard { 
-      background:rgba(255,255,255,.03); 
-      border:1px solid var(--line); 
-      border-radius:16px; 
-      padding:12px; 
-      backdrop-filter: blur(8px);
-    }
-    
-    .stage { 
-      display:grid; 
-      place-items:center; 
-      position:relative; 
-      min-height:40vh; 
-    }
-    
-    canvas { 
-      width:100%; 
-      max-width:100%; 
-      border-radius:14px; 
-      background:#000; 
-      display:block; 
-      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-      transition: transform 0.2s ease;
-    }
-    
-    canvas:hover {
-      transform: scale(1.02);
-    }
-    
-    .btn { 
-      background:#121a24; 
-      border:1px solid #24303f; 
-      color:var(--ink); 
-      padding:10px 14px; 
-      border-radius:12px; 
-      cursor:pointer; 
-      font-weight:700; 
-      transition: all 0.2s; 
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .btn::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-      transition: left 0.5s;
-    }
-    
-    .btn:hover::before {
-      left: 100%;
-    }
-    
-    .btn:hover { 
-      background:#1e2830; 
-      transform: translateY(-2px);
-    }
-    
-    .btn.primary { 
-      background:linear-gradient(135deg,#60a5fa,#34d399); 
-      color:#081017; 
-      border:none; 
-    }
-    
-    .btn.success { 
-      background:var(--success); 
-      color:white; 
-    }
-    
-    .btn.warning { 
-      background:var(--warning); 
-      color:white; 
-    }
-    
-    .btn.accent {
-      background: var(--accent);
-      color: white;
-    }
-    
-    .controls { 
-      display:grid; 
-      gap:12px; 
-      grid-template-columns:1fr; 
-    }
-    
-    @media (min-width:900px){ 
-      .controls{ 
-        grid-template-columns:1fr 1fr; 
-      } 
-      .full{ 
-        grid-column:1/-1; 
-      } 
-    }
-    
-    .section { 
-      background:rgba(255,255,255,.03); 
-      border:1px solid var(--line); 
-      border-radius:16px; 
-      padding:14px; 
-      backdrop-filter: blur(4px);
-      transition: all 0.3s ease;
-    }
-    
-    .section:hover {
-      border-color: var(--accent);
-      background: rgba(255,255,255,.05);
-    }
-    
-    .section h3 { 
-      margin:2px 0 10px; 
-      font-size:16px; 
-      background: linear-gradient(45deg, var(--accent), var(--success));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    
-    .grid1 { display:grid; grid-template-columns:1fr; gap:10px; }
+    .previewCard { background:rgba(255,255,255,.03); border:1px solid var(--line); border-radius:16px; padding:12px; }
+    .stage { display:grid; place-items:center; position:relative; min-height:40vh; }
+    canvas { width:100%; max-width:100%; border-radius:14px; background:#000; display:block; }
+    .btn { background:#121a24; border:1px solid #24303f; color:var(--ink); padding:10px 14px; border-radius:12px; cursor:pointer; font-weight:700; }
+    .btn.primary { background:linear-gradient(135deg,#60a5fa,#34d399); color:#081017; border:none; }
+    .controls { display:grid; gap:12px; grid-template-columns:1fr; }
+    @media (min-width:900px){ .controls{ grid-template-columns:1fr 1fr; } .full{ grid-column:1/-1; } }
+    .section { background:rgba(255,255,255,.03); border:1px solid var(--line); border-radius:16px; padding:14px; }
+    .section h3 { margin:2px 0 10px; font-size:16px; }
+    .grid1 { display:grid; grid-template-columns:1fr; gap:10px; } /* Fixed */
     .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
     .grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
     .grid4 { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
-    
-    label { 
-      font-size:12px; 
-      color:var(--muted); 
-      font-weight: 500;
-    }
-    
-    input,select,textarea { 
-      width:100%; 
-      background:#0f141c; 
-      border:1px solid #273342; 
-      color:var(--ink); 
-      border-radius:10px; 
-      padding:8px; 
-      font-size:14px; 
-      transition: all 0.2s;
-    }
-    
-    input[type=color]{ 
-      padding:0; 
-      height:40px; 
-      cursor: pointer;
-    }
-    
-    input:focus, select:focus, textarea:focus { 
-      border-color: var(--success); 
-      outline: none; 
-      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
-    }
-    
-    textarea{ 
-      min-height:78px; 
-      resize:vertical; 
-      font-family: inherit;
-    }
-    
-    .chip{ 
-      display:flex; 
-      align-items:center; 
-      gap:6px; 
-      border:1px dashed #2a3443; 
-      border-radius:12px; 
-      padding:6px; 
-    }
-    
-    .small{ 
-      font-size:11px; 
-      color:#9aa3ad; 
-    }
-    
-    .row{ 
-      display:flex; 
-      gap:8px; 
-      flex-wrap:wrap; 
-      align-items:center; 
-      justify-content:space-between; 
-      margin-top:8px; 
-    }
-    
-    .toast { 
-      position: fixed; 
-      top: 20px; 
-      right: 20px; 
-      background: var(--success); 
-      color: white; 
-      padding: 12px 20px; 
-      border-radius: 8px; 
-      z-index: 1000; 
-      transform: translateX(300px); 
-      transition: transform 0.3s; 
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-    }
-    
-    .toast.show { 
-      transform: translateX(0); 
-    }
-    
-    .toast.error {
-      background: var(--error);
-    }
-    
-    .toast.warning {
-      background: var(--warning);
-    }
-    
-    .logo-chip { 
-      border: 1px solid #2a3443; 
-      border-radius: 12px; 
-      padding: 8px; 
-      margin: 4px 0; 
-      background: rgba(255,255,255,0.02); 
-      transition: all 0.2s;
-    }
-    
-    .logo-chip:hover {
-      background: rgba(255,255,255,0.05);
-      border-color: var(--accent);
-    }
-    
-    .logo-controls { 
-      display: grid; 
-      grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); 
-      gap: 4px; 
-      align-items: center; 
-      margin-top: 4px; 
-    }
-    
-    .logo-controls input, .logo-controls select, .logo-controls button { 
-      font-size: 11px; 
-      padding: 4px; 
-      height: 28px; 
-    }
-    
-    .logo-header { 
-      display: flex; 
-      justify-content: space-between; 
-      align-items: center; 
-      margin-bottom: 4px; 
-    }
-    
-    .logo-title { 
-      font-size: 12px; 
-      font-weight: 600; 
-      color: var(--ink); 
-    }
-
-    /* New features styling */
-    .template-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 8px;
-      margin-top: 8px;
-    }
-
-    .template-item {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid #2a3443;
-      border-radius: 8px;
-      padding: 8px;
-      cursor: pointer;
-      text-align: center;
-      font-size: 12px;
-      transition: all 0.2s;
-    }
-
-    .template-item:hover {
-      border-color: var(--accent);
-      background: rgba(139, 92, 246, 0.1);
-    }
-
-    .history-item {
-      background: rgba(255,255,255,0.02);
-      border: 1px solid #2a3443;
-      border-radius: 8px;
-      padding: 6px;
-      margin: 4px 0;
-      cursor: pointer;
-      font-size: 12px;
-      transition: all 0.2s;
-    }
-
-    .history-item:hover {
-      background: rgba(255,255,255,0.05);
-      border-color: var(--success);
-    }
-
-    .export-options {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-      gap: 8px;
-      margin-top: 8px;
-    }
-
-    .shortcut-help {
-      background: rgba(139, 92, 246, 0.1);
-      border: 1px solid var(--accent);
-      border-radius: 8px;
-      padding: 8px;
-      margin-top: 8px;
-      font-size: 11px;
-    }
-
-    .layer-panel {
-      max-height: 200px;
-      overflow-y: auto;
-    }
-
-    .layer-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 6px;
-      margin: 2px 0;
-      background: rgba(255,255,255,0.02);
-      border-radius: 6px;
-      font-size: 12px;
-    }
-
-    .progress-bar {
-      width: 100%;
-      height: 4px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 2px;
-      overflow: hidden;
-      margin: 4px 0;
-    }
-
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--accent), var(--success));
-      width: 0%;
-      transition: width 0.3s ease;
-    }
+    label { font-size:12px; color:var(--muted); }
+    input,select,textarea { width:100%; background:#0f141c; border:1px solid #273342; color:var(--ink); border-radius:10px; padding:8px; font-size:14px; }
+    input[type=color]{ padding:0; height:40px; }
+    textarea{ min-height:78px; resize:vertical; }
+    .chip{ display:flex; align-items:center; gap:6px; border:1px dashed #2a3443; border-radius:12px; padding:6px; }
+    .small{ font-size:11px; color:#9aa3ad; }
+    .row{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; justify-content:space-between; margin-top:8px; }
   </style>
 </head>
 <body>
   <div class="container">
     <!-- PREVIEW -->
     <div class="previewCard">
-      <div class="stage">
-        <canvas id="c" width="1080" height="1080"></canvas>
-        <div class="progress-bar" id="progressBar" style="display: none;">
-          <div class="progress-fill" id="progressFill"></div>
-        </div>
-      </div>
+      <div class="stage"><canvas id="c" width="1080" height="1080"></canvas></div>
       <div class="row">
         <div>
           <select id="format"><option value="png">PNG</option><option value="jpeg">JPEG</option><option value="webp">WebP</option></select>
-          <select id="scale"><option value="1">1×</option><option value="2" selected>2×</option><option value="3">3×</option><option value="4">4×</option></select>
+          <select id="scale"><option value="1">1×</option><option value="2" selected>2×</option><option value="3">3×</option></select>
           <input type="range" id="quality" min="0.7" max="1" step="0.01" value="0.95" title="Quality">
-          <span class="small">Drag BG/Logos • Shift+Wheel Resize • Ctrl+Drag Circle</span>
+          <span class="small">Drag BG/Logos • Pinch Zoom • Ctrl+Drag Circle</span>
         </div>
-        <div>
-          <button class="btn accent" id="undoBtn">↶ Undo</button>
-          <button class="btn accent" id="redoBtn">↷ Redo</button>
-          <button class="btn success" id="saveSettings">💾 Save</button>
-          <button class="btn warning" id="loadSettings">📂 Load</button>
-          <button class="btn primary" id="download">⬇️ Download</button>
-        </div>
+        <button class="btn primary" id="download">⬇️ Download</button>
+        <button class="btn" id="undoBtn">Undo</button>
+        <button class="btn" id="redoBtn">Redo</button>
+        <button class="btn" id="savePreset">Save Preset</button>
+        <button class="btn" id="loadPreset">Load Preset</button>
       </div>
     </div>
-
     <!-- CONTROLS -->
     <div class="controls">
-      <!-- TEMPLATES -->
-      <div class="section full">
-        <h3>Quick Templates</h3>
-        <div class="template-grid">
-          <div class="template-item" data-template="social">📱 Social Media</div>
-          <div class="template-item" data-template="business">💼 Business</div>
-          <div class="template-item" data-template="event">🎉 Event</div>
-          <div class="template-item" data-template="minimal">✨ Minimal</div>
-          <div class="template-item" data-template="vibrant">🌈 Vibrant</div>
-          <div class="template-item" data-template="elegant">👑 Elegant</div>
-        </div>
-      </div>
-
       <!-- BACKGROUND -->
       <div class="section full">
         <h3>Background</h3>
@@ -450,26 +78,11 @@
             </select>
           </div>
         </div>
-        
         <div class="grid3" style="margin-top:8px">
           <div><label>Image Opacity</label><input type="range" id="bgImgOpacity" min="0" max="1" step="0.05" value="1"></div>
           <div><label>Image Scale</label><input type="range" id="bgImgScale" min="0.2" max="3" step="0.02" value="1"></div>
           <div><label>Tint Color</label><input type="color" id="bgImgTint" value="#ffffff"></div>
         </div>
-
-        <div class="grid2" style="margin-top:8px">
-          <div><label>Image Blend Direction</label>
-            <select id="bgBlendDir">
-              <option value="none" selected>None</option>
-              <option value="top">Top</option>
-              <option value="bottom">Bottom</option>
-              <option value="left">Left</option>
-              <option value="right">Right</option>
-            </select>
-          </div>
-          <div><label>Blend Strength</label><input type="range" id="bgBlendStrength" min="0" max="1" step="0.05" value="0"></div>
-        </div>
-        
         <div class="grid3" style="margin-top:8px">
           <div><label>Tint Mode</label>
             <select id="bgTintMode">
@@ -483,14 +96,13 @@
           <div><label>Vignette</label><input type="range" id="vignette" min="0" max="100" value="20"></div>
           <div><label>Safe Padding (%)</label><input type="range" id="padding" min="0" max="15" value="5"></div>
         </div>
-
+        <!-- Duplicate BG Blend Direction removed, now only below in grid2 -->
         <!-- Gradient colors -->
         <div class="grid3" style="margin-top:12px">
           <div><label>Gradient Top</label><input type="color" id="bg1" value="#ffffff"></div>
           <div><label>Gradient Mid</label><input type="color" id="bg2" value="#1976D2"></div>
           <div><label>Gradient Bottom</label><input type="color" id="bg3" value="#000000"></div>
         </div>
-
         <div class="grid3" style="margin-top:8px">
           <div><label>Gradient Angle</label><input type="range" id="bgAngle" min="0" max="360" value="90"></div>
           <div><label>Gradient Opacity</label><input type="range" id="gradOpacity" min="0" max="1" step="0.05" value="0.6"></div>
@@ -506,7 +118,6 @@
             </select>
           </div>
         </div>
-
         <!-- Canvas size -->
         <div class="grid3" style="margin-top:8px">
           <div><label>Canvas Preset</label>
@@ -526,7 +137,6 @@
           </div>
           <div></div>
         </div>
-
         <!-- Circle BG controls -->
         <div id="circleControls" class="grid3" style="margin-top:12px; display:none">
           <div><label>Circle X (%)</label><input type="range" id="circleX" min="10" max="90" value="50"></div>
@@ -534,8 +144,22 @@
           <div><label>Radius (%)</label><input type="range" id="circleR" min="10" max="45" value="28"></div>
           <div><label>Circle Opacity</label><input type="range" id="circleOpacity" min="0.1" max="1" step="0.05" value="1"></div>
         </div>
+        <!-- BG Blend Direction & Strength -->
+        <div class="grid2" style="margin-top:8px">
+          <div><label>BG Blend Direction</label>
+            <select id="bgBlendDir">
+              <option value="none" selected>None</option>
+              <option value="top">Top</option>
+              <option value="bottom">Bottom</option>
+              <option value="left">Left</option>
+              <option value="right">Right</option>
+            </select>
+          </div>
+          <div><label>BG Blend Strength</label>
+            <input type="range" id="bgBlendStrength" min="0" max="1" step="0.05" value="0">
+          </div>
+        </div>
       </div>
-
       <!-- TOP TITLE -->
       <div class="section">
         <h3>Top Title</h3>
@@ -550,8 +174,19 @@
           <div><label>Grad B</label><input type="color" id="top2" value="#ffff00"></div>
           <div><label>Angle</label><input type="range" id="topAngle" min="0" max="360" value="0"></div>
         </div>
+        <h3>Bottom Branding</h3>
+        <input id="brand" placeholder="eg. Add Your Bottom Title">
+        <div class="grid3" style="margin-top:8px">
+          <div><label>Size</label><input type="range" id="brandSize" min="18" max="72" value="40"></div>
+          <div><label>Offset %</label><input type="range" id="brandOffset" min="2" max="15" value="6"></div>
+          <div><label>Glow</label><input type="range" id="bGlow" min="0" max="50" value="10"></div>
+        </div>
+        <div class="grid3" style="margin-top:8px">
+          <div><label>Grad A</label><input type="color" id="b1" value="#ff8a00"></div>
+          <div><label>Grad B</label><input type="color" id="b2" value="#ffd000"></div>
+          <div><label>Grad C</label><input type="color" id="b3" value="#ffa24c"></div>
+        </div>
       </div>
-
       <!-- MAIN HEADING -->
       <div class="section">
         <h3>Main Heading</h3>
@@ -581,1061 +216,425 @@
           <div><label>Indic Mode</label><select id="indicMode"><option value="auto" selected>Auto</option><option value="forceOn">Force ON</option><option value="forceOff">Force OFF</option></select></div>
         </div>
       </div>
-
-      <!-- BOTTOM BRANDING -->
-      <div class="section">
-        <h3>Bottom Branding</h3>
-        <input id="brand" placeholder="eg. Add Your Bottom Title">
-        <div class="grid3" style="margin-top:8px">
-          <div><label>Size</label><input type="range" id="brandSize" min="18" max="72" value="40"></div>
-          <div><label>Offset %</label><input type="range" id="brandOffset" min="2" max="15" value="6"></div>
-          <div><label>Glow</label><input type="range" id="bGlow" min="0" max="50" value="10"></div>
-        </div>
-        <div class="grid3" style="margin-top:8px">
-          <div><label>Grad A</label><input type="color" id="b1" value="#ff8a00"></div>
-          <div><label>Grad B</label><input type="color" id="b2" value="#ffd000"></div>
-          <div><label>Grad C</label><input type="color" id="b3" value="#ffa24c"></div>
-        </div>
-      </div>
-
       <!-- LOGOS -->
       <div class="section full">
         <h3>Logos (auto circle + auto-contrast border)</h3>
         <div class="row">
           <input type="file" id="logoInput" accept="image/*" multiple />
           <button class="btn" id="clearLogos">❌ Remove All</button>
-          <button class="btn accent" id="alignLogos">⚡ Auto Align</button>
         </div>
-        <div id="logoList" style="margin-top:8px"></div>
+        <!-- Logo chips dynamically add होंगे -->
+        <div id="logoList" class="grid1" style="margin-top:8px"></div>
         <div class="small" style="margin-top:6px">
-          Drag logos • <b>Shift+Wheel</b> resize • Each logo has individual blend controls
-        </div>
-      </div>
-
-      <!-- LAYERS -->
-      <div class="section">
-        <h3>Layer Management</h3>
-        <div class="layer-panel" id="layerPanel">
-          <div class="layer-item">
-            <span>Background</span>
-            <div>
-              <input type="checkbox" checked disabled> 👁️
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- HISTORY -->
-      <div class="section">
-        <h3>History & Export</h3>
-        <div class="export-options">
-          <button class="btn accent" id="exportPDF">📄 PDF</button>
-          <button class="btn accent" id="exportSVG">🎨 SVG</button>
-          <button class="btn accent" id="batchExport">📦 Batch</button>
-        </div>
-        <div id="historyList" style="margin-top:8px; max-height:150px; overflow-y:auto;"></div>
-      </div>
-
-      <!-- SHORTCUTS -->
-      <div class="section full">
-        <div class="shortcut-help">
-          <strong>⌨️ Keyboard Shortcuts:</strong><br>
-          <strong>Ctrl+S</strong> Save Settings • <strong>Ctrl+O</strong> Load Settings • <strong>Ctrl+Enter</strong> Download<br>
-          <strong>Ctrl+Z</strong> Undo • <strong>Ctrl+Y</strong> Redo • <strong>Space</strong> Quick Preview
+          Drag logos • <b>Shift+Wheel</b> size • हर logo chip में अपने Blend controls होंगे
         </div>
       </div>
     </div>
   </div>
-
-  <div id="toast" class="toast"></div>
-
 <script>
-const c=document.getElementById('c'),ctx=c.getContext('2d'); 
+const c=document.getElementById('c'),ctx=c.getContext('2d');
 const $=id=>document.getElementById(id);
 
-// Enhanced state management with history
-let history = [];
-let historyIndex = -1;
-const maxHistorySize = 50;
-
-// Save state to history
-function saveToHistory() {
-  // Remove future history if we're not at the end
-  if (historyIndex < history.length - 1) {
-    history = history.slice(0, historyIndex + 1);
-  }
-  
-  // Add current state
-  history.push(JSON.stringify(getSettings()));
-  
-  // Limit history size
-  if (history.length > maxHistorySize) {
-    history.shift();
-  } else {
-    historyIndex++;
-  }
-  
-  updateHistoryUI();
+// Undo/Redo History
+let history = [], historyIndex = -1;
+function saveState() {
+  history = history.slice(0, historyIndex+1);
+  history.push(JSON.stringify(S));
+  historyIndex++;
 }
-
-// Undo function
 function undo() {
   if (historyIndex > 0) {
     historyIndex--;
-    const state = JSON.parse(history[historyIndex]);
-    loadSettings(state);
-    showToast('Undo successful!');
+    S = JSON.parse(history[historyIndex]);
+    rebuildLogoList();
+    draw();
   }
 }
-
-// Redo function
 function redo() {
-  if (historyIndex < history.length - 1) {
+  if (historyIndex < history.length-1) {
     historyIndex++;
-    const state = JSON.parse(history[historyIndex]);
-    loadSettings(state);
-    showToast('Redo successful!');
+    S = JSON.parse(history[historyIndex]);
+    rebuildLogoList();
+    draw();
   }
 }
 
-// Update history UI
-function updateHistoryUI() {
-  const undoBtn = $('undoBtn');
-  const redoBtn = $('redoBtn');
-  
-  undoBtn.disabled = historyIndex <= 0;
-  redoBtn.disabled = historyIndex >= history.length - 1;
-  
-  // Update history list
-  const historyList = $('historyList');
-  historyList.innerHTML = '';
-  
-  for (let i = Math.max(0, history.length - 10); i < history.length; i++) {
-    const item = document.createElement('div');
-    item.className = 'history-item';
-    item.textContent = `State ${i + 1}${i === historyIndex ? ' (current)' : ''}`;
-    item.onclick = () => {
-      historyIndex = i;
-      const state = JSON.parse(history[i]);
-      loadSettings(state);
-      updateHistoryUI();
-      showToast('State restored!');
-    };
-    historyList.appendChild(item);
-  }
-}
-
-// Global state
-let BG = {bgImg: null, blendDir: 'none', blendStrength: 0};
-let S = {logos: [], dragTarget: null, resizeTarget: null, dragOffset: {x: 0, y: 0}};
-
-// Font management
-const fonts = ['Noto Sans Devanagari', 'Poppins', 'Inter', 'Mukta', 'Hind', 'Karma', 'Martel'];
-function loadFont(name) {
-  if (document.fonts.check(`16px "${name}"`)) return;
-  const link = document.createElement('link');
-  link.href = `https://fonts.googleapis.com/css2?family=${name.replace(/ /g, '+')}:wght@400;600;800&display=swap`;
-  link.rel = 'stylesheet';
+// Fonts
+const fonts=["Noto Sans Devanagari","Mukta","Hind","Karma","Martel","Poppins","Inter","Roboto","Montserrat","Merriweather","Lora","Playfair Display","Nunito","Manrope","Raleway","Oswald"];
+["font","topFont"].forEach(id=>{
+  const sel=$(id);
+  fonts.forEach(f=>{
+    const o=document.createElement('option');
+    o.value=f;o.textContent=f;sel.appendChild(o);
+  });
+  sel.value = id==="font" ? "Noto Sans Devanagari" : "Poppins";
+});
+function loadFont(f){
+  const id='gf_'+f.replace(/\s+/g,'_');
+  if(document.getElementById(id)) return;
+  const link=document.createElement('link');
+  link.id=id; link.rel='stylesheet';
+  link.href=`https://fonts.googleapis.com/css2?family=${encodeURIComponent(f)}:wght@400;600;800&display=swap`;
   document.head.appendChild(link);
 }
+// BG + Logos state
+const BG={img:null,x:0,y:0,scale:1,blendDir:"none",blendStrength:0};
+let drag={mode:null,dx:0,dy:0};
+let S={logos:[]};
 
-// Initialize font dropdowns
-function initFonts() {
-  const fontSelect = $('font');
-  const topFontSelect = $('topFont');
-  
-  fonts.forEach(font => {
-    const option1 = new Option(font, font);
-    const option2 = new Option(font, font);
-    fontSelect.add(option1);
-    topFontSelect.add(option2);
-  });
-  
-  fontSelect.value = 'Noto Sans Devanagari';
-  topFontSelect.value = 'Noto Sans Devanagari';
+// Preset Save/Load
+function savePreset(name='default') {
+  localStorage.setItem('preset_' + name, JSON.stringify(S));
 }
-
-// Templates
-const templates = {
-  social: {
-    bg1: '#667eea', bg2: '#764ba2', bg3: '#ff6b6b',
-    title: 'Social Media\nPost', titleSize: 80,
-    brand: '@YourHandle', topTitle: 'Trending Now'
-  },
-  business: {
-    bg1: '#2c3e50', bg2: '#34495e', bg3: '#1abc9c',
-    title: 'Business\nSolution', titleSize: 72,
-    brand: 'Company Name', topTitle: 'Professional'
-  },
-  event: {
-    bg1: '#ff6b35', bg2: '#f7931e', bg3: '#ffd700',
-    title: 'Special Event\nAnnouncement', titleSize: 64,
-    brand: 'Join Us Today', topTitle: 'Don\'t Miss Out'
-  },
-  minimal: {
-    bg1: '#ffffff', bg2: '#f8f9fa', bg3: '#e9ecef',
-    title: 'Minimal\nDesign', titleSize: 96,
-    brand: 'Less is More', topTitle: 'Simple'
-  },
-  vibrant: {
-    bg1: '#ff0080', bg2: '#ff8c00', bg3: '#40e0d0',
-    title: 'Vibrant\nColors', titleSize: 88,
-    brand: 'Bold & Bright', topTitle: 'Eye-Catching'
-  },
-  elegant: {
-    bg1: '#2d1b69', bg2: '#11998e', bg3: '#38ef7d',
-    title: 'Elegant\nDesign', titleSize: 76,
-    brand: 'Sophisticated', topTitle: 'Premium'
+function loadPreset(name='default') {
+  const p = localStorage.getItem('preset_' + name);
+  if (p) {
+    S = JSON.parse(p);
+    rebuildLogoList();
+    draw();
+  } else {
+    alert('No preset found!');
   }
-};
-
-function applyTemplate(templateName) {
-  const template = templates[templateName];
-  if (!template) return;
-  
-  Object.keys(template).forEach(key => {
-    const element = $(key);
-    if (element) {
-      element.value = template[key];
-    }
-  });
-  
-  draw();
-  saveToHistory();
-  showToast(`Applied ${templateName} template!`);
 }
 
-// Progress bar functions
-function showProgress() {
-  $('progressBar').style.display = 'block';
-}
+// Auto-Save functionality
+setInterval(() => localStorage.setItem('autosave', JSON.stringify(S)), 30000);
+window.addEventListener('load', () => {
+  const autosaved = localStorage.getItem('autosave');
+  if (autosaved) { S = JSON.parse(autosaved); rebuildLogoList(); draw(); }
+});
 
-function updateProgress(percent) {
-  $('progressFill').style.width = percent + '%';
+// Helpers
+function makeGrad(W,H,a,stops){
+  const rad=a*Math.PI/180,vx=Math.cos(rad),vy=Math.sin(rad);
+  const x0=W*(.5-.5*vx),y0=H*(.5-.5*vy),x1=W*(.5+.5*vx),y1=H*(.5+.5*vy);
+  const g=ctx.createLinearGradient(x0,y0,x1,y1);
+  stops.forEach(s=>g.addColorStop(s.pos,s.c));
+  return g;
 }
+function hexToRgb(h){h=h.replace('#','');if(h.length===3)h=[...h].map(x=>x+x).join('');const n=parseInt(h,16);return[n>>16&255,n>>8&255,n&255];}
+const HAS_DEV = s=>/[\u0900-\u097F]/.test(s);
 
-function hideProgress() {
-  $('progressBar').style.display = 'none';
-}
-
-// Toast notifications
-function showToast(message, type = 'success') {
-  const toast = $('toast');
-  toast.textContent = message;
-  toast.className = `toast ${type}`;
-  toast.classList.add('show');
-  
-  setTimeout(() => {
-    toast.classList.remove('show');
-  }, 3000);
-}
-
-// Logo management
-function addLogo(file) {
-  const img = new Image();
-  const reader = new FileReader();
-  
-  reader.onload = (e) => {
-    img.onload = () => {
-      const logo = {
-        img, x: c.width/2, y: c.height/2, scale: 0.3, opacity: 1,
-        bw: false, bcolor: '#ffffff', bopac: 0.8, autoBorder: true,
-        blendDir: 'none', blendStrength: 0
-      };
-      S.logos.push(logo);
-      rebuildLogoList();
+// Upload BG
+$('bgImageInput').addEventListener('change',e=>{
+  const f=e.target.files[0]; if(!f) return;
+  const img=new Image();
+  const url = URL.createObjectURL(f);
+  img.onload=()=>{
+    try {
+      const W=c.width,H=c.height;
+      BG.img=img;
+      BG.scale=Math.max(W/img.naturalWidth,H/img.naturalHeight);
+      BG.x=W/2; BG.y=H/2;
       draw();
-      saveToHistory();
-      showToast('Logo added successfully!');
-    };
-    img.src = e.target.result;
+      saveState();
+      URL.revokeObjectURL(url);
+    } catch (e) { alert('Image error: '+e); }
   };
-  
-  reader.readAsDataURL(file);
-}
+  img.src=url; e.target.value='';
+});
 
-function rebuildLogoList() {
-  const list = $('logoList');
-  list.innerHTML = '';
-  
-  S.logos.forEach((logo, i) => {
-    const chip = document.createElement('div');
-    chip.className = 'logo-chip';
-    chip.innerHTML = `
-      <div class="logo-header">
-        <span class="logo-title">Logo ${i + 1}</span>
-        <button onclick="removeLogo(${i})" style="background:var(--error);color:white;border:none;border-radius:4px;padding:2px 6px;cursor:pointer;">×</button>
-      </div>
-      <div class="logo-controls">
-        <input type="range" min="0.1" max="2" step="0.05" value="${logo.scale}" onchange="S.logos[${i}].scale=+this.value;draw();" title="Scale">
-        <input type="range" min="0" max="1" step="0.05" value="${logo.opacity}" onchange="S.logos[${i}].opacity=+this.value;draw();" title="Opacity">
-        <input type="checkbox" ${logo.bw?'checked':''} onchange="S.logos[${i}].bw=this.checked;draw();" title="B&W">
-        <input type="color" value="${logo.bcolor}" onchange="S.logos[${i}].bcolor=this.value;draw();" title="Border Color">
-        <input type="range" min="0" max="1" step="0.05" value="${logo.bopac}" onchange="S.logos[${i}].bopac=+this.value;draw();" title="Border Opacity">
-        <select onchange="S.logos[${i}].blendDir=this.value;draw();" title="Blend Direction">
-          <option value="none" ${logo.blendDir==='none'?'selected':''}>None</option>
-          <option value="top" ${logo.blendDir==='top'?'selected':''}>Top</option>
-          <option value="bottom" ${logo.blendDir==='bottom'?'selected':''}>Bottom</option>
-          <option value="left" ${logo.blendDir==='left'?'selected':''}>Left</option>
-          <option value="right" ${logo.blendDir==='right'?'selected':''}>Right</option>
-        </select>
-      </div>
-    `;
-    list.appendChild(chip);
+// Upload Logos
+$('logoInput').addEventListener('change',e=>{
+  for(const file of e.target.files){
+    const img=new Image();
+    const url = URL.createObjectURL(file);
+    img.onload=()=>{
+      try {
+        S.logos.push({
+          img,x:c.width*0.5,y:c.height*0.2+Math.random()*80,
+          scale:Math.min(400/img.naturalWidth,400/img.naturalHeight)*0.7,
+          opacity:1,bw:6,bcolor:'#ffffff',bopac:1,autoBorder:true,
+          blendDir:"none",blendStrength:0
+        });
+        addLogoChip(S.logos.length-1); draw(); saveState();
+        URL.revokeObjectURL(url);
+      } catch (e) { alert('Logo image error: '+e);}
+    };
+    img.src=url;
+  }
+  e.target.value='';
+});
+$('clearLogos').onclick=()=>{
+  S.logos=[]; rebuildLogoList(); draw(); saveState();
+};
+// Logo UI
+function addLogoChip(i){
+  const L=S.logos[i];
+  const row=document.createElement('div');
+  row.className='chip';
+  row.innerHTML=`
+    <span class="small">Logo ${i+1}</span>
+    <input type="range" min="0.05" max="2" step="0.01" value="${L.scale}" data-k="scale" title="Size">
+    <input type="range" min="0.1" max="1" step="0.01" value="${L.opacity}" data-k="opacity" title="Opacity">
+    <select data-k="snap" title="Snap">
+      <option value="">Free</option><option>TL</option><option>TC</option><option>TR</option>
+      <option>CL</option><option selected>CC</option><option>CR</option>
+      <option>BL</option><option>BC</option><option>BR</option>
+    </select>
+    <label class="small"><input type="checkbox" data-k="auto" ${L.autoBorder?'checked':''}/> Auto Border</label>
+    <input type="color" value="${L.bcolor}" data-k="bcolor" title="Border Color">
+    <input type="range" min="0" max="20" step="1" value="${L.bw}" data-k="bw" title="Border Width">
+    <!-- ✅ Blend Controls per Logo -->
+    <label class="small">Blend Dir
+      <select data-k="blendDir">
+        <option value="none" ${L.blendDir==="none"?"selected":""}>None</option>
+        <option value="top" ${L.blendDir==="top"?"selected":""}>Top</option>
+        <option value="bottom" ${L.blendDir==="bottom"?"selected":""}>Bottom</option>
+        <option value="left" ${L.blendDir==="left"?"selected":""}>Left</option>
+        <option value="right" ${L.blendDir==="right"?"selected":""}>Right</option>
+      </select>
+    </label>
+    <label class="small">Blend Strength
+      <input type="range" min="0" max="1" step="0.01" value="${L.blendStrength}" data-k="blendStrength">
+    </label>
+    <button data-k="up">⬆️</button>
+    <button data-k="down">⬇️</button>
+    <button data-k="del">🗑️</button>
+  `;
+  row.querySelectorAll('input,select,button').forEach(el=>{
+    el.oninput = el.onclick = ()=>{
+      const k=el.dataset.k;
+      if(k==='scale') L.scale=+el.value;
+      else if(k==='opacity') L.opacity=+el.value;
+      else if(k==='bcolor') L.bcolor=el.value;
+      else if(k==='bw') L.bw=+el.value;
+      else if(k==='auto') L.autoBorder=el.checked;
+      else if(k==='snap'){ snapLogo(L, el.value); }
+      else if(k==='del'){ S.logos.splice(i,1); rebuildLogoList(); saveState(); }
+      else if(k==='up'){ moveLogo(i,-1); saveState(); }
+      else if(k==='down'){ moveLogo(i,1); saveState(); }
+      else if(k==='blendDir'){ L.blendDir=el.value; }
+      else if(k==='blendStrength'){ L.blendStrength=+el.value; }
+      draw(); saveState();
+    };
   });
+  document.getElementById('logoList').appendChild(row);
 }
-
-function removeLogo(index) {
-  S.logos.splice(index, 1);
-  rebuildLogoList();
-  draw();
-  saveToHistory();
-  showToast('Logo removed!');
+function rebuildLogoList(){ const wrap=document.getElementById('logoList'); wrap.innerHTML=''; S.logos.forEach((_,i)=>addLogoChip(i)); }
+function moveLogo(i,dir){ const j=i+dir; if(j<0||j>=S.logos.length) return; [S.logos[i],S.logos[j]]=[S.logos[j],S.logos[i]]; rebuildLogoList(); }
+function snapLogo(L,pos){
+  const W=c.width,H=c.height,pad=Math.min(W,H)*(+$('padding').value/100);
+  const map={TL:[pad,pad],TC:[W/2,pad],TR:[W-pad,pad],CL:[pad,H/2],CC:[W/2,H/2],CR:[W-pad,H/2],BL:[pad,H-pad],BC:[W/2,H-pad],BR:[W-pad,H-pad]};
+  if(map[pos]){L.x=map[pos][0];L.y=map[pos][1];}
 }
-
-function autoAlignLogos() {
-  if (S.logos.length === 0) return;
-  
-  const spacing = c.width / (S.logos.length + 1);
-  const y = c.height * 0.85;
-  
-  S.logos.forEach((logo, i) => {
-    logo.x = spacing * (i + 1);
-    logo.y = y;
-  });
-  
-  draw();
-  saveToHistory();
-  showToast('Logos auto-aligned!');
-}
-
-// Export functions
-function exportAsPDF() {
-  showToast('PDF export would be implemented with jsPDF library');
-}
-
-function exportAsSVG() {
-  showToast('SVG export would be implemented with custom SVG generation');
-}
-
-function batchExport() {
-  const formats = ['png', 'jpeg', 'webp'];
-  const scales = [1, 2, 3];
-  
-  showToast(`Batch export would generate ${formats.length * scales.length} files`);
-}
-
-// Drawing functions
-function drawBackground() {
-  const w = c.width, h = c.height;
-  const pad = h * (+$('padding').value / 100);
-  
-  // Clear canvas
-  ctx.clearRect(0, 0, w, h);
-  
-  // Background image handling
-  if (BG.bgImg && ($('bgBlend').value === 'under' || $('bgBlend').value === 'imageOnly')) {
-    ctx.save();
-    const scale = +$('bgImgScale').value;
-    const opacity = +$('bgImgOpacity').value;
-    
-    ctx.globalAlpha = opacity;
-    
-    // Apply tint
-    const tintMode = $('bgTintMode').value;
-    if (tintMode !== 'none') {
-      ctx.globalCompositeOperation = tintMode;
-      ctx.fillStyle = $('bgImgTint').value;
-      ctx.fillRect(0, 0, w, h);
-      ctx.globalCompositeOperation = 'source-over';
-    }
-    
-    const imgW = BG.bgImg.width * scale;
-    const imgH = BG.bgImg.height * scale;
-    const imgX = (w - imgW) / 2;
-    const imgY = (h - imgH) / 2;
-    
-    ctx.drawImage(BG.bgImg, imgX, imgY, imgW, imgH);
-    
-    // Apply directional blend
-    if (BG.blendDir !== 'none' && BG.blendStrength > 0) {
-      const gradient = ctx.createLinearGradient(
-        BG.blendDir === 'left' ? 0 : BG.blendDir === 'right' ? w : w/2,
-        BG.blendDir === 'top' ? 0 : BG.blendDir === 'bottom' ? h : h/2,
-        BG.blendDir === 'left' ? w : BG.blendDir === 'right' ? 0 : w/2,
-        BG.blendDir === 'top' ? h : BG.blendDir === 'bottom' ? 0 : h/2
-      );
-      
-      gradient.addColorStop(0, `rgba(0,0,0,${BG.blendStrength})`);
-      gradient.addColorStop(1, 'rgba(0,0,0,0)');
-      
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, w, h);
-    }
-    
-    ctx.restore();
-  }
-  
-  // Gradient background
-  if ($('bgBlend').value !== 'imageOnly') {
-    ctx.save();
-    ctx.globalAlpha = +$('gradOpacity').value;
-    ctx.globalCompositeOperation = $('gradBlend').value;
-    
-    const angle = +$('bgAngle').value * Math.PI / 180;
-    const centerX = w / 2, centerY = h / 2;
-    const radius = Math.sqrt(w * w + h * h) / 2;
-    
-    const x1 = centerX - Math.cos(angle) * radius;
-    const y1 = centerY - Math.sin(angle) * radius;
-    const x2 = centerX + Math.cos(angle) * radius;
-    const y2 = centerY + Math.sin(angle) * radius;
-    
-    const gradient = ctx.createLinearGradient(x1, y1, x2, y2);
-    gradient.addColorStop(0, $('bg1').value);
-    gradient.addColorStop(0.5, $('bg2').value);
-    gradient.addColorStop(1, $('bg3').value);
-    
-    if ($('bgShape').value === 'circle') {
-      const cx = w * (+$('circleX').value / 100);
-      const cy = h * (+$('circleY').value / 100);
-      const r = Math.min(w, h) * (+$('circleR').value / 100);
-      
-      ctx.globalAlpha *= +$('circleOpacity').value;
-      ctx.beginPath();
-      ctx.arc(cx, cy, r, 0, Math.PI * 2);
-      ctx.fillStyle = gradient;
-      ctx.fill();
-    } else {
-      ctx.fillStyle = gradient;
-      ctx.fillRect(pad, pad, w - 2 * pad, h - 2 * pad);
-    }
-    
-    ctx.restore();
-  }
-  
-  // Background image over gradient
-  if (BG.bgImg && $('bgBlend').value === 'over') {
-    ctx.save();
-    const scale = +$('bgImgScale').value;
-    const opacity = +$('bgImgOpacity').value;
-    
-    ctx.globalAlpha = opacity;
-    
-    const imgW = BG.bgImg.width * scale;
-    const imgH = BG.bgImg.height * scale;
-    const imgX = (w - imgW) / 2;
-    const imgY = (h - imgH) / 2;
-    
-    ctx.drawImage(BG.bgImg, imgX, imgY, imgW, imgH);
-    ctx.restore();
-  }
-  
-  // Vignette effect
-  const vignetteStrength = +$('vignette').value;
-  if (vignetteStrength > 0) {
-    ctx.save();
-    const gradient = ctx.createRadialGradient(w/2, h/2, 0, w/2, h/2, Math.max(w, h)/2);
-    gradient.addColorStop(0, 'rgba(0,0,0,0)');
-    gradient.addColorStop(1, `rgba(0,0,0,${vignetteStrength/100})`);
-    
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, w, h);
-    ctx.restore();
-  }
-}
-
-function drawText(text, x, y, options = {}) {
-  if (!text.trim()) return;
-  
-  const {
-    font = 'Noto Sans Devanagari',
-    size = 48,
-    weight = '600',
-    align = 'center',
-    lineHeight = 1.15,
-    letterSpacing = 0,
-    colors = ['#40c9ff', '#f7b733'],
-    angle = 0,
-    outline = 0,
-    glow = 0
-  } = options;
-  
+// Blend mask
+function applyBlendMask(x,y,w,h,dir,str){
+  if(!dir||dir==="none"||str<=0) return;
   ctx.save();
-  
-  // Set font properties
-  ctx.font = `${weight} ${size}px "${font}"`;
-  ctx.textAlign = align;
-  ctx.textBaseline = 'middle';
-  
-  // Handle multi-line text
-  const lines = text.split('\n');
-  const totalHeight = lines.length * size * lineHeight;
-  const startY = y - totalHeight / 2 + size / 2;
-  
-  lines.forEach((line, i) => {
-    const lineY = startY + i * size * lineHeight;
-    
-    // Apply letter spacing
-    if (letterSpacing !== 0) {
-      let currentX = x;
-      if (align === 'center') {
-        currentX = x - (ctx.measureText(line).width + letterSpacing * (line.length - 1)) / 2;
-      }
-      
-      for (let j = 0; j < line.length; j++) {
-        drawSingleChar(line[j], currentX, lineY, colors, angle, outline, glow);
-        currentX += ctx.measureText(line[j]).width + letterSpacing;
-      }
-    } else {
-      drawSingleChar(line, x, lineY, colors, angle, outline, glow);
-    }
-  });
-  
+  let g;
+  if(dir==="top"||dir==="bottom") g=ctx.createLinearGradient(x,y,x,y+h);
+  else g=ctx.createLinearGradient(x,y,x+w,y);
+  if(dir==="top"){ g.addColorStop(0,"rgba(0,0,0,"+str+")"); g.addColorStop(1,"transparent"); }
+  if(dir==="bottom"){ g.addColorStop(0,"transparent"); g.addColorStop(1,"rgba(0,0,0,"+str+")"); }
+  if(dir==="left"){ g.addColorStop(0,"rgba(0,0,0,"+str+")"); g.addColorStop(1,"transparent"); }
+  if(dir==="right"){ g.addColorStop(0,"transparent"); g.addColorStop(1,"rgba(0,0,0,"+str+")"); }
+  ctx.fillStyle=g; ctx.fillRect(x,y,w,h);
   ctx.restore();
 }
-
-function drawSingleChar(char, x, y, colors, angle, outline, glow) {
-  // Create gradient
-  const gradient = ctx.createLinearGradient(
-    x - 100, y - 50,
-    x + 100, y + 50
-  );
-  
-  if (colors.length >= 3) {
-    gradient.addColorStop(0, colors[0]);
-    gradient.addColorStop(0.5, colors[1]);
-    gradient.addColorStop(1, colors[2]);
-  } else {
-    gradient.addColorStop(0, colors[0]);
-    gradient.addColorStop(1, colors[1]);
+// Draw BG
+function drawBG(W,H,shape){
+  if(!BG.img) return;
+  try {
+    const iw=BG.img.naturalWidth*BG.scale, ih=BG.img.naturalHeight*BG.scale;
+    const op=+$('bgImgOpacity').value; const [r,g,b]=hexToRgb($('bgImgTint').value); const mode=$('bgTintMode').value;
+    if(shape==='circle'){
+      const cx=W*(+$('circleX').value/100), cy=H*(+$('circleY').value/100), R=Math.min(W,H)*(+$('circleR').value/100), cop=+$('circleOpacity').value;
+      ctx.save(); ctx.globalAlpha=op*cop; ctx.beginPath(); ctx.arc(cx,cy,R,0,Math.PI*2); ctx.clip();
+      ctx.drawImage(BG.img, BG.x - iw/2, BG.y - ih/2, iw, ih);
+      if(mode!=='none'){
+        ctx.globalCompositeOperation=mode;
+        ctx.fillStyle=`rgb(${r},${g},${b})`; ctx.fillRect(cx-R,cy-R,2*R,2*R);
+        ctx.globalCompositeOperation='source-over';
+      }
+      ctx.restore();
+    } else {
+      ctx.save(); ctx.globalAlpha=op;
+      ctx.drawImage(BG.img, BG.x - iw/2, BG.y - ih/2, iw, ih);
+      if(mode!=='none'){
+        ctx.globalCompositeOperation=mode;
+        ctx.fillStyle=`rgb(${r},${g},${b})`; ctx.fillRect(0,0,W,H);
+        ctx.globalCompositeOperation='source-over';
+      }
+      ctx.restore();
+    }
+    applyBlendMask(0,0,W,H,BG.blendDir,BG.blendStrength);
+  } catch(e){console.error('drawBG error:',e);}
+}
+// Dragging
+c.addEventListener('mousedown',e=>{
+  const r=c.getBoundingClientRect(), mx=(e.clientX-r.left)*(c.width/r.width), my=(e.clientY-r.top)*(c.height/r.height);
+  if($('bgShape').value==='circle' && e.ctrlKey){ drag={mode:'CIRCLE',dx:mx,dy:my}; return; }
+  for(let i=S.logos.length-1;i>=0;i--){
+    const L=S.logos[i], iw=L.img.naturalWidth*L.scale, ih=L.img.naturalHeight*L.scale;
+    if(mx> L.x-iw/2 && mx< L.x+iw/2 && my> L.y-ih/2 && my< L.y+ih/2){ drag={mode:'LOGO:'+i,dx:mx-L.x,dy:my-L.y}; return; }
   }
-  
-  // Glow effect
-  if (glow > 0) {
-    ctx.save();
-    ctx.shadowColor = colors[0];
-    ctx.shadowBlur = glow;
-    ctx.globalAlpha = 0.6;
-    ctx.fillStyle = gradient;
-    ctx.fillText(char, x, y);
+  if(BG.img){
+    const iw=BG.img.naturalWidth*BG.scale, ih=BG.img.naturalHeight*BG.scale;
+    if(mx>BG.x-iw/2 && mx<BG.x+iw/2 && my>BG.y-ih/2 && my<BG.y+ih/2){ drag={mode:'BG',dx:mx-BG.x,dy:my-B.y}; return; }
+  }
+  drag={mode:null};
+});
+window.addEventListener('mousemove',e=>{
+  if(!drag.mode) return;
+  const r=c.getBoundingClientRect(), mx=(e.clientX-r.left)*(c.width/r.width), my=(e.clientY-r.top)*(c.height/r.height);
+  if(drag.mode==='BG'){ BG.x=mx-drag.dx; BG.y=my-dy; draw(); saveState(); }
+  else if(drag.mode.startsWith('LOGO:')){ const i=+drag.mode.split(':')[1]; const L=S.logos[i]; L.x=mx-drag.dx; L.y=my-dy; draw(); saveState(); }
+  else if(drag.mode==='CIRCLE'){ $('circleX').value = Math.round(100*mx/c.width); $('circleY').value = Math.round(100*my/c.height); draw(); saveState(); }
+});
+window.addEventListener('mouseup',()=> drag.mode=null);
+// Mouse wheel zoom
+c.addEventListener('wheel',e=>{
+  if(!e.shiftKey) return;
+  const r=c.getBoundingClientRect(), mx=(e.clientX-r.left)*(c.width/r.width), my=(e.clientY-r.top)*(c.height/r.height);
+  for(let i=S.logos.length-1;i>=0;i--){
+    const L=S.logos[i], iw=L.img.naturalWidth*L.scale, ih=L.img.naturalHeight*L.scale;
+    if(mx> L.x-iw/2 && mx< L.x+iw/2 && my> L.y-ih/2 && my< L.y+ih/2){
+      L.scale=Math.max(0.05, Math.min(2, L.scale*(1 - e.deltaY*0.0015))); draw(); saveState(); e.preventDefault(); return;
+    }
+  }
+  if(BG.img){ BG.scale=Math.max(0.2, Math.min(3, BG.scale*(1 - e.deltaY*0.0015))); $('bgImgScale').value=BG.scale.toFixed(2); draw(); saveState(); e.preventDefault(); }
+},{passive:false});
+// Draw text with spacing
+function drawWithLetterSpacing(mode, text, x, y, spacing, align){
+  ctx.save(); const w = ctx.measureText(text).width + spacing*(text.length-1);
+  if(align==='center') x -= w/2; else if(align==='right') x -= w;
+  for(let i=0;i<text.length;i++){ const ch=text[i]; ctx[mode+'Text'](ch, x, y); x += ctx.measureText(ch).width + spacing; }
+  ctx.restore();
+}
+// DRAW main
+function draw(){
+  const W=+$('cw').value, H=+$('ch').value;
+  c.width=W; c.height=H;
+  const pad=Math.round(Math.min(W,H)*(+$('padding').value/100));
+  if(BG.img) BG.scale = +$('bgImgScale').value;
+  const blend=$('bgBlend').value, shape=$('bgShape').value;
+  ctx.clearRect(0,0,W,H);
+  if((blend==='under'||blend==='imageOnly')) drawBG(W,H,shape);
+  if(blend!=='imageOnly'){
+    const gradFill = makeGrad(W,H,+$('bgAngle').value,[{c:$('bg1').value,pos:0},{c:$('bg2').value,pos:.5},{c:$('bg3').value,pos:1}]);
+    ctx.save(); ctx.globalAlpha = +$('gradOpacity').value; ctx.globalCompositeOperation = $('gradBlend').value;
+    ctx.fillStyle = gradFill; ctx.fillRect(0,0,W,H); ctx.restore();
+  }
+  if(blend==='over') drawBG(W,H,shape);
+  const vig=+$('vignette').value/100;
+  if(vig>0){
+    const g=ctx.createRadialGradient(W/2,H/2,Math.min(W,H)*(0.6-0.6*vig),W/2,H/2,Math.max(W,H)*0.8);
+    g.addColorStop(0,'rgba(0,0,0,0)');
+    g.addColorStop(1,`rgba(0,0,0,${0.55*vig})`);
+    ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+  }
+  // Top Title
+  const topText=$('topTitle').value.trim();
+  if(topText){
+    const f=$('topFont').value; loadFont(f);
+    ctx.save(); ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.font=`800 ${+$('topSize').value}px "${f}"`;
+    const tg=makeGrad(W,H,+$('topAngle').value,[{c:$('top1').value,pos:0},{c:$('top2').value,pos:1}]);
+    ctx.fillStyle=tg; ctx.fillText(topText,W/2,H*(+$('topY').value/100));
     ctx.restore();
   }
-  
-  // Outline
-  if (outline > 0) {
-    ctx.strokeStyle = 'rgba(0,0,0,0.8)';
-    ctx.lineWidth = outline;
-    ctx.lineJoin = 'round';
-    ctx.strokeText(char, x, y);
-  }
-  
-  // Main text
-  ctx.fillStyle = gradient;
-  ctx.fillText(char, x, y);
-}
-
-function drawLogos() {
-  S.logos.forEach(logo => {
-    ctx.save();
-    
-    // Apply logo transformations
-    ctx.globalAlpha = logo.opacity;
-    ctx.translate(logo.x, logo.y);
-    
-    const logoSize = Math.min(logo.img.width, logo.img.height) * logo.scale;
-    const logoX = -logoSize / 2;
-    const logoY = -logoSize / 2;
-    
-    // Auto-border with circle clipping
-    if (logo.autoBorder) {
-      // Draw border circle
-      ctx.beginPath();
-      ctx.arc(0, 0, logoSize / 2 + 8, 0, Math.PI * 2);
-      ctx.fillStyle = logo.bcolor;
-      ctx.globalAlpha = logo.bopac;
-      ctx.fill();
-      ctx.globalAlpha = logo.opacity;
-      
-      // Clip to circle
-      ctx.beginPath();
-      ctx.arc(0, 0, logoSize / 2, 0, Math.PI * 2);
-      ctx.clip();
+  // Main Heading
+  const text=$('title').value;
+  if(text.trim()){
+    const fam=$('font').value; loadFont(fam);
+    const base=+$('titleSize').value, lh=+$('lineHeight').value, wght=$('weight').value;
+    const align=$('align').value, x= align==='left'? pad : (align==='right'? W-pad : W/2);
+    const y0= H*(+$('titleY').value/100);
+    const outline=+$('outline').value, glow=+$('glow').value;
+    const tg=makeGrad(W,H,+$('tAngle').value,[{c:$('t1').value,pos:0},{c:$('t2').value,pos:.5},{c:$('t3').value,pos:1}]);
+    const isIndic = $('indicMode').value==='forceOn' ? true : ($('indicMode').value==='forceOff' ? false : HAS_DEV(text));
+    const letter = isIndic ? 0 : +$('letter').value;
+    ctx.save(); ctx.textAlign=align; ctx.textBaseline='alphabetic';
+    ctx.shadowBlur=glow; ctx.shadowColor='rgba(0,0,0,0.55)'; ctx.lineJoin="round"; ctx.miterLimit=2;
+    const lines=text.split('\n');
+    for(let i=0;i<lines.length;i++){
+      ctx.font=`${wght} ${base}px "${fam}"`;
+      const y = y0 + i*base*lh;
+      if(outline>0){
+        ctx.lineWidth=outline;
+        ctx.strokeStyle=makeGrad(W,H,90,[{c:'rgba(0,0,0,0.85)',pos:0},{c:'rgba(0,0,0,0.25)',pos:1}]);
+        if(letter===0) ctx.strokeText(lines[i],x,y); else drawWithLetterSpacing('stroke',lines[i],x,y,letter,align);
+      }
+      ctx.fillStyle=tg;
+      if(letter===0) ctx.fillText(lines[i],x,y); else drawWithLetterSpacing('fill',lines[i],x,y,letter,align);
     }
-    
-    // Apply black & white filter
-    if (logo.bw) {
-      ctx.filter = 'grayscale(100%)';
-    }
-    
-    // Draw logo
-    ctx.drawImage(logo.img, logoX, logoY, logoSize, logoSize);
-    
     ctx.restore();
+    $('letter').disabled = isIndic;
+  }
+  // Branding
+  const brand=$('brand').value.trim();
+  if(brand){
+    const size=+$('brandSize').value, off=+$('brandOffset').value/100*H;
+    const bg=makeGrad(W,H,0,[{c:$('b1').value,pos:0},{c:$('b2').value,pos:.5},{c:$('b3').value,pos:1}]);
+    const fam=$('font').value; loadFont(fam);
+    ctx.save(); ctx.textAlign='center'; ctx.textBaseline='bottom';
+    ctx.font=`600 ${size}px "${fam}"`; ctx.shadowBlur=+$('bGlow').value; ctx.shadowColor='rgba(0,0,0,0.35)';
+    ctx.fillStyle=bg; ctx.fillText(brand, W/2, H-off); ctx.restore();
+  }
+  // Logos
+  S.logos.forEach(L=>{
+    if(!L.img.complete)return;
+    try {
+      const iw=L.img.naturalWidth*L.scale, ih=L.img.naturalHeight*L.scale;
+      ctx.save();
+      const r=Math.min(iw,ih)/2;
+      ctx.beginPath(); ctx.arc(L.x,L.y,r,0,Math.PI*2); ctx.clip();
+      ctx.globalAlpha=L.opacity; ctx.drawImage(L.img, L.x - iw/2, L.y - ih/2, iw, ih);
+      ctx.restore();
+      applyBlendMask(L.x - iw/2, L.y - ih/2, iw, ih, L.blendDir, L.blendStrength);
+
+      let borderColor=L.bcolor;
+      if(L.autoBorder){
+        try{
+          const px=ctx.getImageData(Math.round(L.x),Math.round(L.y),1,1).data;
+          const lum=0.2126*px[0]+0.7152*px[1]+0.0722*px[2];
+          borderColor = lum>140 ? '#111111' : '#FFFFFF';
+        }catch(e){ borderColor=L.bcolor; }
+      }
+      if(L.bw>0){
+        ctx.save(); ctx.lineWidth=L.bw; ctx.strokeStyle=borderColor; ctx.globalAlpha=L.bopac||1;
+        ctx.beginPath(); ctx.arc(L.x,L.y,Math.min(iw,ih)/2 - L.bw/2,0,Math.PI*2); ctx.stroke(); ctx.restore();
+      }
+    } catch(e){console.error('draw logos error:',e);}
   });
 }
-
-function draw() {
-  // Update canvas size
-  c.width = +$('cw').value;
-  c.height = +$('ch').value;
-  
-  // Enable high-DPI rendering
-  const dpr = window.devicePixelRatio || 1;
-  const rect = c.getBoundingClientRect();
-  
-  c.width = rect.width * dpr;
-  c.height = rect.height * dpr;
-  ctx.scale(dpr, dpr);
-  
-  c.style.width = rect.width + 'px';
-  c.style.height = rect.height + 'px';
-  
-  // Reset to actual dimensions for drawing
-  c.width = +$('cw').value;
-  c.height = +$('ch').value;
-  
-  drawBackground();
-  
-  // Draw top title
-  const topTitle = $('topTitle').value;
-  if (topTitle.trim()) {
-    drawText(topTitle, c.width / 2, c.height * (+$('topY').value / 100), {
-      font: $('topFont').value,
-      size: +$('topSize').value,
-      colors: [$('top1').value, $('top2').value],
-      angle: +$('topAngle').value
-    });
-  }
-  
-  // Draw main title
-  const title = $('title').value;
-  if (title.trim()) {
-    const isIndic = $('indicMode').value === 'forceOn' || 
-                   ($('indicMode').value === 'auto' && /[\u0900-\u097F]/.test(title));
-    
-    drawText(title, c.width / 2, c.height * (+$('titleY').value / 100), {
-      font: isIndic ? 'Noto Sans Devanagari' : $('font').value,
-      size: +$('titleSize').value,
-      weight: $('weight').value,
-      align: $('align').value,
-      lineHeight: +$('lineHeight').value,
-      letterSpacing: +$('letter').value,
-      colors: [$('t1').value, $('t2').value, $('t3').value],
-      angle: +$('tAngle').value,
-      outline: +$('outline').value,
-      glow: +$('glow').value
-    });
-  }
-  
-  // Draw brand
-  const brand = $('brand').value;
-  if (brand.trim()) {
-    drawText(brand, c.width / 2, c.height * (1 - +$('brandOffset').value / 100), {
-      size: +$('brandSize').value,
-      colors: [$('b1').value, $('b2').value, $('b3').value],
-      glow: +$('bGlow').value
-    });
-  }
-  
-  // Draw logos
-  drawLogos();
-}
-
-// Mouse interaction
-let mousePos = {x: 0, y: 0};
-
-function getMousePos(e) {
-  const rect = c.getBoundingClientRect();
-  const scaleX = c.width / rect.width;
-  const scaleY = c.height / rect.height;
-  
-  return {
-    x: (e.clientX - rect.left) * scaleX,
-    y: (e.clientY - rect.top) * scaleY
-  };
-}
-
-c.addEventListener('mousedown', (e) => {
-  mousePos = getMousePos(e);
-  
-  // Check for logo hits
-  for (let i = S.logos.length - 1; i >= 0; i--) {
-    const logo = S.logos[i];
-    const size = Math.min(logo.img.width, logo.img.height) * logo.scale;
-    const dx = mousePos.x - logo.x;
-    const dy = mousePos.y - logo.y;
-    
-    if (Math.sqrt(dx * dx + dy * dy) < size / 2) {
-      S.dragTarget = logo;
-      S.dragOffset = {x: dx, y: dy};
-      break;
-    }
-  }
-});
-
-c.addEventListener('mousemove', (e) => {
-  if (!S.dragTarget) return;
-  
-  mousePos = getMousePos(e);
-  S.dragTarget.x = mousePos.x - S.dragOffset.x;
-  S.dragTarget.y = mousePos.y - S.dragOffset.y;
-  
-  draw();
-});
-
-c.addEventListener('mouseup', () => {
-  if (S.dragTarget) {
-    saveToHistory();
-  }
-  S.dragTarget = null;
-});
-
-c.addEventListener('wheel', (e) => {
-  e.preventDefault();
-  
-  if (!e.shiftKey) return;
-  
-  mousePos = getMousePos(e);
-  
-  // Find logo under cursor
-  for (let i = S.logos.length - 1; i >= 0; i--) {
-    const logo = S.logos[i];
-    const size = Math.min(logo.img.width, logo.img.height) * logo.scale;
-    const dx = mousePos.x - logo.x;
-    const dy = mousePos.y - logo.y;
-    
-    if (Math.sqrt(dx * dx + dy * dy) < size / 2) {
-      const delta = e.deltaY > 0 ? -0.05 : 0.05;
-      logo.scale = Math.max(0.1, Math.min(2, logo.scale + delta));
-      draw();
-      break;
-    }
-  }
-});
-
-// File handling
-$('bgImageInput').onchange = (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-  
-  const img = new Image();
-  const reader = new FileReader();
-  
-  reader.onload = (e) => {
-    img.onload = () => {
-      BG.bgImg = img;
-      draw();
-      saveToHistory();
-      showToast('Background image loaded!');
-    };
-    img.src = e.target.result;
-  };
-  
-  reader.readAsDataURL(file);
-};
-
-$('logoInput').onchange = (e) => {
-  Array.from(e.target.files).forEach(addLogo);
-  e.target.value = ''; // Reset input
-};
-
-$('clearLogos').onclick = () => {
-  S.logos = [];
-  rebuildLogoList();
-  draw();
-  saveToHistory();
-  showToast('All logos cleared!');
-};
-
-// Settings Save/Load System (Enhanced)
-function getSettings() {
-  return {
-    // Background settings
-    bg1: $('bg1').value,
-    bg2: $('bg2').value,
-    bg3: $('bg3').value,
-    bgAngle: $('bgAngle').value,
-    gradOpacity: $('gradOpacity').value,
-    bgBlend: $('bgBlend').value,
-    bgShape: $('bgShape').value,
-    vignette: $('vignette').value,
-    padding: $('padding').value,
-    bgImgOpacity: $('bgImgOpacity').value,
-    bgImgScale: $('bgImgScale').value,
-    bgImgTint: $('bgImgTint').value,
-    bgBlendDir: $('bgBlendDir').value,
-    bgBlendStrength: $('bgBlendStrength').value,
-    bgTintMode: $('bgTintMode').value,
-    gradBlend: $('gradBlend').value,
-    
-    // Circle settings
-    circleX: $('circleX').value,
-    circleY: $('circleY').value,
-    circleR: $('circleR').value,
-    circleOpacity: $('circleOpacity').value,
-    
-    // Text settings
-    topTitle: $('topTitle').value,
-    topFont: $('topFont').value,
-    topSize: $('topSize').value,
-    topY: $('topY').value,
-    top1: $('top1').value,
-    top2: $('top2').value,
-    topAngle: $('topAngle').value,
-    
-    title: $('title').value,
-    font: $('font').value,
-    weight: $('weight').value,
-    titleSize: $('titleSize').value,
-    lineHeight: $('lineHeight').value,
-    letter: $('letter').value,
-    align: $('align').value,
-    t1: $('t1').value,
-    t2: $('t2').value,
-    t3: $('t3').value,
-    tAngle: $('tAngle').value,
-    outline: $('outline').value,
-    glow: $('glow').value,
-    titleY: $('titleY').value,
-    indicMode: $('indicMode').value,
-    
-    brand: $('brand').value,
-    brandSize: $('brandSize').value,
-    brandOffset: $('brandOffset').value,
-    bGlow: $('bGlow').value,
-    b1: $('b1').value,
-    b2: $('b2').value,
-    b3: $('b3').value,
-    
-    // Canvas settings
-    preset: $('preset').value,
-    cw: $('cw').value,
-    ch: $('ch').value,
-    
-    // Logos (excluding image data)
-    logoCount: S.logos.length,
-    logoSettings: S.logos.map(L => ({
-      x: L.x, y: L.y, scale: L.scale, opacity: L.opacity,
-      bw: L.bw, bcolor: L.bcolor, bopac: L.bopac, 
-      autoBorder: L.autoBorder, blendDir: L.blendDir, 
-      blendStrength: L.blendStrength
-    }))
-  };
-}
-
-function loadSettings(settings) {
-  Object.keys(settings).forEach(key => {
-    if(key === 'logoCount' || key === 'logoSettings') return;
-    const element = $(key);
-    if(element) {
-      element.value = settings[key];
-      if(element.type === 'checkbox') {
-        element.checked = settings[key];
-      }
-    }
-  });
-  
-  // Apply logo settings if available
-  if(settings.logoSettings && S.logos.length === settings.logoSettings.length) {
-    settings.logoSettings.forEach((logoSettings, i) => {
-      if(S.logos[i]) {
-        Object.assign(S.logos[i], logoSettings);
-      }
-    });
-    rebuildLogoList();
-  }
-  
-  // Update UI state
-  document.getElementById('circleControls').style.display = 
-    $('bgShape').value === 'circle' ? 'grid' : 'none';
-  
-  // Update BG state
-  BG.blendDir = $('bgBlendDir').value;
-  BG.blendStrength = +$('bgBlendStrength').value;
-  
-  draw();
-}
-
-$('saveSettings').onclick = () => {
-  const settings = getSettings();
-  const blob = new Blob([JSON.stringify(settings, null, 2)], {type: 'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `post_maker_settings_${new Date().toISOString().slice(0,10)}.json`;
-  a.click();
-  URL.revokeObjectURL(url);
-  showToast('Settings saved successfully!');
-};
-
-$('loadSettings').onclick = () => {
-  const input = document.createElement('input');
-  input.type = 'file';
-  input.accept = '.json';
-  input.onchange = (e) => {
-    const file = e.target.files[0];
-    if(!file) return;
-    
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      try {
-        const settings = JSON.parse(e.target.result);
-        loadSettings(settings);
-        saveToHistory();
-        showToast('Settings loaded successfully!');
-      } catch(err) {
-        showToast('Error loading settings file!', 'error');
-      }
-    };
-    reader.readAsText(file);
-  };
-  input.click();
-};
-
-// Event bindings (Enhanced)
+// Bind Inputs
 document.querySelectorAll('input,select,textarea').forEach(el=>el.addEventListener('input',()=>{
   if(el.id==='font'||el.id==='topFont') loadFont(el.value);
-  if(el.id==='bgShape'){ 
-    document.getElementById('circleControls').style.display = el.value==='circle'?'grid':'none'; 
-  }
-  
-  BG.blendDir=$('bgBlendDir').value; 
-  BG.blendStrength=+$('bgBlendStrength').value;
-  draw();
-  
-  // Auto-save to history on significant changes
-  if(['title', 'topTitle', 'brand', 'bg1', 'bg2', 'bg3'].includes(el.id)) {
-    clearTimeout(el.autoSaveTimeout);
-    el.autoSaveTimeout = setTimeout(saveToHistory, 1000);
-  }
+  if(el.id==='bgShape'){ document.getElementById('circleControls').style.display = el.value==='circle'?'grid':'none'; }
+  BG.blendDir=$('bgBlendDir').value; BG.blendStrength=+$('bgBlendStrength').value;
+  draw(); saveState();
 }));
-
-document.getElementById('preset').addEventListener('change',()=>{ 
-  const v=$('preset').value; 
-  if(v!=='custom'){ 
-    const [w,h]=v.split('x').map(Number); 
-    $('cw').value=w; 
-    $('ch').value=h; 
-  } 
-  draw(); 
-  saveToHistory();
+document.getElementById('preset').addEventListener('change',()=>{
+  const v=$('preset').value;
+  if(v!=='custom'){ const [w,h]=v.split('x').map(Number); $('cw').value=w; $('ch').value=h; }
+  draw(); saveState();
 });
-
-// Enhanced Download function
+// Download
 $('download').onclick=()=>{
   const scale=+$('scale').value, fmt=$('format').value, q=+$('quality').value;
-  
-  showProgress();
-  updateProgress(20);
-  
-  const tmp=document.createElement('canvas'); 
-  tmp.width=c.width*scale; 
-  tmp.height=c.height*scale;
-  const t=tmp.getContext('2d'); 
-  t.imageSmoothingQuality='high'; 
-  t.scale(scale, scale);
-  
-  updateProgress(50);
-  
-  // Redraw everything on scaled canvas
-  const originalCanvas = c;
-  const originalCtx = ctx;
-  
-  // Temporarily replace canvas context for drawing
-  window.c = tmp;
-  window.ctx = t;
-  
-  draw();
-  
-  // Restore original canvas
-  window.c = originalCanvas;
-  window.ctx = originalCtx;
-  
-  updateProgress(80);
-  
+  const tmp=document.createElement('canvas'); tmp.width=c.width*scale; tmp.height=c.height*scale;
+  const t=tmp.getContext('2d'); t.imageSmoothingQuality='high'; t.drawImage(c,0,0,tmp.width,tmp.height);
   const mime= fmt==='png'?'image/png':(fmt==='jpeg'?'image/jpeg':'image/webp');
-  const url=tmp.toDataURL(mime,q); 
-  const a=document.createElement('a'); 
-  a.href=url; 
-  a.download=`post_${tmp.width}x${tmp.height}_${Date.now()}.${fmt}`; 
-  a.click();
-  
-  updateProgress(100);
-  hideProgress();
-  showToast(`Download completed! ${tmp.width}×${tmp.height} ${fmt.toUpperCase()}`);
+  const url=tmp.toDataURL(mime,q); const a=document.createElement('a'); a.href=url; a.download=`post_${tmp.width}x${tmp.height}.${fmt}`; a.click();
 };
-
-// Enhanced Event Listeners
-$('undoBtn').onclick = undo;
-$('redoBtn').onclick = redo;
-$('alignLogos').onclick = autoAlignLogos;
-$('exportPDF').onclick = exportAsPDF;
-$('exportSVG').onclick = exportAsSVG;
-$('batchExport').onclick = batchExport;
-
-// Template event listeners
-document.querySelectorAll('.template-item').forEach(item => {
-  item.onclick = () => applyTemplate(item.dataset.template);
+// Preset Save/Load Logic
+$('savePreset').onclick=()=> { savePreset(prompt("Preset name?") || "default"); alert('Preset saved'); }
+$('loadPreset').onclick=()=> { loadPreset(prompt("Preset name?") || "default"); }
+// Undo/Redo UI
+$('undoBtn').onclick=()=>undo();
+$('redoBtn').onclick=()=>redo();
+// Keyboard shortcuts
+document.addEventListener('keydown',e=>{
+  if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='z'){ undo(); }
+  if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='y'){ redo(); }
 });
-
-// Enhanced keyboard shortcuts
-document.addEventListener('keydown', (e) => {
-  if(e.ctrlKey || e.metaKey) {
-    switch(e.key) {
-      case 's':
-        e.preventDefault();
-        $('saveSettings').click();
-        break;
-      case 'o':
-        e.preventDefault();
-        $('loadSettings').click();
-        break;
-      case 'Enter':
-        e.preventDefault();
-        $('download').click();
-        break;
-      case 'z':
-        if(!e.shiftKey) {
-          e.preventDefault();
-          undo();
-        }
-        break;
-      case 'y':
-        e.preventDefault();
-        redo();
-        break;
-    }
-  }
-  
-  // Space for quick preview
-  if(e.code === 'Space' && !e.ctrlKey && !e.shiftKey) {
-    e.preventDefault();
-    c.style.transform = c.style.transform ? '' : 'scale(1.1)';
-    setTimeout(() => {
-      c.style.transform = '';
-    }, 200);
-  }
-});
-
-// Initialize
-initFonts();
-loadFont("Noto Sans Devanagari"); 
-loadFont("Poppins");
+// Init
+loadFont("Noto Sans Devanagari"); loadFont("Poppins");
 document.getElementById('circleControls').style.display = $('bgShape').value==='circle'?'grid':'none';
-
-// Save initial state to history
-setTimeout(() => {
-  saveToHistory();
-  updateHistoryUI();
-}, 100);
-
-// Auto-draw on load
 draw();
-
-console.log('🎨 Enhanced Post Maker loaded successfully!');
-console.log('✨ New features: Templates, Undo/Redo, Auto-align, Progress bars, Enhanced exports');
-console.log('⌨️ Shortcuts: Ctrl+S (Save), Ctrl+O (Load), Ctrl+Z (Undo), Ctrl+Y (Redo), Space (Preview)');
+saveState();
 </script>
 </body>
 </html>
