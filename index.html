@@ -70,41 +70,85 @@
     <!-- CONTROLS -->
     <div class="controls">
       <!-- BACKGROUND -->
-      <div class="section full">
-        <h3>Background</h3>
-        <div class="grid3">
-          <div><label>BG Image</label><input type="file" id="bgImageInput" accept="image/*"></div>
-          <div><label>Blend Order</label>
-            <select id="bgBlend">
-              <option value="under">Gradient over Image</option>
-              <option value="over">Image over Gradient</option>
-              <option value="imageOnly">Image Only</option>
-              <option value="gradientOnly">Gradient Only</option>
-            </select>
-          </div>
-          <div><label>BG Shape</label>
-            <select id="bgShape">
-              <option value="full" selected>Full</option>
-              <option value="circle">Circle</option>
-            </select>
-          </div>
-        </div>
+<div class="section full">
+  <h3>Background</h3>
+  <div class="grid3">
+    <div><label>BG Image</label><input type="file" id="bgImageInput" accept="image/*"></div>
+    <div><label>Blend Order</label>
+      <select id="bgBlend">
+        <option value="under">Gradient over Image</option>
+        <option value="over">Image over Gradient</option>
+        <option value="imageOnly">Image Only</option>
+        <option value="gradientOnly">Gradient Only</option>
+      </select>
+    </div>
+    <div><label>BG Shape</label>
+      <select id="bgShape">
+        <option value="full" selected>Full</option>
+        <option value="circle">Circle</option>
+      </select>
+    </div>
+  </div>
 
-        <!-- 🔹 BG Blend Direction + Strength -->
-        <div class="grid2" style="margin-top:8px">
-          <div><label>BG Blend Direction</label>
-            <select id="bgBlendDir">
-              <option value="top">Top</option>
-              <option value="bottom">Bottom</option>
-              <option value="left">Left</option>
-              <option value="right">Right</option>
-            </select>
-          </div>
-          <div><label>BG Blend Strength</label><input type="range" id="bgBlendStrength" min="0" max="1" step="0.05" value="0.5"></div>
-        </div>
-      </div>
+  <div class="grid3" style="margin-top:8px">
+    <div><label>Image Opacity</label><input type="range" id="bgImgOpacity" min="0" max="1" step="0.05" value="1"></div>
+    <div><label>Image Scale</label><input type="range" id="bgImgScale" min="0.2" max="3" step="0.02" value="1"></div>
+    <div><label>Tint Color</label><input type="color" id="bgImgTint" value="#ffffff"></div>
+  </div>
 
-      <!-- (बाकी controls: Top Title, Main Heading, Logos, Branding — वही structure रहेगा जैसा आपके code में था) -->
+  <div class="grid3" style="margin-top:8px">
+    <div><label>Tint Mode</label>
+      <select id="bgTintMode">
+        <option value="none" selected>None</option>
+        <option value="multiply">Multiply</option>
+        <option value="screen">Screen</option>
+        <option value="overlay">Overlay</option>
+        <option value="soft-light">Soft Light</option>
+      </select>
+    </div>
+    <div><label>Vignette</label><input type="range" id="vignette" min="0" max="100" value="20"></div>
+    <div><label>Safe Padding (%)</label><input type="range" id="padding" min="0" max="15" value="5"></div>
+  </div>
+
+  <!-- Gradient colors -->
+  <div class="grid3" style="margin-top:12px">
+    <div><label>Gradient Top</label><input type="color" id="bg1" value="#ffffff"></div>
+    <div><label>Gradient Mid</label><input type="color" id="bg2" value="#1976D2"></div>
+    <div><label>Gradient Bottom</label><input type="color" id="bg3" value="#000000"></div>
+  </div>
+  <div class="grid3" style="margin-top:8px">
+    <div><label>Gradient Angle</label><input type="range" id="bgAngle" min="0" max="360" value="90"></div>
+    <div><label>Gradient Opacity</label><input type="range" id="gradOpacity" min="0" max="1" step="0.05" value="0.6"></div>
+    <div>
+      <label>Gradient Blend</label>
+      <select id="gradBlend">
+        <option value="source-over" selected>Normal</option>
+        <option value="multiply">Multiply</option>
+        <option value="screen">Screen</option>
+        <option value="overlay">Overlay</option>
+        <option value="soft-light">Soft Light</option>
+        <option value="hard-light">Hard Light</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- BG Blend Direction & Strength -->
+  <div class="grid2" style="margin-top:8px">
+    <div><label>BG Blend Direction</label>
+      <select id="bgBlendDir">
+        <option value="none" selected>None</option>
+        <option value="top">Top</option>
+        <option value="bottom">Bottom</option>
+        <option value="left">Left</option>
+        <option value="right">Right</option>
+      </select>
+    </div>
+    <div><label>BG Blend Strength</label>
+      <input type="range" id="bgBlendStrength" min="0" max="1" step="0.05" value="0">
+    </div>
+  </div>
+</div>
+
 
 
       <!-- TOP TITLE -->
@@ -349,123 +393,134 @@
 
   // DRAW
   function draw(){
-    // size
-    const W=+$('cw').value, H=+$('ch').value; c.width=W; c.height=H;
-    const pad=Math.round(Math.min(W,H)*(+$('padding').value/100));
+  // size
+  const W=+$('cw').value, H=+$('ch').value; 
+  c.width=W; c.height=H;
+  const pad=Math.round(Math.min(W,H)*(+$('padding').value/100));
 
-    // update BG scale from slider
-    if(BG.img) BG.scale = +$('bgImgScale').value;
+  // update BG scale from slider
+  if(BG.img) BG.scale = +$('bgImgScale').value;
 
-    // blend & shape
-    const blend=$('bgBlend').value, shape=$('bgShape').value;
+  const blend=$('bgBlend').value, shape=$('bgShape').value;
 
-    // clear
-    ctx.clearRect(0,0,W,H);
+  // clear
+  ctx.clearRect(0,0,W,H);
 
-    // 1) Image first when 'under' or 'imageOnly'
-    if((blend==='under'||blend==='imageOnly')) drawBG(W,H,shape);
+  // 1) Image first when 'under' or 'imageOnly'
+  if((blend==='under'||blend==='imageOnly')) drawBG(W,H,shape);
 
-    // 2) Gradient (with opacity + blend) unless imageOnly
-    if(blend!=='imageOnly'){
-      const gradFill = makeGrad(W,H,+$('bgAngle').value,[
-        {c:$('bg1').value,pos:0},
-        {c:$('bg2').value,pos:.5},
-        {c:$('bg3').value,pos:1}
-      ]);
-      ctx.save();
-      ctx.globalAlpha = +$('gradOpacity').value;
-      ctx.globalCompositeOperation = $('gradBlend').value;
-      ctx.fillStyle = gradFill;
-      ctx.fillRect(0,0,W,H);
-      ctx.restore();
-    }
-
-    // 3) Image over when 'over'
-    if(blend==='over') drawBG(W,H,shape);
-
-    // Vignette
-    const vig=+$('vignette').value/100;
-    if(vig>0){
-      const g=ctx.createRadialGradient(W/2,H/2,Math.min(W,H)*(0.6-0.6*vig),W/2,H/2,Math.max(W,H)*0.8);
-      g.addColorStop(0,'rgba(0,0,0,0)'); g.addColorStop(1,`rgba(0,0,0,${0.55*vig})`);
-      ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
-    }
-
-    // Top title
-    const topText=$('topTitle').value.trim();
-    if(topText){
-      const f=$('topFont').value; loadFont(f);
-      ctx.save(); ctx.textAlign='center'; ctx.textBaseline='middle';
-      ctx.font=`800 ${+$('topSize').value}px "${f}"`;
-      const tg=makeGrad(W,H,+$('topAngle').value,[{c:$('top1').value,pos:0},{c:$('top2').value,pos:1}]);
-      ctx.fillStyle=tg; ctx.fillText(topText,W/2,H*(+$('topY').value/100));
-      ctx.restore();
-    }
-
-    // Main heading (Indic safe)
-    const text=$('title').value;
-    if(text.trim()){
-      const fam=$('font').value; loadFont(fam);
-      const base=+$('titleSize').value, lh=+$('lineHeight').value, wght=$('weight').value;
-      const align=$('align').value, x= align==='left'? pad : (align==='right'? W-pad : W/2);
-      const y0= H*(+$('titleY').value/100);
-      const outline=+$('outline').value, glow=+$('glow').value;
-      const tg=makeGrad(W,H,+$('tAngle').value,[{c:$('t1').value,pos:0},{c:$('t2').value,pos:.5},{c:$('t3').value,pos:1}]);
-      const isIndic = $('indicMode').value==='forceOn' ? true : ($('indicMode').value==='forceOff' ? false : HAS_DEV(text));
-      const letter = isIndic ? 0 : +$('letter').value;
-
-      ctx.save(); ctx.textAlign=align; ctx.textBaseline='alphabetic';
-      ctx.shadowBlur=glow; ctx.shadowColor='rgba(0,0,0,0.55)'; ctx.lineJoin="round"; ctx.miterLimit=2;
-
-      const lines=text.split('\n');
-      for(let i=0;i<lines.length;i++){
-        ctx.font=`${wght} ${base}px "${fam}"`;
-        const y = y0 + i*base*lh;
-        if(outline>0){
-          ctx.lineWidth=outline;
-          ctx.strokeStyle=makeGrad(W,H,90,[{c:'rgba(0,0,0,0.85)',pos:0},{c:'rgba(0,0,0,0.25)',pos:1}]);
-          if(letter===0) ctx.strokeText(lines[i],x,y); else drawWithLetterSpacing('stroke',lines[i],x,y,letter,align);
-        }
-        ctx.fillStyle=tg;
-        if(letter===0) ctx.fillText(lines[i],x,y); else drawWithLetterSpacing('fill',lines[i],x,y,letter,align);
-      }
-      ctx.restore();
-      $('letter').disabled = isIndic;
-    }
-
-    // Branding
-    const brand=$('brand').value.trim();
-    if(brand){
-      const size=+$('brandSize').value, off=+$('brandOffset').value/100*H;
-      const bg=makeGrad(W,H,0,[{c:$('b1').value,pos:0},{c:$('b2').value,pos:.5},{c:$('b3').value,pos:1}]);
-      const fam=$('font').value; loadFont(fam);
-      ctx.save(); ctx.textAlign='center'; ctx.textBaseline='bottom';
-      ctx.font=`600 ${size}px "${fam}"`; ctx.shadowBlur=+$('bGlow').value; ctx.shadowColor='rgba(0,0,0,0.35)';
-      ctx.fillStyle=bg; ctx.fillText(brand, W/2, H-off); ctx.restore();
-    }
-
-    // Logos (circle mask + auto border)
-    S.logos.forEach(L=>{
-      if(!L.img.complete)return;
-      const iw=L.img.naturalWidth*L.scale, ih=L.img.naturalHeight*L.scale;
-      ctx.save();
-      const r=Math.min(iw,ih)/2;
-      ctx.beginPath(); ctx.arc(L.x,L.y,r,0,Math.PI*2); ctx.clip();
-      ctx.globalAlpha=L.opacity; ctx.drawImage(L.img, L.x - iw/2, L.y - ih/2, iw, ih);
-      ctx.restore();
-
-      // auto border: sample background under logo center
-      let borderColor=L.bcolor;
-      if(L.autoBorder){
-        try{
-          const px=ctx.getImageData(Math.round(L.x),Math.round(L.y),1,1).data;
-          const lum=0.2126*px[0]+0.7152*px[1]+0.0722*px[2];
-          borderColor = lum>140 ? '#111111' : '#FFFFFF';
-        }catch(e){ borderColor=L.bcolor; }
-      }
-      if(L.bw>0){ ctx.save(); ctx.lineWidth=L.bw; ctx.strokeStyle=borderColor; ctx.globalAlpha=L.bopac||1; ctx.beginPath(); ctx.arc(L.x,L.y,Math.min(iw,ih)/2 - L.bw/2,0,Math.PI*2); ctx.stroke(); ctx.restore(); }
-    });
+  // 2) Gradient (with opacity + blend) unless imageOnly
+  if(blend!=='imageOnly'){
+    const gradFill = makeGrad(W,H,+$('bgAngle').value,[
+      {c:$('bg1').value,pos:0},
+      {c:$('bg2').value,pos:.5},
+      {c:$('bg3').value,pos:1}
+    ]);
+    ctx.save();
+    ctx.globalAlpha = +$('gradOpacity').value;
+    ctx.globalCompositeOperation = $('gradBlend').value;
+    ctx.fillStyle = gradFill;
+    ctx.fillRect(0,0,W,H);
+    ctx.restore();
   }
+
+  // 3) Image over when 'over'
+  if(blend==='over') drawBG(W,H,shape);
+
+  // 4) BG Blend Direction & Strength
+  applyBlendMask(0,0,W,H,BG.blendDir, BG.blendStrength);
+
+  // 5) Vignette
+  const vig=+$('vignette').value/100;
+  if(vig>0){
+    const g=ctx.createRadialGradient(W/2,H/2,Math.min(W,H)*(0.6-0.6*vig),W/2,H/2,Math.max(W,H)*0.8);
+    g.addColorStop(0,'rgba(0,0,0,0)');
+    g.addColorStop(1,`rgba(0,0,0,${0.55*vig})`);
+    ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+  }
+
+  // --- Top Title ---
+  const topText=$('topTitle').value.trim();
+  if(topText){
+    const f=$('topFont').value; loadFont(f);
+    ctx.save(); ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.font=`800 ${+$('topSize').value}px "${f}"`;
+    const tg=makeGrad(W,H,+$('topAngle').value,[{c:$('top1').value,pos:0},{c:$('top2').value,pos:1}]);
+    ctx.fillStyle=tg; ctx.fillText(topText,W/2,H*(+$('topY').value/100));
+    ctx.restore();
+  }
+
+  // --- Main Heading ---
+  const text=$('title').value;
+  if(text.trim()){
+    const fam=$('font').value; loadFont(fam);
+    const base=+$('titleSize').value, lh=+$('lineHeight').value, wght=$('weight').value;
+    const align=$('align').value, x= align==='left'? pad : (align==='right'? W-pad : W/2);
+    const y0= H*(+$('titleY').value/100);
+    const outline=+$('outline').value, glow=+$('glow').value;
+    const tg=makeGrad(W,H,+$('tAngle').value,[{c:$('t1').value,pos:0},{c:$('t2').value,pos:.5},{c:$('t3').value,pos:1}]);
+    const isIndic = $('indicMode').value==='forceOn' ? true : ($('indicMode').value==='forceOff' ? false : HAS_DEV(text));
+    const letter = isIndic ? 0 : +$('letter').value;
+
+    ctx.save(); ctx.textAlign=align; ctx.textBaseline='alphabetic';
+    ctx.shadowBlur=glow; ctx.shadowColor='rgba(0,0,0,0.55)'; ctx.lineJoin="round"; ctx.miterLimit=2;
+
+    const lines=text.split('\n');
+    for(let i=0;i<lines.length;i++){
+      ctx.font=`${wght} ${base}px "${fam}"`;
+      const y = y0 + i*base*lh;
+      if(outline>0){
+        ctx.lineWidth=outline;
+        ctx.strokeStyle=makeGrad(W,H,90,[{c:'rgba(0,0,0,0.85)',pos:0},{c:'rgba(0,0,0,0.25)',pos:1}]);
+        if(letter===0) ctx.strokeText(lines[i],x,y); else drawWithLetterSpacing('stroke',lines[i],x,y,letter,align);
+      }
+      ctx.fillStyle=tg;
+      if(letter===0) ctx.fillText(lines[i],x,y); else drawWithLetterSpacing('fill',lines[i],x,y,letter,align);
+    }
+    ctx.restore();
+    $('letter').disabled = isIndic;
+  }
+
+  // --- Branding ---
+  const brand=$('brand').value.trim();
+  if(brand){
+    const size=+$('brandSize').value, off=+$('brandOffset').value/100*H;
+    const bg=makeGrad(W,H,0,[{c:$('b1').value,pos:0},{c:$('b2').value,pos:.5},{c:$('b3').value,pos:1}]);
+    const fam=$('font').value; loadFont(fam);
+    ctx.save(); ctx.textAlign='center'; ctx.textBaseline='bottom';
+    ctx.font=`600 ${size}px "${fam}"`; ctx.shadowBlur=+$('bGlow').value; ctx.shadowColor='rgba(0,0,0,0.35)';
+    ctx.fillStyle=bg; ctx.fillText(brand, W/2, H-off); ctx.restore();
+  }
+
+  // --- Logos ---
+  S.logos.forEach(L=>{
+    if(!L.img.complete)return;
+    const iw=L.img.naturalWidth*L.scale, ih=L.img.naturalHeight*L.scale;
+    ctx.save();
+    const r=Math.min(iw,ih)/2;
+    ctx.beginPath(); ctx.arc(L.x,L.y,r,0,Math.PI*2); ctx.clip();
+    ctx.globalAlpha=L.opacity; ctx.drawImage(L.img, L.x - iw/2, L.y - ih/2, iw, ih);
+    ctx.restore();
+
+    // logo blend
+    applyBlendMask(L.x - iw/2, L.y - ih/2, iw, ih, L.blendDir, L.blendStrength);
+
+    // auto border
+    let borderColor=L.bcolor;
+    if(L.autoBorder){
+      try{
+        const px=ctx.getImageData(Math.round(L.x),Math.round(L.y),1,1).data;
+        const lum=0.2126*px[0]+0.7152*px[1]+0.0722*px[2];
+        borderColor = lum>140 ? '#111111' : '#FFFFFF';
+      }catch(e){ borderColor=L.bcolor; }
+    }
+    if(L.bw>0){ 
+      ctx.save(); ctx.lineWidth=L.bw; ctx.strokeStyle=borderColor; ctx.globalAlpha=L.bopac||1; 
+      ctx.beginPath(); ctx.arc(L.x,L.y,Math.min(iw,ih)/2 - L.bw/2,0,Math.PI*2); ctx.stroke(); ctx.restore(); 
+    }
+  });
+}
+
 
 
 
