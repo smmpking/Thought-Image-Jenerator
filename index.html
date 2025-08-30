@@ -132,6 +132,37 @@
     </div>
   </div>
 
+<!-- Canvas size -->
+<div class="grid3" style="margin-top:8px">
+  <div><label>Canvas Preset</label>
+    <select id="preset">
+      <option value="1080x1080" selected>IG/FB Square — 1080×1080</option>
+      <option value="1080x1920">Story/Reel — 1080×1920</option>
+      <option value="1080x1350">IG Portrait — 1080×1350</option>
+      <option value="1640x924">FB Cover — 1640×924</option>
+      <option value="1280x720">YT/Telegram — 1280×720</option>
+      <option value="1280x1280">Telegram Square — 1280×1280</option>
+      <option value="custom">Custom…</option>
+    </select>
+  </div>
+  <div class="grid2">
+    <input id="cw" type="number" min="320" value="1080" title="Width (px)">
+    <input id="ch" type="number" min="320" value="1080" title="Height (px)">
+  </div>
+  <div></div>
+</div>
+
+<!-- Circle BG controls -->
+<div id="circleControls" class="grid3" style="margin-top:12px; display:none">
+  <div><label>Circle X (%)</label><input type="range" id="circleX" min="10" max="90" value="50"></div>
+  <div><label>Circle Y (%)</label><input type="range" id="circleY" min="10" max="90" value="35"></div>
+  <div><label>Radius (%)</label><input type="range" id="circleR" min="10" max="45" value="28"></div>
+  <div><label>Circle Opacity</label><input type="range" id="circleOpacity" min="0.1" max="1" step="0.05" value="1"></div>
+</div>
+
+
+
+  
   <!-- BG Blend Direction & Strength -->
   <div class="grid2" style="margin-top:8px">
     <div><label>BG Blend Direction</label>
