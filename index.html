@@ -3,53 +3,52 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <h1><title>Post Maker — BG Image + Circle + Logos</title></h1>
+  <title>Post Maker — BG Image + Circle + Logos</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600;800&family=Mukta:wght@400;600;800&family=Hind:wght@400;600;700&family=Karma:wght@400;700&family=Martel:wght@400;800&family=Poppins:wght@400;600;800&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
-    :root{--line:#1f2630;--ink:#e8ecf1;--muted:#9aa3ad}
-    *{box-sizing:border-box}
-    body{margin:0;background:#0a0c10;color:var(--ink);font-family:"Noto Sans Devanagari","Poppins",system-ui,Segoe UI,Roboto,Arial,sans-serif}
+    :root { --line:#1f2630; --ink:#e8ecf1; --muted:#9aa3ad; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:#0a0c10; color:var(--ink); font-family:"Noto Sans Devanagari","Poppins",system-ui,Segoe UI,Roboto,Arial,sans-serif; }
+    
+    /* Desktop split layout */
     .container {
-  max-width: 900px;  /* पूरा layout को थोड़ा बड़ा रहने दें */
-  margin: auto;
-  padding: 12px;
-}
-    .previewCard {
-  max-width: 500px;   /* Preview card width limit */
-  margin: auto;
-}
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+      max-width:1400px;
+      margin:auto;
+      padding:12px;
+    }
+    @media (min-width:1000px){
+      .container { flex-direction:row; align-items:flex-start; }
+      .previewCard { flex:1; max-width:600px; }
+      .controls { flex:1.5; }
+    }
 
-.stage {
-  display: grid;
-  place-items: center;
-  position: relative;
-  min-height: 40vh;
-}
+    .previewCard { background:rgba(255,255,255,.03); border:1px solid var(--line); border-radius:16px; padding:12px; }
+    .stage { display:grid; place-items:center; position:relative; min-height:40vh; }
+    canvas { width:100%; max-width:100%; border-radius:14px; background:#000; display:block; }
 
-canvas {
-  width: 100%;        /* canvas को card के अंदर फिट कराओ */
-  max-width: 400px;   /* desktop पर ज्यादा बड़ा न हो */
-  height: auto;
-  border-radius: 14px;
-  background: #000;
-  display: block;
-}
-    .btn{background:#121a24;border:1px solid #24303f;color:var(--ink);padding:10px 14px;border-radius:12px;cursor:pointer;font-weight:700}
-    .btn.primary{background:linear-gradient(135deg,#60a5fa,#34d399);color:#081017;border:none}
-    .controls{margin-top:14px;display:grid;gap:12px;grid-template-columns:1fr}
-    @media (min-width:900px){.controls{grid-template-columns:1fr 1fr}.full{grid-column:1/-1}}
-    .section{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:16px;padding:14px}
-    .section h3{margin:2px 0 10px;font-size:16px}
-    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
-    .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-    label{font-size:12px;color:var(--muted)}
-    input,select,textarea{width:100%;background:#0f141c;border:1px solid #273342;color:var(--ink);border-radius:10px;padding:8px;font-size:14px}
-    input[type=color]{padding:0;height:40px}
-    textarea{min-height:78px;resize:vertical}
-    .chip{display:flex;align-items:center;gap:6px;border:1px dashed #2a3443;border-radius:12px;padding:6px}
-    .small{font-size:11px;color:#9aa3ad}
-    .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-top:8px}
+    .btn { background:#121a24; border:1px solid #24303f; color:var(--ink); padding:10px 14px; border-radius:12px; cursor:pointer; font-weight:700; }
+    .btn.primary { background:linear-gradient(135deg,#60a5fa,#34d399); color:#081017; border:none; }
+    
+    .controls { display:grid; gap:12px; grid-template-columns:1fr; }
+    @media (min-width:900px){ .controls{ grid-template-columns:1fr 1fr; } .full{ grid-column:1/-1; } }
+    
+    .section { background:rgba(255,255,255,.03); border:1px solid var(--line); border-radius:16px; padding:14px; }
+    .section h3 { margin:2px 0 10px; font-size:16px; }
+    .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+    .grid4 { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+    
+    label { font-size:12px; color:var(--muted); }
+    input,select,textarea { width:100%; background:#0f141c; border:1px solid #273342; color:var(--ink); border-radius:10px; padding:8px; font-size:14px; }
+    input[type=color]{ padding:0; height:40px; }
+    textarea{ min-height:78px; resize:vertical; }
+    
+    .chip{ display:flex; align-items:center; gap:6px; border:1px dashed #2a3443; border-radius:12px; padding:6px; }
+    .small{ font-size:11px; color:#9aa3ad; }
+    .row{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; justify-content:space-between; margin-top:8px; }
   </style>
 </head>
 <body>
@@ -62,7 +61,7 @@ canvas {
           <select id="format"><option value="png">PNG</option><option value="jpeg">JPEG</option><option value="webp">WebP</option></select>
           <select id="scale"><option value="1">1×</option><option value="2" selected>2×</option><option value="3">3×</option></select>
           <input type="range" id="quality" min="0.7" max="1" step="0.01" value="0.95" title="Quality">
-          <span class="small">Drag BG/Logos • <b>Shift+Wheel</b> Zoom • <b>Ctrl+Drag</b> Circle move</span>
+          <span class="small">Drag BG/Logos • Pinch Zoom • Ctrl+Drag Circle</span>
         </div>
         <button class="btn primary" id="download">⬇️ Download</button>
       </div>
@@ -91,77 +90,22 @@ canvas {
           </div>
         </div>
 
-        <div class="grid3" style="margin-top:8px">
-          <div><label>Image Opacity</label><input type="range" id="bgImgOpacity" min="0" max="1" step="0.05" value="1"></div>
-          <div><label>Image Scale</label><input type="range" id="bgImgScale" min="0.2" max="3" step="0.02" value="1"></div>
-          <div><label>Tint Color</label><input type="color" id="bgImgTint" value="#ffffff"></div>
-        </div>
-
-        <div class="grid3" style="margin-top:8px">
-          <div><label>Tint Mode</label>
-            <select id="bgTintMode">
-              <option value="none" selected>None</option>
-              <option value="multiply">Multiply</option>
-              <option value="screen">Screen</option>
-              <option value="overlay">Overlay</option>
-              <option value="soft-light">Soft Light</option>
+        <!-- 🔹 BG Blend Direction + Strength -->
+        <div class="grid2" style="margin-top:8px">
+          <div><label>BG Blend Direction</label>
+            <select id="bgBlendDir">
+              <option value="top">Top</option>
+              <option value="bottom">Bottom</option>
+              <option value="left">Left</option>
+              <option value="right">Right</option>
             </select>
           </div>
-          <div><label>Vignette</label><input type="range" id="vignette" min="0" max="100" value="20"></div>
-          <div><label>Safe Padding (%)</label><input type="range" id="padding" min="0" max="15" value="5"></div>
-        </div>
-
-        <!-- Gradient colors -->
-        <div class="grid3" style="margin-top:12px">
-          <div><label>Gradient Top</label><input type="color" id="bg1" value="#ffffff"></div>
-          <div><label>Gradient Mid</label><input type="color" id="bg2" value="#1976D2"></div>
-          <div><label>Gradient Bottom</label><input type="color" id="bg3" value="#000000"></div>
-        </div>
-        <div class="grid3" style="margin-top:8px">
-          <div><label>Gradient Angle</label><input type="range" id="bgAngle" min="0" max="360" value="90"></div>
-          <div><label>Gradient Opacity</label><input type="range" id="gradOpacity" min="0" max="1" step="0.05" value="0.6"></div>
-          <div>
-            <label>Gradient Blend</label>
-            <select id="gradBlend">
-              <option value="source-over" selected>Normal</option>
-              <option value="multiply">Multiply</option>
-              <option value="screen">Screen</option>
-              <option value="overlay">Overlay</option>
-              <option value="soft-light">Soft Light</option>
-              <option value="hard-light">Hard Light</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Canvas size -->
-        <div class="grid3" style="margin-top:8px">
-          <div><label>Canvas Preset</label>
-            <select id="preset">
-              <option value="1080x1080" selected>IG/FB Square — 1080×1080</option>
-              <option value="1080x1920">Story/Reel — 1080×1920</option>
-              <option value="1080x1350">IG Portrait — 1080×1350</option>
-              <option value="1640x924">FB Cover — 1640×924</option>
-              <option value="1280x720">YT/Telegram — 1280×720</option>
-              <option value="1280x1280">Telegram Square — 1280×1280</option>
-              <option value="custom">Custom…</option>
-            </select>
-          </div>
-          <div class="grid2">
-            <input id="cw" type="number" min="320" value="1080" title="Width (px)">
-            <input id="ch" type="number" min="320" value="1080" title="Height (px)">
-          </div>
-          <div></div>
-        </div>
-
-        <!-- Circle BG controls -->
-        <div id="circleControls" class="grid3" style="margin-top:12px; display:none">
-          <div><label>Circle X (%)</label><input type="range" id="circleX" min="10" max="90" value="50"></div>
-          <div><label>Circle Y (%)</label><input type="range" id="circleY" min="10" max="90" value="35"></div>
-          <div><label>Radius (%)</label><input type="range" id="circleR" min="10" max="45" value="28"></div>
-          <div><label>Circle Opacity</label><input type="range" id="circleOpacity" min="0.1" max="1" step="0.05" value="1"></div>
-          <div class="small" style="grid-column:1/-1">Tip: Circle mode में <b>Ctrl + Drag</b> से circle move, <b>Shift+Wheel</b> से BG zoom.</div>
+          <div><label>BG Blend Strength</label><input type="range" id="bgBlendStrength" min="0" max="1" step="0.05" value="0.5"></div>
         </div>
       </div>
+
+      <!-- (बाकी controls: Top Title, Main Heading, Logos, Branding — वही structure रहेगा जैसा आपके code में था) -->
+
 
       <!-- TOP TITLE -->
       <div class="section">
@@ -238,7 +182,7 @@ canvas {
     </div>
   </div>
 
-  <script>
+<script>
   const c=document.getElementById('c'),ctx=c.getContext('2d'); const $=id=>document.getElementById(id);
 
   // Fonts
@@ -246,11 +190,11 @@ canvas {
   ["font","topFont"].forEach(id=>{ const sel=$(id); fonts.forEach(f=>{const o=document.createElement('option');o.value=f;o.textContent=f;sel.appendChild(o);}); sel.value = id==="font" ? "Noto Sans Devanagari" : "Poppins"; });
   function loadFont(f){ const id='gf_'+f.replace(/\s+/g,'_'); if(document.getElementById(id)) return; const link=document.createElement('link'); link.id=id; link.rel='stylesheet'; link.href=`https://fonts.googleapis.com/css2?family=${encodeURIComponent(f)}:wght@400;600;800&display=swap`; document.head.appendChild(link); }
 
-  // BG image + circle state
-  const BG={img:null,x:0,y:0,scale:1};
-  let drag={mode:null,dx:0,dy:0}; // 'BG' | 'LOGO:i' | 'CIRCLE'
-  // Logos
-  const S={logos:[]}; // {img,x,y,scale,opacity,bw,bcolor,bopac,autoBorder}
+  // BG state with blend options
+  const BG={img:null,x:0,y:0,scale:1,blendDir:"bottom",blendStrength:0.5};
+  let drag={mode:null,dx:0,dy:0};
+  // Logos with blend options
+  const S={logos:[]}; // {img,x,y,scale,opacity,bw,bcolor,bopac,autoBorder,blendDir,blendStrength}
 
   // Helpers
   function makeGrad(W,H,a,stops){ const rad=a*Math.PI/180,vx=Math.cos(rad),vy=Math.sin(rad); const x0=W*(.5-.5*vx),y0=H*(.5-.5*vy),x1=W*(.5+.5*vx),y1=H*(.5+.5*vy); const g=ctx.createLinearGradient(x0,y0,x1,y1); stops.forEach(s=>g.addColorStop(s.pos,s.c)); return g; }
@@ -269,7 +213,15 @@ canvas {
   $('logoInput').addEventListener('change',e=>{
     for(const file of e.target.files){
       const img=new Image();
-      img.onload=()=>{ S.logos.push({img,x:c.width*0.5,y:c.height*0.2+Math.random()*80,scale:Math.min(400/img.naturalWidth,400/img.naturalHeight)*0.7,opacity:1,bw:6,bcolor:'#ffffff',bopac:1,autoBorder:true}); addLogoChip(S.logos.length-1); draw(); };
+      img.onload=()=>{ 
+        S.logos.push({
+          img,x:c.width*0.5,y:c.height*0.2+Math.random()*80,
+          scale:Math.min(400/img.naturalWidth,400/img.naturalHeight)*0.7,
+          opacity:1,bw:6,bcolor:'#ffffff',bopac:1,autoBorder:true,
+          blendDir:"bottom",blendStrength:0.5
+        }); 
+        addLogoChip(S.logos.length-1); draw(); 
+      };
       img.src=URL.createObjectURL(file);
     }
     e.target.value='';
@@ -290,6 +242,13 @@ canvas {
       <label class="small"><input type="checkbox" data-k="auto" ${L.autoBorder?'checked':''}/> Auto Border</label>
       <input type="color" value="${L.bcolor}" data-k="bcolor" title="Border Color">
       <input type="range" min="0" max="20" step="1" value="${L.bw}" data-k="bw" title="Border Width">
+      <select data-k="blendDir" title="Blend Direction">
+        <option value="top">Top</option>
+        <option value="bottom" selected>Bottom</option>
+        <option value="left">Left</option>
+        <option value="right">Right</option>
+      </select>
+      <input type="range" min="0" max="1" step="0.05" value="${L.blendStrength}" data-k="blendStrength" title="Blend Strength">
       <button data-k="up">⬆️</button><button data-k="down">⬇️</button><button data-k="del">🗑️</button>
     `;
     row.querySelectorAll('input,select,button').forEach(el=>{
@@ -304,6 +263,8 @@ canvas {
         else if(k==='del'){ S.logos.splice(i,1); rebuildLogoList(); }
         else if(k==='up'){ moveLogo(i,-1); }
         else if(k==='down'){ moveLogo(i,1); }
+        else if(k==='blendDir'){ L.blendDir=el.value; }
+        else if(k==='blendStrength'){ L.blendStrength=+el.value; }
         draw();
       };
     });
@@ -315,6 +276,30 @@ canvas {
     const W=c.width,H=c.height,pad=Math.min(W,H)*(+$('padding').value/100);
     const map={TL:[pad,pad],TC:[W/2,pad],TR:[W-pad,pad],CL:[pad,H/2],CC:[W/2,H/2],CR:[W-pad,H/2],BL:[pad,H-pad],BC:[W/2,H-pad],BR:[W-pad,H-pad]};
     if(map[pos]){L.x=map[pos][0];L.y=map[pos][1];}
+  }
+
+  // --- Apply Blend Mask Helper ---
+  function applyBlendMask(x,y,w,h,dir,str){
+    if(!dir||str<=0) return;
+    let g;
+    if(dir==="top"||dir==="bottom") g=ctx.createLinearGradient(x,y,x,y+h);
+    else g=ctx.createLinearGradient(x,y,x+w,y);
+    if(dir==="top"){ g.addColorStop(0,"rgba(0,0,0,"+str+")"); g.addColorStop(1,"transparent"); }
+    if(dir==="bottom"){ g.addColorStop(0,"transparent"); g.addColorStop(1,"rgba(0,0,0,"+str+")"); }
+    if(dir==="left"){ g.addColorStop(0,"rgba(0,0,0,"+str+")"); g.addColorStop(1,"transparent"); }
+    if(dir==="right"){ g.addColorStop(0,"transparent"); g.addColorStop(1,"rgba(0,0,0,"+str+")"); }
+    ctx.fillStyle=g; ctx.fillRect(x,y,w,h);
+  }
+
+  // --- Update drawBG to apply BG blend ---
+  function drawBG(W,H,shape){
+    if(!BG.img) return;
+    const iw=BG.img.naturalWidth*BG.scale, ih=BG.img.naturalHeight*BG.scale;
+    const op=+$('bgImgOpacity').value; const [r,g,b]=hexToRgb($('bgImgTint').value); const mode=$('bgTintMode').value;
+    ctx.save(); ctx.globalAlpha=op;
+    ctx.drawImage(BG.img, BG.x - iw/2, BG.y - ih/2, iw, ih);
+    ctx.restore();
+    applyBlendMask(0,0,W,H,BG.blendDir, BG.blendStrength);
   }
 
   // Canvas interactions
