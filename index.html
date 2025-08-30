@@ -81,6 +81,16 @@
           <div><label>Tint Color</label><input type="color" id="bgImgTint" value="#ffffff"></div>
         </div>
 
+          <select id="bgBlendDir">
+  <option value="none" selected>None</option>
+  <option value="top">Top</option>
+  <option value="bottom">Bottom</option>
+  <option value="left">Left</option>
+  <option value="right">Right</option>
+</select>
+<input type="range" id="bgBlendStrength" min="0" max="1" step="0.05" value="0">
+
+        
         <div class="grid3" style="margin-top:8px">
           <div><label>Tint Mode</label>
             <select id="bgTintMode">
@@ -178,7 +188,7 @@
         </div>
 
         <h3>Bottom Branding</h3>
-        <input id="brand" placeholder="eg. आप अपना टायटल लिखें">
+        <input id="brand" placeholder="eg. Add Your Bottom Title">
         <div class="grid3" style="margin-top:8px">
           <div><label>Size</label><input type="range" id="brandSize" min="18" max="72" value="40"></div>
           <div><label>Offset %</label><input type="range" id="brandOffset" min="2" max="15" value="6"></div>
@@ -229,7 +239,16 @@
           <button class="btn" id="clearLogos">❌ Remove All</button>
         </div>
         <div id="logoList" class="grid2" style="margin-top:8px"></div>
-        <div class="small" style="margin-top:6px">Drag logos • <b>Shift+Wheel</b> size • Snap from chip dropdown • “Auto Border” ON रहने पर background के हिसाब से white/black चुनता है</div>
+        <div class="small" style="margin-top:6px">Drag logos • <b>Shift+Wheel</b> </div>
+        <select data-k="blendDir" title="Blend Direction">
+  <option value="none">None</option>
+  <option value="top">Top</option>
+  <option value="bottom" selected>Bottom</option>
+  <option value="left">Left</option>
+  <option value="right">Right</option>
+</select>
+<input type="range" min="0" max="1" step="0.05" value="0.5" data-k="blendStrength" title="Blend Strength">
+
       </div>
     </div>
   </div>
