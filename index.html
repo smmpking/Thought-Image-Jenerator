@@ -432,29 +432,49 @@ function applyBlendMask(x,y,w,h,dir,str){
 function drawBG(W,H,shape){
   if(!BG.img) return;
   const iw=BG.img.naturalWidth*BG.scale, ih=BG.img.naturalHeight*BG.scale;
-  const op=+$('bgImgOpacity').value; const [r,g,b]=hexToRgb($('bgImgTint').value); const mode=$('bgTintMode').value;
+  const op=+$('bgImgOpacity').value; 
+  const [r,g,b]=hexToRgb($('bgImgTint').value); 
+  const mode=$('bgTintMode').value;
 
   if(shape==='circle'){
-    const cx=W*(+$('circleX').value/100), cy=H*(+$('circleY').value/100), R=Math.min(W,H)*(+$('circleR').value/100), cop=+$('circleOpacity').value;
-    ctx.save(); ctx.globalAlpha=op*cop; ctx.beginPath(); ctx.arc(cx,cy,R,0,Math.PI*2); ctx.clip();
+    const cx=W*(+$('circleX').value/100), 
+          cy=H*(+$('circleY').value/100), 
+          R=Math.min(W,H)*(+$('circleR').value/100), 
+          cop=+$('circleOpacity').value;
+
+    ctx.save(); 
+    ctx.beginPath(); 
+    ctx.arc(cx,cy,R,0,Math.PI*2); 
+    ctx.clip();
+
+    // ✅ सिर्फ image पर opacity + tint + blend
+    ctx.globalAlpha=op*cop; 
     ctx.drawImage(BG.img, BG.x - iw/2, BG.y - ih/2, iw, ih);
     if(mode!=='none'){
       ctx.globalCompositeOperation=mode;
-      ctx.fillStyle=`rgb(${r},${g},${b})`; ctx.fillRect(cx-R,cy-R,2*R,2*R);
+      ctx.fillStyle=`rgb(${r},${g},${b})`; 
+      ctx.fillRect(cx-R,cy-R,2*R,2*R);
       ctx.globalCompositeOperation='source-over';
     }
     ctx.restore();
+
   } else {
-    ctx.save(); ctx.globalAlpha=op;
+    ctx.save(); 
+    ctx.globalAlpha=op;
     ctx.drawImage(BG.img, BG.x - iw/2, BG.y - ih/2, iw, ih);
+
+    // ✅ Tint सिर्फ image पर
     if(mode!=='none'){
       ctx.globalCompositeOperation=mode;
-      ctx.fillStyle=`rgb(${r},${g},${b})`; ctx.fillRect(0,0,W,H);
+      ctx.fillStyle=`rgb(${r},${g},${b})`; 
+      ctx.fillRect(BG.x - iw/2, BG.y - ih/2, iw, ih);
       ctx.globalCompositeOperation='source-over';
     }
     ctx.restore();
   }
-  applyBlendMask(0,0,W,H,BG.blendDir,BG.blendStrength);
+
+  // ✅ Blend mask भी सिर्फ image पर लगे
+  applyBlendMask(BG.x - iw/2, BG.y - ih/2, iw, ih, BG.blendDir,BG.blendStrength);
 }
 
 // Dragging
