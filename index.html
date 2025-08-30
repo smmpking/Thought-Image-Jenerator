@@ -480,6 +480,127 @@ window.addEventListener('mousemove',e=>{
 });
 window.addEventListener('mouseup',()=> drag.mode=null);
 
+
+// --- ✅ Mobile Touch Support (BG + Logos Pinch Zoom) --- //
+let ongoingTouches = [];
+let pinchTarget = null; // "BG" या कोई logo index
+
+c.addEventListener("touchstart", e => {
+  e.preventDefault();
+  ongoingTouches = [...e.touches];
+
+  if(ongoingTouches.length === 1){
+    const t = ongoingTouches[0];
+    const r = c.getBoundingClientRect();
+    const mx = (t.clientX - r.left) * (c.width/r.width);
+    const my = (t.clientY - r.top) * (c.height/r.height);
+
+    // Logo drag check
+    for(let i=S.logos.length-1;i>=0;i--){
+      const L=S.logos[i], iw=L.img.naturalWidth*L.scale, ih=L.img.naturalHeight*L.scale;
+      if(mx> L.x-iw/2 && mx< L.x+iw/2 && my> L.y-ih/2 && my< L.y+ih/2){
+        drag={mode:'LOGO:'+i,dx:mx-L.x,dy:my-L.y};
+        return;
+      }
+    }
+    // BG drag check
+    if(BG.img){
+      const iw=BG.img.naturalWidth*BG.scale, ih=BG.img.naturalHeight*BG.scale;
+      if(mx>BG.x-iw/2 && mx<BG.x+iw/2 && my>BG.y-ih/2 && my<BG.y+ih/2){
+        drag={mode:'BG',dx:mx-BG.x,dy:my-BG.y};
+        return;
+      }
+    }
+    drag={mode:null};
+  }
+}, {passive:false});
+
+c.addEventListener("touchmove", e => {
+  e.preventDefault();
+
+  // --- Single finger drag ---
+  if(ongoingTouches.length === 1 && e.touches.length === 1 && drag.mode){
+    const t = e.touches[0];
+    const r = c.getBoundingClientRect();
+    const mx = (t.clientX - r.left) * (c.width/r.width);
+    const my = (t.clientY - r.top) * (c.height/r.height);
+
+    if(drag.mode==='BG'){ 
+      BG.x=mx-drag.dx; BG.y=my-drag.dy; draw(); 
+    }
+    else if(drag.mode.startsWith('LOGO:')){ 
+      const i=+drag.mode.split(':')[1]; 
+      const L=S.logos[i]; 
+      L.x=mx-drag.dx; L.y=my-drag.dy; draw(); 
+    }
+  }
+
+  // --- Pinch Zoom (2-finger) ---
+  if(e.touches.length === 2){
+    const dist = Math.hypot(
+      e.touches[0].clientX - e.touches[1].clientX,
+      e.touches[0].clientY - e.touches[1].clientY
+    );
+
+    if(ongoingTouches.length === 2){
+      const prevDist = Math.hypot(
+        ongoingTouches[0].clientX - ongoingTouches[1].clientX,
+        ongoingTouches[0].clientY - ongoingTouches[1].clientY
+      );
+      const scaleFactor = dist / prevDist;
+
+      // ✅ Check pinch target
+      if(!pinchTarget){
+        // Center point between two touches
+        const cx = (e.touches[0].clientX + e.touches[1].clientX)/2;
+        const cy = (e.touches[0].clientY + e.touches[1].clientY)/2;
+        const r = c.getBoundingClientRect();
+        const mx = (cx - r.left) * (c.width/r.width);
+        const my = (cy - r.top) * (c.height/r.height);
+
+        // Check if inside a logo
+        for(let i=S.logos.length-1;i>=0;i--){
+          const L=S.logos[i], iw=L.img.naturalWidth*L.scale, ih=L.img.naturalHeight*L.scale;
+          if(mx> L.x-iw/2 && mx< L.x+iw/2 && my> L.y-ih/2 && my< L.y+ih/2){
+            pinchTarget = i; break;
+          }
+        }
+        if(pinchTarget === null) pinchTarget = "BG";
+      }
+
+      // ✅ Apply zoom
+      if(pinchTarget === "BG" && BG.img){
+        BG.scale = Math.max(0.2, Math.min(3, BG.scale*scaleFactor));
+        $('bgImgScale').value = BG.scale.toFixed(2);
+      }
+      else if(typeof pinchTarget === "number"){
+        const L=S.logos[pinchTarget];
+        L.scale = Math.max(0.05, Math.min(2, L.scale*scaleFactor));
+      }
+      draw();
+    }
+    ongoingTouches = [...e.touches];
+  }
+}, {passive:false});
+
+c.addEventListener("touchend", e=>{
+  e.preventDefault();
+  drag.mode=null;
+  pinchTarget=null;
+  ongoingTouches = [...e.touches];
+}, {passive:false});
+
+c.addEventListener("touchcancel", e=>{
+  drag.mode=null;
+  pinchTarget=null;
+  ongoingTouches = [];
+}, {passive:false});
+
+
+
+
+  
+
 // Mouse wheel zoom
 c.addEventListener('wheel',e=>{
   if(!e.shiftKey) return;
