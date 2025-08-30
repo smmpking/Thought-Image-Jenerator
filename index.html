@@ -9,43 +9,28 @@
     :root { --line:#1f2630; --ink:#e8ecf1; --muted:#9aa3ad; }
     * { box-sizing:border-box; }
     body { margin:0; background:#0a0c10; color:var(--ink); font-family:"Noto Sans Devanagari","Poppins",system-ui,Segoe UI,Roboto,Arial,sans-serif; }
-    
-    /* Desktop split layout */
-    .container {
-      display:flex;
-      flex-direction:column;
-      gap:16px;
-      max-width:1400px;
-      margin:auto;
-      padding:12px;
-    }
+    .container { display:flex; flex-direction:column; gap:16px; max-width:1400px; margin:auto; padding:12px; }
     @media (min-width:1000px){
       .container { flex-direction:row; align-items:flex-start; }
       .previewCard { flex:1; max-width:600px; }
       .controls { flex:1.5; }
     }
-
     .previewCard { background:rgba(255,255,255,.03); border:1px solid var(--line); border-radius:16px; padding:12px; }
     .stage { display:grid; place-items:center; position:relative; min-height:40vh; }
     canvas { width:100%; max-width:100%; border-radius:14px; background:#000; display:block; }
-
     .btn { background:#121a24; border:1px solid #24303f; color:var(--ink); padding:10px 14px; border-radius:12px; cursor:pointer; font-weight:700; }
     .btn.primary { background:linear-gradient(135deg,#60a5fa,#34d399); color:#081017; border:none; }
-    
     .controls { display:grid; gap:12px; grid-template-columns:1fr; }
     @media (min-width:900px){ .controls{ grid-template-columns:1fr 1fr; } .full{ grid-column:1/-1; } }
-    
     .section { background:rgba(255,255,255,.03); border:1px solid var(--line); border-radius:16px; padding:14px; }
     .section h3 { margin:2px 0 10px; font-size:16px; }
     .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
     .grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
     .grid4 { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
-    
     label { font-size:12px; color:var(--muted); }
     input,select,textarea { width:100%; background:#0f141c; border:1px solid #273342; color:var(--ink); border-radius:10px; padding:8px; font-size:14px; }
     input[type=color]{ padding:0; height:40px; }
     textarea{ min-height:78px; resize:vertical; }
-    
     .chip{ display:flex; align-items:center; gap:6px; border:1px dashed #2a3443; border-radius:12px; padding:6px; }
     .small{ font-size:11px; color:#9aa3ad; }
     .row{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; justify-content:space-between; margin-top:8px; }
@@ -70,117 +55,112 @@
     <!-- CONTROLS -->
     <div class="controls">
       <!-- BACKGROUND -->
-<div class="section full">
-  <h3>Background</h3>
-  <div class="grid3">
-    <div><label>BG Image</label><input type="file" id="bgImageInput" accept="image/*"></div>
-    <div><label>Blend Order</label>
-      <select id="bgBlend">
-        <option value="under">Gradient over Image</option>
-        <option value="over">Image over Gradient</option>
-        <option value="imageOnly">Image Only</option>
-        <option value="gradientOnly">Gradient Only</option>
-      </select>
-    </div>
-    <div><label>BG Shape</label>
-      <select id="bgShape">
-        <option value="full" selected>Full</option>
-        <option value="circle">Circle</option>
-      </select>
-    </div>
-  </div>
+      <div class="section full">
+        <h3>Background</h3>
+        <div class="grid3">
+          <div><label>BG Image</label><input type="file" id="bgImageInput" accept="image/*"></div>
+          <div><label>Blend Order</label>
+            <select id="bgBlend">
+              <option value="under">Gradient over Image</option>
+              <option value="over">Image over Gradient</option>
+              <option value="imageOnly">Image Only</option>
+              <option value="gradientOnly">Gradient Only</option>
+            </select>
+          </div>
+          <div><label>BG Shape</label>
+            <select id="bgShape">
+              <option value="full" selected>Full</option>
+              <option value="circle">Circle</option>
+            </select>
+          </div>
+        </div>
 
-  <div class="grid3" style="margin-top:8px">
-    <div><label>Image Opacity</label><input type="range" id="bgImgOpacity" min="0" max="1" step="0.05" value="1"></div>
-    <div><label>Image Scale</label><input type="range" id="bgImgScale" min="0.2" max="3" step="0.02" value="1"></div>
-    <div><label>Tint Color</label><input type="color" id="bgImgTint" value="#ffffff"></div>
-  </div>
+        <div class="grid3" style="margin-top:8px">
+          <div><label>Image Opacity</label><input type="range" id="bgImgOpacity" min="0" max="1" step="0.05" value="1"></div>
+          <div><label>Image Scale</label><input type="range" id="bgImgScale" min="0.2" max="3" step="0.02" value="1"></div>
+          <div><label>Tint Color</label><input type="color" id="bgImgTint" value="#ffffff"></div>
+        </div>
 
-  <div class="grid3" style="margin-top:8px">
-    <div><label>Tint Mode</label>
-      <select id="bgTintMode">
-        <option value="none" selected>None</option>
-        <option value="multiply">Multiply</option>
-        <option value="screen">Screen</option>
-        <option value="overlay">Overlay</option>
-        <option value="soft-light">Soft Light</option>
-      </select>
-    </div>
-    <div><label>Vignette</label><input type="range" id="vignette" min="0" max="100" value="20"></div>
-    <div><label>Safe Padding (%)</label><input type="range" id="padding" min="0" max="15" value="5"></div>
-  </div>
+        <div class="grid3" style="margin-top:8px">
+          <div><label>Tint Mode</label>
+            <select id="bgTintMode">
+              <option value="none" selected>None</option>
+              <option value="multiply">Multiply</option>
+              <option value="screen">Screen</option>
+              <option value="overlay">Overlay</option>
+              <option value="soft-light">Soft Light</option>
+            </select>
+          </div>
+          <div><label>Vignette</label><input type="range" id="vignette" min="0" max="100" value="20"></div>
+          <div><label>Safe Padding (%)</label><input type="range" id="padding" min="0" max="15" value="5"></div>
+        </div>
 
-  <!-- Gradient colors -->
-  <div class="grid3" style="margin-top:12px">
-    <div><label>Gradient Top</label><input type="color" id="bg1" value="#ffffff"></div>
-    <div><label>Gradient Mid</label><input type="color" id="bg2" value="#1976D2"></div>
-    <div><label>Gradient Bottom</label><input type="color" id="bg3" value="#000000"></div>
-  </div>
-  <div class="grid3" style="margin-top:8px">
-    <div><label>Gradient Angle</label><input type="range" id="bgAngle" min="0" max="360" value="90"></div>
-    <div><label>Gradient Opacity</label><input type="range" id="gradOpacity" min="0" max="1" step="0.05" value="0.6"></div>
-    <div>
-      <label>Gradient Blend</label>
-      <select id="gradBlend">
-        <option value="source-over" selected>Normal</option>
-        <option value="multiply">Multiply</option>
-        <option value="screen">Screen</option>
-        <option value="overlay">Overlay</option>
-        <option value="soft-light">Soft Light</option>
-        <option value="hard-light">Hard Light</option>
-      </select>
-    </div>
-  </div>
+        <!-- Gradient colors -->
+        <div class="grid3" style="margin-top:12px">
+          <div><label>Gradient Top</label><input type="color" id="bg1" value="#ffffff"></div>
+          <div><label>Gradient Mid</label><input type="color" id="bg2" value="#1976D2"></div>
+          <div><label>Gradient Bottom</label><input type="color" id="bg3" value="#000000"></div>
+        </div>
+        <div class="grid3" style="margin-top:8px">
+          <div><label>Gradient Angle</label><input type="range" id="bgAngle" min="0" max="360" value="90"></div>
+          <div><label>Gradient Opacity</label><input type="range" id="gradOpacity" min="0" max="1" step="0.05" value="0.6"></div>
+          <div>
+            <label>Gradient Blend</label>
+            <select id="gradBlend">
+              <option value="source-over" selected>Normal</option>
+              <option value="multiply">Multiply</option>
+              <option value="screen">Screen</option>
+              <option value="overlay">Overlay</option>
+              <option value="soft-light">Soft Light</option>
+              <option value="hard-light">Hard Light</option>
+            </select>
+          </div>
+        </div>
 
-<!-- Canvas size -->
-<div class="grid3" style="margin-top:8px">
-  <div><label>Canvas Preset</label>
-    <select id="preset">
-      <option value="1080x1080" selected>IG/FB Square — 1080×1080</option>
-      <option value="1080x1920">Story/Reel — 1080×1920</option>
-      <option value="1080x1350">IG Portrait — 1080×1350</option>
-      <option value="1640x924">FB Cover — 1640×924</option>
-      <option value="1280x720">YT/Telegram — 1280×720</option>
-      <option value="1280x1280">Telegram Square — 1280×1280</option>
-      <option value="custom">Custom…</option>
-    </select>
-  </div>
-  <div class="grid2">
-    <input id="cw" type="number" min="320" value="1080" title="Width (px)">
-    <input id="ch" type="number" min="320" value="1080" title="Height (px)">
-  </div>
-  <div></div>
-</div>
+        <!-- Canvas size -->
+        <div class="grid3" style="margin-top:8px">
+          <div><label>Canvas Preset</label>
+            <select id="preset">
+              <option value="1080x1080" selected>IG/FB Square — 1080×1080</option>
+              <option value="1080x1920">Story/Reel — 1080×1920</option>
+              <option value="1080x1350">IG Portrait — 1080×1350</option>
+              <option value="1640x924">FB Cover — 1640×924</option>
+              <option value="1280x720">YT/Telegram — 1280×720</option>
+              <option value="1280x1280">Telegram Square — 1280×1280</option>
+              <option value="custom">Custom…</option>
+            </select>
+          </div>
+          <div class="grid2">
+            <input id="cw" type="number" min="320" value="1080" title="Width (px)">
+            <input id="ch" type="number" min="320" value="1080" title="Height (px)">
+          </div>
+          <div></div>
+        </div>
 
-<!-- Circle BG controls -->
-<div id="circleControls" class="grid3" style="margin-top:12px; display:none">
-  <div><label>Circle X (%)</label><input type="range" id="circleX" min="10" max="90" value="50"></div>
-  <div><label>Circle Y (%)</label><input type="range" id="circleY" min="10" max="90" value="35"></div>
-  <div><label>Radius (%)</label><input type="range" id="circleR" min="10" max="45" value="28"></div>
-  <div><label>Circle Opacity</label><input type="range" id="circleOpacity" min="0.1" max="1" step="0.05" value="1"></div>
-</div>
+        <!-- Circle BG controls -->
+        <div id="circleControls" class="grid3" style="margin-top:12px; display:none">
+          <div><label>Circle X (%)</label><input type="range" id="circleX" min="10" max="90" value="50"></div>
+          <div><label>Circle Y (%)</label><input type="range" id="circleY" min="10" max="90" value="35"></div>
+          <div><label>Radius (%)</label><input type="range" id="circleR" min="10" max="45" value="28"></div>
+          <div><label>Circle Opacity</label><input type="range" id="circleOpacity" min="0.1" max="1" step="0.05" value="1"></div>
+        </div>
 
-
-
-  
-  <!-- BG Blend Direction & Strength -->
-  <div class="grid2" style="margin-top:8px">
-    <div><label>BG Blend Direction</label>
-      <select id="bgBlendDir">
-        <option value="none" selected>None</option>
-        <option value="top">Top</option>
-        <option value="bottom">Bottom</option>
-        <option value="left">Left</option>
-        <option value="right">Right</option>
-      </select>
-    </div>
-    <div><label>BG Blend Strength</label>
-      <input type="range" id="bgBlendStrength" min="0" max="1" step="0.05" value="0">
-    </div>
-  </div>
-</div>
-
-
+        <!-- BG Blend Direction & Strength -->
+        <div class="grid2" style="margin-top:8px">
+          <div><label>BG Blend Direction</label>
+            <select id="bgBlendDir">
+              <option value="none" selected>None</option>
+              <option value="top">Top</option>
+              <option value="bottom">Bottom</option>
+              <option value="left">Left</option>
+              <option value="right">Right</option>
+            </select>
+          </div>
+          <div><label>BG Blend Strength</label>
+            <input type="range" id="bgBlendStrength" min="0" max="1" step="0.05" value="0">
+          </div>
+        </div>
+      </div>
 
       <!-- TOP TITLE -->
       <div class="section">
@@ -209,8 +189,6 @@
           <div><label>Grad B</label><input type="color" id="b2" value="#ffd000"></div>
           <div><label>Grad C</label><input type="color" id="b3" value="#ffa24c"></div>
         </div>
-
-        
       </div>
 
       <!-- MAIN HEADING -->
@@ -253,217 +231,239 @@
         <div id="logoList" class="grid2" style="margin-top:8px"></div>
         <div class="small" style="margin-top:6px">Drag logos • <b>Shift+Wheel</b> size • Snap from chip dropdown • “Auto Border” ON रहने पर background के हिसाब से white/black चुनता है</div>
       </div>
-
-      <!-- BRANDING -->
-      
     </div>
   </div>
 
+
+
 <script>
-  const c=document.getElementById('c'),ctx=c.getContext('2d'); const $=id=>document.getElementById(id);
+const c=document.getElementById('c'),ctx=c.getContext('2d'); 
+const $=id=>document.getElementById(id);
 
-  // Fonts
-  const fonts=["Noto Sans Devanagari","Mukta","Hind","Karma","Martel","Poppins","Inter","Roboto","Montserrat","Merriweather","Lora","Playfair Display","Nunito","Manrope","Raleway","Oswald"];
-  ["font","topFont"].forEach(id=>{ const sel=$(id); fonts.forEach(f=>{const o=document.createElement('option');o.value=f;o.textContent=f;sel.appendChild(o);}); sel.value = id==="font" ? "Noto Sans Devanagari" : "Poppins"; });
-  function loadFont(f){ const id='gf_'+f.replace(/\s+/g,'_'); if(document.getElementById(id)) return; const link=document.createElement('link'); link.id=id; link.rel='stylesheet'; link.href=`https://fonts.googleapis.com/css2?family=${encodeURIComponent(f)}:wght@400;600;800&display=swap`; document.head.appendChild(link); }
+// Fonts
+const fonts=["Noto Sans Devanagari","Mukta","Hind","Karma","Martel","Poppins","Inter","Roboto","Montserrat","Merriweather","Lora","Playfair Display","Nunito","Manrope","Raleway","Oswald"];
+["font","topFont"].forEach(id=>{
+  const sel=$(id); 
+  fonts.forEach(f=>{
+    const o=document.createElement('option');
+    o.value=f;o.textContent=f;sel.appendChild(o);
+  }); 
+  sel.value = id==="font" ? "Noto Sans Devanagari" : "Poppins"; 
+});
+function loadFont(f){ 
+  const id='gf_'+f.replace(/\s+/g,'_'); 
+  if(document.getElementById(id)) return; 
+  const link=document.createElement('link'); 
+  link.id=id; link.rel='stylesheet'; 
+  link.href=`https://fonts.googleapis.com/css2?family=${encodeURIComponent(f)}:wght@400;600;800&display=swap`; 
+  document.head.appendChild(link); 
+}
 
-  // BG state with blend options
-  const BG={img:null,x:0,y:0,scale:1,blendDir:"bottom",blendStrength:0.5};
-  let drag={mode:null,dx:0,dy:0};
-  // Logos with blend options
-  const S={logos:[]}; // {img,x,y,scale,opacity,bw,bcolor,bopac,autoBorder,blendDir,blendStrength}
+// BG + Logos state
+const BG={img:null,x:0,y:0,scale:1,blendDir:"none",blendStrength:0};
+let drag={mode:null,dx:0,dy:0};
+const S={logos:[]}; 
 
-  // Helpers
-  function makeGrad(W,H,a,stops){ const rad=a*Math.PI/180,vx=Math.cos(rad),vy=Math.sin(rad); const x0=W*(.5-.5*vx),y0=H*(.5-.5*vy),x1=W*(.5+.5*vx),y1=H*(.5+.5*vy); const g=ctx.createLinearGradient(x0,y0,x1,y1); stops.forEach(s=>g.addColorStop(s.pos,s.c)); return g; }
-  function hexToRgb(h){h=h.replace('#','');if(h.length===3)h=[...h].map(x=>x+x).join('');const n=parseInt(h,16);return[n>>16&255,n>>8&255,n&255];}
-  const HAS_DEV = s=>/[\u0900-\u097F]/.test(s);
+// Helpers
+function makeGrad(W,H,a,stops){ 
+  const rad=a*Math.PI/180,vx=Math.cos(rad),vy=Math.sin(rad); 
+  const x0=W*(.5-.5*vx),y0=H*(.5-.5*vy),x1=W*(.5+.5*vx),y1=H*(.5+.5*vy); 
+  const g=ctx.createLinearGradient(x0,y0,x1,y1); 
+  stops.forEach(s=>g.addColorStop(s.pos,s.c)); 
+  return g; 
+}
+function hexToRgb(h){h=h.replace('#','');if(h.length===3)h=[...h].map(x=>x+x).join('');const n=parseInt(h,16);return[n>>16&255,n>>8&255,n&255];}
+const HAS_DEV = s=>/[\u0900-\u097F]/.test(s);
 
-  // BG upload
-  $('bgImageInput').addEventListener('change',e=>{
-    const f=e.target.files[0]; if(!f) return;
+// Upload BG
+$('bgImageInput').addEventListener('change',e=>{
+  const f=e.target.files[0]; if(!f) return;
+  const img=new Image();
+  img.onload=()=>{ 
+    const W=c.width,H=c.height; 
+    BG.img=img; 
+    BG.scale=Math.max(W/img.naturalWidth,H/img.naturalHeight); 
+    BG.x=W/2; BG.y=H/2; 
+    draw(); 
+  };
+  img.src=URL.createObjectURL(f); e.target.value='';
+});
+
+// Upload Logos
+$('logoInput').addEventListener('change',e=>{
+  for(const file of e.target.files){
     const img=new Image();
-    img.onload=()=>{ const W=c.width,H=c.height; BG.img=img; BG.scale=Math.max(W/img.naturalWidth,H/img.naturalHeight); BG.x=W/2; BG.y=H/2; draw(); };
-    img.src=URL.createObjectURL(f); e.target.value='';
-  });
+    img.onload=()=>{ 
+      S.logos.push({
+        img,x:c.width*0.5,y:c.height*0.2+Math.random()*80,
+        scale:Math.min(400/img.naturalWidth,400/img.naturalHeight)*0.7,
+        opacity:1,bw:6,bcolor:'#ffffff',bopac:1,autoBorder:true,
+        blendDir:"none",blendStrength:0
+      }); 
+      addLogoChip(S.logos.length-1); draw(); 
+    };
+    img.src=URL.createObjectURL(file);
+  }
+  e.target.value='';
+});
+$('clearLogos').onclick=()=>{ S.logos=[]; rebuildLogoList(); draw(); };
 
-  // Logos upload
-  $('logoInput').addEventListener('change',e=>{
-    for(const file of e.target.files){
-      const img=new Image();
-      img.onload=()=>{ 
-        S.logos.push({
-          img,x:c.width*0.5,y:c.height*0.2+Math.random()*80,
-          scale:Math.min(400/img.naturalWidth,400/img.naturalHeight)*0.7,
-          opacity:1,bw:6,bcolor:'#ffffff',bopac:1,autoBorder:true,
-          blendDir:"bottom",blendStrength:0.5
-        }); 
-        addLogoChip(S.logos.length-1); draw(); 
-      };
-      img.src=URL.createObjectURL(file);
+// Logo UI
+function addLogoChip(i){
+  const L=S.logos[i]; 
+  const row=document.createElement('div'); row.className='chip';
+  row.innerHTML=`
+    <span class="small">Logo ${i+1}</span>
+    <input type="range" min="0.05" max="2" step="0.01" value="${L.scale}" data-k="scale">
+    <input type="range" min="0.1" max="1" step="0.01" value="${L.opacity}" data-k="opacity">
+    <select data-k="snap">
+      <option value="">Free</option><option>TL</option><option>TC</option><option>TR</option>
+      <option>CL</option><option selected>CC</option><option>CR</option>
+      <option>BL</option><option>BC</option><option>BR</option>
+    </select>
+    <label class="small"><input type="checkbox" data-k="auto" ${L.autoBorder?'checked':''}/> Auto Border</label>
+    <input type="color" value="${L.bcolor}" data-k="bcolor">
+    <input type="range" min="0" max="20" step="1" value="${L.bw}" data-k="bw">
+    <select data-k="blendDir">
+      <option value="none" selected>None</option>
+      <option value="top">Top</option><option value="bottom">Bottom</option>
+      <option value="left">Left</option><option value="right">Right</option>
+    </select>
+    <input type="range" min="0" max="1" step="0.05" value="${L.blendStrength}" data-k="blendStrength">
+    <button data-k="up">⬆️</button><button data-k="down">⬇️</button><button data-k="del">🗑️</button>
+  `;
+  row.querySelectorAll('input,select,button').forEach(el=>{
+    el.oninput = el.onclick = ()=>{
+      const k=el.dataset.k;
+      if(k==='scale') L.scale=+el.value;
+      else if(k==='opacity') L.opacity=+el.value;
+      else if(k==='bcolor') L.bcolor=el.value;
+      else if(k==='bw') L.bw=+el.value;
+      else if(k==='auto') L.autoBorder=el.checked;
+      else if(k==='snap'){ snapLogo(L, el.value); }
+      else if(k==='del'){ S.logos.splice(i,1); rebuildLogoList(); return; }
+      else if(k==='up'){ moveLogo(i,-1); return; }
+      else if(k==='down'){ moveLogo(i,1); return; }
+      else if(k==='blendDir'){ L.blendDir=el.value; }
+      else if(k==='blendStrength'){ L.blendStrength=+el.value; }
+      draw();
+    };
+  });
+  document.getElementById('logoList').appendChild(row);
+}
+function rebuildLogoList(){ const wrap=document.getElementById('logoList'); wrap.innerHTML=''; S.logos.forEach((_,i)=>addLogoChip(i)); }
+function moveLogo(i,dir){ const j=i+dir; if(j<0||j>=S.logos.length) return; [S.logos[i],S.logos[j]]=[S.logos[j],S.logos[i]]; rebuildLogoList(); }
+function snapLogo(L,pos){
+  const W=c.width,H=c.height,pad=Math.min(W,H)*(+$('padding').value/100);
+  const map={TL:[pad,pad],TC:[W/2,pad],TR:[W-pad,pad],CL:[pad,H/2],CC:[W/2,H/2],CR:[W-pad,H/2],BL:[pad,H-pad],BC:[W/2,H-pad],BR:[W-pad,H-pad]};
+  if(map[pos]){L.x=map[pos][0];L.y=map[pos][1];}
+}
+
+// Blend mask
+function applyBlendMask(x,y,w,h,dir,str){
+  if(!dir||dir==="none"||str<=0) return;
+  ctx.save();
+  let g;
+  if(dir==="top"||dir==="bottom") g=ctx.createLinearGradient(x,y,x,y+h);
+  else g=ctx.createLinearGradient(x,y,x+w,y);
+  if(dir==="top"){ g.addColorStop(0,"rgba(0,0,0,"+str+")"); g.addColorStop(1,"transparent"); }
+  if(dir==="bottom"){ g.addColorStop(0,"transparent"); g.addColorStop(1,"rgba(0,0,0,"+str+")"); }
+  if(dir==="left"){ g.addColorStop(0,"rgba(0,0,0,"+str+")"); g.addColorStop(1,"transparent"); }
+  if(dir==="right"){ g.addColorStop(0,"transparent"); g.addColorStop(1,"rgba(0,0,0,"+str+")"); }
+  ctx.fillStyle=g; ctx.fillRect(x,y,w,h);
+  ctx.restore();
+}
+
+// Draw BG
+function drawBG(W,H,shape){
+  if(!BG.img) return;
+  const iw=BG.img.naturalWidth*BG.scale, ih=BG.img.naturalHeight*BG.scale;
+  const op=+$('bgImgOpacity').value; const [r,g,b]=hexToRgb($('bgImgTint').value); const mode=$('bgTintMode').value;
+
+  if(shape==='circle'){
+    const cx=W*(+$('circleX').value/100), cy=H*(+$('circleY').value/100), R=Math.min(W,H)*(+$('circleR').value/100), cop=+$('circleOpacity').value;
+    ctx.save(); ctx.globalAlpha=op*cop; ctx.beginPath(); ctx.arc(cx,cy,R,0,Math.PI*2); ctx.clip();
+    ctx.drawImage(BG.img, BG.x - iw/2, BG.y - ih/2, iw, ih);
+    if(mode!=='none'){
+      ctx.globalCompositeOperation=mode;
+      ctx.fillStyle=`rgb(${r},${g},${b})`; ctx.fillRect(cx-R,cy-R,2*R,2*R);
+      ctx.globalCompositeOperation='source-over';
     }
-    e.target.value='';
-  });
-  $('clearLogos').onclick=()=>{ S.logos=[]; rebuildLogoList(); draw(); };
-
-  function addLogoChip(i){
-    const L=S.logos[i]; const row=document.createElement('div'); row.className='chip';
-    row.innerHTML=`
-      <span class="small">Logo ${i+1}</span>
-      <input type="range" min="0.05" max="2" step="0.01" value="${L.scale}" data-k="scale" title="Size">
-      <input type="range" min="0.1" max="1" step="0.01" value="${L.opacity}" data-k="opacity" title="Opacity">
-      <select data-k="snap" title="Snap">
-        <option value="">Free</option><option>TL</option><option>TC</option><option>TR</option>
-        <option>CL</option><option selected>CC</option><option>CR</option>
-        <option>BL</option><option>BC</option><option>BR</option>
-      </select>
-      <label class="small"><input type="checkbox" data-k="auto" ${L.autoBorder?'checked':''}/> Auto Border</label>
-      <input type="color" value="${L.bcolor}" data-k="bcolor" title="Border Color">
-      <input type="range" min="0" max="20" step="1" value="${L.bw}" data-k="bw" title="Border Width">
-      <select data-k="blendDir" title="Blend Direction">
-        <option value="top">Top</option>
-        <option value="bottom" selected>Bottom</option>
-        <option value="left">Left</option>
-        <option value="right">Right</option>
-      </select>
-      <input type="range" min="0" max="1" step="0.05" value="${L.blendStrength}" data-k="blendStrength" title="Blend Strength">
-      <button data-k="up">⬆️</button><button data-k="down">⬇️</button><button data-k="del">🗑️</button>
-    `;
-    row.querySelectorAll('input,select,button').forEach(el=>{
-      el.oninput = el.onclick = ()=>{
-        const k=el.dataset.k;
-        if(k==='scale') L.scale=+el.value;
-        else if(k==='opacity') L.opacity=+el.value;
-        else if(k==='bcolor') L.bcolor=el.value;
-        else if(k==='bw') L.bw=+el.value;
-        else if(k==='auto') L.autoBorder=el.checked;
-        else if(k==='snap'){ snapLogo(L, el.value); }
-        else if(k==='del'){ S.logos.splice(i,1); rebuildLogoList(); }
-        else if(k==='up'){ moveLogo(i,-1); }
-        else if(k==='down'){ moveLogo(i,1); }
-        else if(k==='blendDir'){ L.blendDir=el.value; }
-        else if(k==='blendStrength'){ L.blendStrength=+el.value; }
-        draw();
-      };
-    });
-    document.getElementById('logoList').appendChild(row);
-  }
-  function rebuildLogoList(){ const wrap=document.getElementById('logoList'); wrap.innerHTML=''; S.logos.forEach((_,i)=>addLogoChip(i)); }
-  function moveLogo(i,dir){ const j=i+dir; if(j<0||j>=S.logos.length) return; [S.logos[i],S.logos[j]]=[S.logos[j],S.logos[i]]; rebuildLogoList(); }
-  function snapLogo(L,pos){
-    const W=c.width,H=c.height,pad=Math.min(W,H)*(+$('padding').value/100);
-    const map={TL:[pad,pad],TC:[W/2,pad],TR:[W-pad,pad],CL:[pad,H/2],CC:[W/2,H/2],CR:[W-pad,H/2],BL:[pad,H-pad],BC:[W/2,H-pad],BR:[W-pad,H-pad]};
-    if(map[pos]){L.x=map[pos][0];L.y=map[pos][1];}
-  }
-
-  // --- Apply Blend Mask Helper ---
-  function applyBlendMask(x,y,w,h,dir,str){
-    if(!dir||str<=0) return;
-    let g;
-    if(dir==="top"||dir==="bottom") g=ctx.createLinearGradient(x,y,x,y+h);
-    else g=ctx.createLinearGradient(x,y,x+w,y);
-    if(dir==="top"){ g.addColorStop(0,"rgba(0,0,0,"+str+")"); g.addColorStop(1,"transparent"); }
-    if(dir==="bottom"){ g.addColorStop(0,"transparent"); g.addColorStop(1,"rgba(0,0,0,"+str+")"); }
-    if(dir==="left"){ g.addColorStop(0,"rgba(0,0,0,"+str+")"); g.addColorStop(1,"transparent"); }
-    if(dir==="right"){ g.addColorStop(0,"transparent"); g.addColorStop(1,"rgba(0,0,0,"+str+")"); }
-    ctx.fillStyle=g; ctx.fillRect(x,y,w,h);
-  }
-
-  // --- Update drawBG to apply BG blend ---
-  function drawBG(W,H,shape){
-    if(!BG.img) return;
-    const iw=BG.img.naturalWidth*BG.scale, ih=BG.img.naturalHeight*BG.scale;
-    const op=+$('bgImgOpacity').value; const [r,g,b]=hexToRgb($('bgImgTint').value); const mode=$('bgTintMode').value;
+    ctx.restore();
+  } else {
     ctx.save(); ctx.globalAlpha=op;
     ctx.drawImage(BG.img, BG.x - iw/2, BG.y - ih/2, iw, ih);
-    ctx.restore();
-    applyBlendMask(0,0,W,H,BG.blendDir, BG.blendStrength);
-  }
-
-  // Canvas interactions
-  c.addEventListener('mousedown',e=>{
-    const r=c.getBoundingClientRect(), mx=(e.clientX-r.left)*(c.width/r.width), my=(e.clientY-r.top)*(c.height/r.height);
-    // Circle drag with Ctrl
-    if($('bgShape').value==='circle' && e.ctrlKey){ drag={mode:'CIRCLE',dx:mx,dy:my}; return; }
-    // Logos hit-test (topmost first)
-    for(let i=S.logos.length-1;i>=0;i--){
-      const L=S.logos[i], iw=L.img.naturalWidth*L.scale, ih=L.img.naturalHeight*L.scale;
-      if(mx> L.x-iw/2 && mx< L.x+iw/2 && my> L.y-ih/2 && my< L.y+ih/2){ drag={mode:'LOGO:'+i,dx:mx-L.x,dy:my-L.y}; return; }
+    if(mode!=='none'){
+      ctx.globalCompositeOperation=mode;
+      ctx.fillStyle=`rgb(${r},${g},${b})`; ctx.fillRect(0,0,W,H);
+      ctx.globalCompositeOperation='source-over';
     }
-    // BG image drag
-    if(BG.img){
-      const iw=BG.img.naturalWidth*BG.scale, ih=BG.img.naturalHeight*BG.scale;
-      if(mx>BG.x-iw/2 && mx<BG.x+iw/2 && my>BG.y-ih/2 && my<BG.y+ih/2){ drag={mode:'BG',dx:mx-BG.x,dy:my-BG.y}; return; }
-    }
-    drag={mode:null};
-  });
-  window.addEventListener('mousemove',e=>{
-    if(!drag.mode) return;
-    const r=c.getBoundingClientRect(), mx=(e.clientX-r.left)*(c.width/r.width), my=(e.clientY-r.top)*(c.height/r.height);
-    if(drag.mode==='BG'){ BG.x=mx-drag.dx; BG.y=my-drag.dy; draw(); }
-    else if(drag.mode.startsWith('LOGO:')){ const i=+drag.mode.split(':')[1]; const L=S.logos[i]; L.x=mx-drag.dx; L.y=my-drag.dy; draw(); }
-    else if(drag.mode==='CIRCLE'){ $('circleX').value = Math.round(100*mx/c.width); $('circleY').value = Math.round(100*my/c.height); draw(); }
-  });
-  window.addEventListener('mouseup',()=> drag.mode=null);
-  c.addEventListener('wheel',e=>{
-    if(!e.shiftKey) return;
-    const r=c.getBoundingClientRect(), mx=(e.clientX-r.left)*(c.width/r.width), my=(e.clientY-r.top)*(c.height/r.height);
-    // Zoom logo under cursor
-    for(let i=S.logos.length-1;i>=0;i--){
-      const L=S.logos[i], iw=L.img.naturalWidth*L.scale, ih=L.img.naturalHeight*L.scale;
-      if(mx> L.x-iw/2 && mx< L.x+iw/2 && my> L.y-ih/2 && my< L.y+ih/2){ L.scale=Math.max(0.05, Math.min(2, L.scale*(1 - e.deltaY*0.0015))); draw(); e.preventDefault(); return; }
-    }
-    // else zoom BG
-    if(BG.img){ BG.scale=Math.max(0.2, Math.min(3, BG.scale*(1 - e.deltaY*0.0015))); $('bgImgScale').value=BG.scale.toFixed(2); draw(); e.preventDefault(); }
-  },{passive:false});
-
-  // Text helpers
-  function drawWithLetterSpacing(mode, text, x, y, spacing, align){
-    ctx.save(); const w = ctx.measureText(text).width + spacing*(text.length-1);
-    if(align==='center') x -= w/2; else if(align==='right') x -= w;
-    for(let i=0;i<text.length;i++){ const ch=text[i]; ctx[mode+'Text'](ch, x, y); x += ctx.measureText(ch).width + spacing; }
     ctx.restore();
   }
+  applyBlendMask(0,0,W,H,BG.blendDir,BG.blendStrength);
+}
 
-  // DRAW
-  function draw(){
-  // size
+// Dragging
+c.addEventListener('mousedown',e=>{
+  const r=c.getBoundingClientRect(), mx=(e.clientX-r.left)*(c.width/r.width), my=(e.clientY-r.top)*(c.height/r.height);
+  if($('bgShape').value==='circle' && e.ctrlKey){ drag={mode:'CIRCLE',dx:mx,dy:my}; return; }
+  for(let i=S.logos.length-1;i>=0;i--){
+    const L=S.logos[i], iw=L.img.naturalWidth*L.scale, ih=L.img.naturalHeight*L.scale;
+    if(mx> L.x-iw/2 && mx< L.x+iw/2 && my> L.y-ih/2 && my< L.y+ih/2){ drag={mode:'LOGO:'+i,dx:mx-L.x,dy:my-L.y}; return; }
+  }
+  if(BG.img){
+    const iw=BG.img.naturalWidth*BG.scale, ih=BG.img.naturalHeight*BG.scale;
+    if(mx>BG.x-iw/2 && mx<BG.x+iw/2 && my>BG.y-ih/2 && my<BG.y+ih/2){ drag={mode:'BG',dx:mx-BG.x,dy:my-BG.y}; return; }
+  }
+  drag={mode:null};
+});
+window.addEventListener('mousemove',e=>{
+  if(!drag.mode) return;
+  const r=c.getBoundingClientRect(), mx=(e.clientX-r.left)*(c.width/r.width), my=(e.clientY-r.top)*(c.height/r.height);
+  if(drag.mode==='BG'){ BG.x=mx-drag.dx; BG.y=my-drag.dy; draw(); }
+  else if(drag.mode.startsWith('LOGO:')){ const i=+drag.mode.split(':')[1]; const L=S.logos[i]; L.x=mx-drag.dx; L.y=my-drag.dy; draw(); }
+  else if(drag.mode==='CIRCLE'){ $('circleX').value = Math.round(100*mx/c.width); $('circleY').value = Math.round(100*my/c.height); draw(); }
+});
+window.addEventListener('mouseup',()=> drag.mode=null);
+
+// Mouse wheel zoom
+c.addEventListener('wheel',e=>{
+  if(!e.shiftKey) return;
+  const r=c.getBoundingClientRect(), mx=(e.clientX-r.left)*(c.width/r.width), my=(e.clientY-r.top)*(c.height/r.height);
+  for(let i=S.logos.length-1;i>=0;i--){
+    const L=S.logos[i], iw=L.img.naturalWidth*L.scale, ih=L.img.naturalHeight*L.scale;
+    if(mx> L.x-iw/2 && mx< L.x+iw/2 && my> L.y-ih/2 && my< L.y+ih/2){ 
+      L.scale=Math.max(0.05, Math.min(2, L.scale*(1 - e.deltaY*0.0015))); draw(); e.preventDefault(); return; 
+    }
+  }
+  if(BG.img){ BG.scale=Math.max(0.2, Math.min(3, BG.scale*(1 - e.deltaY*0.0015))); $('bgImgScale').value=BG.scale.toFixed(2); draw(); e.preventDefault(); }
+},{passive:false});
+
+// Draw text with spacing
+function drawWithLetterSpacing(mode, text, x, y, spacing, align){
+  ctx.save(); const w = ctx.measureText(text).width + spacing*(text.length-1);
+  if(align==='center') x -= w/2; else if(align==='right') x -= w;
+  for(let i=0;i<text.length;i++){ const ch=text[i]; ctx[mode+'Text'](ch, x, y); x += ctx.measureText(ch).width + spacing; }
+  ctx.restore();
+}
+
+// DRAW main
+function draw(){
   const W=+$('cw').value, H=+$('ch').value; 
   c.width=W; c.height=H;
   const pad=Math.round(Math.min(W,H)*(+$('padding').value/100));
-
-  // update BG scale from slider
   if(BG.img) BG.scale = +$('bgImgScale').value;
-
   const blend=$('bgBlend').value, shape=$('bgShape').value;
-
-  // clear
   ctx.clearRect(0,0,W,H);
 
-  // 1) Image first when 'under' or 'imageOnly'
   if((blend==='under'||blend==='imageOnly')) drawBG(W,H,shape);
-
-  // 2) Gradient (with opacity + blend) unless imageOnly
   if(blend!=='imageOnly'){
-    const gradFill = makeGrad(W,H,+$('bgAngle').value,[
-      {c:$('bg1').value,pos:0},
-      {c:$('bg2').value,pos:.5},
-      {c:$('bg3').value,pos:1}
-    ]);
-    ctx.save();
-    ctx.globalAlpha = +$('gradOpacity').value;
-    ctx.globalCompositeOperation = $('gradBlend').value;
-    ctx.fillStyle = gradFill;
-    ctx.fillRect(0,0,W,H);
-    ctx.restore();
+    const gradFill = makeGrad(W,H,+$('bgAngle').value,[{c:$('bg1').value,pos:0},{c:$('bg2').value,pos:.5},{c:$('bg3').value,pos:1}]);
+    ctx.save(); ctx.globalAlpha = +$('gradOpacity').value; ctx.globalCompositeOperation = $('gradBlend').value;
+    ctx.fillStyle = gradFill; ctx.fillRect(0,0,W,H); ctx.restore();
   }
-
-  // 3) Image over when 'over'
   if(blend==='over') drawBG(W,H,shape);
 
-  // 4) BG Blend Direction & Strength
-  applyBlendMask(0,0,W,H,BG.blendDir, BG.blendStrength);
-
-  // 5) Vignette
   const vig=+$('vignette').value/100;
   if(vig>0){
     const g=ctx.createRadialGradient(W/2,H/2,Math.min(W,H)*(0.6-0.6*vig),W/2,H/2,Math.max(W,H)*0.8);
@@ -472,7 +472,7 @@
     ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
   }
 
-  // --- Top Title ---
+  // Top Title
   const topText=$('topTitle').value.trim();
   if(topText){
     const f=$('topFont').value; loadFont(f);
@@ -483,7 +483,7 @@
     ctx.restore();
   }
 
-  // --- Main Heading ---
+  // Main Heading
   const text=$('title').value;
   if(text.trim()){
     const fam=$('font').value; loadFont(fam);
@@ -494,10 +494,8 @@
     const tg=makeGrad(W,H,+$('tAngle').value,[{c:$('t1').value,pos:0},{c:$('t2').value,pos:.5},{c:$('t3').value,pos:1}]);
     const isIndic = $('indicMode').value==='forceOn' ? true : ($('indicMode').value==='forceOff' ? false : HAS_DEV(text));
     const letter = isIndic ? 0 : +$('letter').value;
-
     ctx.save(); ctx.textAlign=align; ctx.textBaseline='alphabetic';
     ctx.shadowBlur=glow; ctx.shadowColor='rgba(0,0,0,0.55)'; ctx.lineJoin="round"; ctx.miterLimit=2;
-
     const lines=text.split('\n');
     for(let i=0;i<lines.length;i++){
       ctx.font=`${wght} ${base}px "${fam}"`;
@@ -514,7 +512,7 @@
     $('letter').disabled = isIndic;
   }
 
-  // --- Branding ---
+  // Branding
   const brand=$('brand').value.trim();
   if(brand){
     const size=+$('brandSize').value, off=+$('brandOffset').value/100*H;
@@ -525,7 +523,7 @@
     ctx.fillStyle=bg; ctx.fillText(brand, W/2, H-off); ctx.restore();
   }
 
-  // --- Logos ---
+  // Logos
   S.logos.forEach(L=>{
     if(!L.img.complete)return;
     const iw=L.img.naturalWidth*L.scale, ih=L.img.naturalHeight*L.scale;
@@ -534,11 +532,7 @@
     ctx.beginPath(); ctx.arc(L.x,L.y,r,0,Math.PI*2); ctx.clip();
     ctx.globalAlpha=L.opacity; ctx.drawImage(L.img, L.x - iw/2, L.y - ih/2, iw, ih);
     ctx.restore();
-
-    // logo blend
     applyBlendMask(L.x - iw/2, L.y - ih/2, iw, ih, L.blendDir, L.blendStrength);
-
-    // auto border
     let borderColor=L.bcolor;
     if(L.autoBorder){
       try{
@@ -554,147 +548,33 @@
   });
 }
 
-
-
-
-
-
-
-// --- TOUCH HANDLERS --- //
-let touchState = { mode: null, id: null, startDist: 0, startScale: 1 };
-
-c.addEventListener("touchstart", e => {
-  if (e.touches.length === 1) {
-    const t = e.touches[0];
-    const r = c.getBoundingClientRect();
-    const mx = (t.clientX - r.left) * (c.width / r.width);
-    const my = (t.clientY - r.top) * (c.height / r.height);
-
-    // logo check
-    for (let i = S.logos.length - 1; i >= 0; i--) {
-      const L = S.logos[i], iw = L.img.naturalWidth * L.scale, ih = L.img.naturalHeight * L.scale;
-      if (mx > L.x - iw/2 && mx < L.x + iw/2 && my > L.y - ih/2 && my < L.y + ih/2) {
-        touchState = { mode: "LOGO:"+i, id: t.identifier, dx: mx-L.x, dy: my-L.y };
-        return;
-      }
-    }
-    // else BG
-    if (BG.img) {
-      const iw = BG.img.naturalWidth * BG.scale, ih = BG.img.naturalHeight * BG.scale;
-      if (mx > BG.x - iw/2 && mx < BG.x + iw/2 && my > BG.y - ih/2 && my < BG.y + ih/2) {
-        touchState = { mode: "BG", id: t.identifier, dx: mx-BG.x, dy: my-BG.y };
-        return;
-      }
-    }
-  } else if (e.touches.length === 2) {
-    const [t1,t2] = e.touches;
-    const dx = t2.clientX - t1.clientX, dy = t2.clientY - t1.clientY;
-    const dist = Math.sqrt(dx*dx+dy*dy);
-    touchState = { mode: "PINCH", startDist: dist, startScale: BG.scale };
-    // अगर दोनों logo पर हैं तो logo pinch mode
-    for (let i=S.logos.length-1;i>=0;i--){
-      const L=S.logos[i], iw=L.img.naturalWidth*L.scale, ih=L.img.naturalHeight*L.scale;
-      const r=c.getBoundingClientRect();
-      const mx1=(t1.clientX-r.left)*(c.width/r.width), my1=(t1.clientY-r.top)*(c.height/r.height);
-      const mx2=(t2.clientX-r.left)*(c.width/r.width), my2=(t2.clientY-r.top)*(c.height/r.height);
-      if(mx1> L.x-iw/2 && mx1<L.x+iw/2 && my1> L.y-ih/2 && my1<L.y+ih/2 &&
-         mx2> L.x-iw/2 && mx2<L.x+iw/2 && my2> L.y-ih/2 && my2<L.y+ih/2){
-        touchState = { mode:"PINCH_LOGO:"+i, startDist: dist, startScale:L.scale };
-        break;
-      }
-    }
-  }
+// Bind Inputs
+document.querySelectorAll('input,select,textarea').forEach(el=>el.addEventListener('input',()=>{
+  if(el.id==='font'||el.id==='topFont') loadFont(el.value);
+  if(el.id==='bgShape'){ document.getElementById('circleControls').style.display = el.value==='circle'?'grid':'none'; }
+  BG.blendDir=$('bgBlendDir').value; BG.blendStrength=+$('bgBlendStrength').value;
+  draw();
+}));
+document.getElementById('preset').addEventListener('change',()=>{ 
+  const v=$('preset').value; 
+  if(v!=='custom'){ const [w,h]=v.split('x').map(Number); $('cw').value=w; $('ch').value=h; } 
+  draw(); 
 });
 
-c.addEventListener("touchmove", e => {
-  e.preventDefault();
-  if (touchState.mode && e.touches.length===1 && !touchState.mode.startsWith("PINCH")) {
-    const t = e.touches[0];
-    const r = c.getBoundingClientRect();
-    const mx = (t.clientX - r.left) * (c.width / r.width);
-    const my = (t.clientY - r.top) * (c.height / r.height);
-    if (touchState.mode==="BG"){ BG.x=mx-touchState.dx; BG.y=my-touchState.dy; draw(); }
-    else if (touchState.mode.startsWith("LOGO:")){
-      const i=+touchState.mode.split(":")[1]; const L=S.logos[i];
-      L.x=mx-touchState.dx; L.y=my-touchState.dy; draw();
-    }
-  } else if (touchState.mode && e.touches.length===2 && touchState.mode.startsWith("PINCH")) {
-    const [t1,t2] = e.touches;
-    const dx = t2.clientX - t1.clientX, dy = t2.clientY - t1.clientY;
-    const dist = Math.sqrt(dx*dx+dy*dy);
-    const scale = dist / touchState.startDist;
-    if (touchState.mode==="PINCH"){ 
-      BG.scale = Math.max(0.2, Math.min(3, touchState.startScale*scale));
-      $("bgImgScale").value = BG.scale.toFixed(2);
-      draw();
-    } else if (touchState.mode.startsWith("PINCH_LOGO:")) {
-      const i=+touchState.mode.split(":")[1]; const L=S.logos[i];
-      L.scale=Math.max(0.05, Math.min(2, touchState.startScale*scale));
-      draw();
-    }
-  }
-},{passive:false});
+// Download
+$('download').onclick=()=>{
+  const scale=+$('scale').value, fmt=$('format').value, q=+$('quality').value;
+  const tmp=document.createElement('canvas'); tmp.width=c.width*scale; tmp.height=c.height*scale;
+  const t=tmp.getContext('2d'); t.imageSmoothingQuality='high'; t.drawImage(c,0,0,tmp.width,tmp.height);
+  const mime= fmt==='png'?'image/png':(fmt==='jpeg'?'image/jpeg':'image/webp');
+  const url=tmp.toDataURL(mime,q); const a=document.createElement('a'); a.href=url; a.download=`post_${tmp.width}x${tmp.height}.${fmt}`; a.click();
+};
 
-c.addEventListener("touchend", ()=> touchState={mode:null,id:null});
+// Init
+loadFont("Noto Sans Devanagari"); loadFont("Poppins");
+document.getElementById('circleControls').style.display = $('bgShape').value==='circle'?'grid':'none';
+draw();
+</script>
 
-
-
-
-
-
-
-
-  function drawBG(W,H,shape){
-    if(!BG.img) return;
-    const iw=BG.img.naturalWidth*BG.scale, ih=BG.img.naturalHeight*BG.scale;
-    const op=+$('bgImgOpacity').value; const [r,g,b]=hexToRgb($('bgImgTint').value); const mode=$('bgTintMode').value;
-
-    if(shape==='circle'){
-      const cx=W*(+$('circleX').value/100), cy=H*(+$('circleY').value/100), R=Math.min(W,H)*(+$('circleR').value/100), cop=+$('circleOpacity').value;
-      ctx.save();
-      ctx.globalAlpha=op*cop;
-      ctx.beginPath(); ctx.arc(cx,cy,R,0,Math.PI*2); ctx.clip();
-      ctx.drawImage(BG.img, BG.x - iw/2, BG.y - ih/2, iw, ih);
-      if(mode!=='none'){
-        ctx.globalCompositeOperation=mode;
-        ctx.fillStyle=`rgb(${r},${g},${b})`; ctx.fillRect(cx-R,cy-R,2*R,2*R);
-        ctx.globalCompositeOperation='source-over';
-      }
-      ctx.restore();
-    }else{
-      ctx.save(); ctx.globalAlpha=op;
-      ctx.drawImage(BG.img, BG.x - iw/2, BG.y - ih/2, iw, ih);
-      if(mode!=='none'){
-        ctx.globalCompositeOperation=mode;
-        ctx.fillStyle=`rgb(${r},${g},${b})`; ctx.fillRect(0,0,W,H);
-        ctx.globalCompositeOperation='source-over';
-      }
-      ctx.restore();
-    }
-  }
-
-  // Inputs binding
-  document.querySelectorAll('input,select,textarea').forEach(el=>el.addEventListener('input',()=>{
-    if(el.id==='font'||el.id==='topFont') loadFont(el.value);
-    if(el.id==='bgShape'){ document.getElementById('circleControls').style.display = el.value==='circle'?'grid':'none'; }
-    draw();
-  }));
-  document.getElementById('preset').addEventListener('change',()=>{ const v=$('preset').value; if(v!=='custom'){ const [w,h]=v.split('x').map(Number); $('cw').value=w; $('ch').value=h; } draw(); });
-
-  // Download
-  $('download').onclick=()=>{
-    const scale=+$('scale').value, fmt=$('format').value, q=+$('quality').value;
-    const tmp=document.createElement('canvas'); tmp.width=c.width*scale; tmp.height=c.height*scale;
-    const t=tmp.getContext('2d'); t.imageSmoothingQuality='high'; t.drawImage(c,0,0,tmp.width,tmp.height);
-    const mime= fmt==='png'?'image/png':(fmt==='jpeg'?'image/jpeg':'image/webp');
-    const url=tmp.toDataURL(mime,q); const a=document.createElement('a'); a.href=url; a.download=`post_${tmp.width}x${tmp.height}.${fmt}`; a.click();
-  };
-
-  // Init
-  loadFont("Noto Sans Devanagari"); loadFont("Poppins");
-  // show/hide circle controls on load
-  document.getElementById('circleControls').style.display = $('bgShape').value==='circle'?'grid':'none';
-  draw();
-  </script>
 </body>
 </html>
