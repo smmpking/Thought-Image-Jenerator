@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Post Maker — BG Image + Circle + Logos</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600;800&family=Mukta:wght@400;600;800&family=Hind:wght@400;600;700&family=Karma:wght@400;700&family=Martel:wght@400;800&family=Poppins:wght@400;600;800&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-  <style>
+  
+<style>
     :root { --line:#1f2630; --ink:#e8ecf1; --muted:#9aa3ad; }
     * { box-sizing:border-box; }
     body { margin:0; background:#0a0c10; color:var(--ink); font-family:"Noto Sans Devanagari","Poppins",system-ui,Segoe UI,Roboto,Arial,sans-serif; }
-    .website-header { width:100%; padding:18px 0 10px 0; font-size:32px; background:linear-gradient(135deg,#60a5fa 0%,#34d399 100%); color:#111; text-align:center; font-family:"Martel", "Poppins", sans-serif; font-weight:800; letter-spacing:1px; border-bottom:2px solid #24303f; }
     .container { display:flex; flex-direction:column; gap:16px; max-width:1400px; margin:auto; padding:12px; }
     @media (min-width:1000px){
       .container { flex-direction:row; align-items:flex-start; }
@@ -18,32 +18,29 @@
     }
     .previewCard { background:rgba(255,255,255,.03); border:1px solid var(--line); border-radius:16px; padding:12px; }
     .stage { display:grid; place-items:center; position:relative; min-height:40vh; }
-    canvas { width:100%; max-width:100%; border-radius:14px; background:#000; display:block; touch-action:none; }
+    canvas { width:100%; max-width:100%; border-radius:14px; background:#000; display:block; }
     .btn { background:#121a24; border:1px solid #24303f; color:var(--ink); padding:10px 14px; border-radius:12px; cursor:pointer; font-weight:700; }
     .btn.primary { background:linear-gradient(135deg,#60a5fa,#34d399); color:#081017; border:none; }
     .controls { display:grid; gap:12px; grid-template-columns:1fr; }
     @media (min-width:900px){ .controls{ grid-template-columns:1fr 1fr; } .full{ grid-column:1/-1; } }
     .section { background:rgba(255,255,255,.03); border:1px solid var(--line); border-radius:16px; padding:14px; }
     .section h3 { margin:2px 0 10px; font-size:16px; }
-    .grid1 { display:grid; grid-template-columns:1fr; gap:14px; }
+    .grid1 { display:grid; grid-template-columns:1fr; gap:10px; } /* Fixed */
     .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
     .grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
     .grid4 { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
-    label { font-size:14px; color:var(--muted); }
+    label { font-size:12px; color:var(--muted); }
     input,select,textarea { width:100%; background:#0f141c; border:1px solid #273342; color:var(--ink); border-radius:10px; padding:8px; font-size:14px; }
     input[type=color]{ padding:0; height:40px; }
     textarea{ min-height:78px; resize:vertical; }
-    .chip{ display:flex; align-items:center; gap:10px; border:2px dashed #2a3443; border-radius:16px; padding:12px 8px; font-size:17px; background:rgba(90,160,255,0.07);}
-    .small{ font-size:13px; color:#9aa3ad; }
+    .chip{ display:flex; align-items:center; gap:6px; border:1px dashed #2a3443; border-radius:12px; padding:6px; }
+    .small{ font-size:11px; color:#9aa3ad; }
     .row{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; justify-content:space-between; margin-top:8px; }
-    .chip input[type=range] { width:70px; }
-    .chip label, .chip select { font-size:15px!Important; }
-    .chip input[type=color] { height:30px }
   </style>
 </head>
 <body>
-  <div class="website-header">Post Maker — BG Image + Circle + Logos</div>
   <div class="container">
+    <!-- PREVIEW -->
     <div class="previewCard">
       <div class="stage"><canvas id="c" width="1080" height="1080"></canvas></div>
       <div class="row">
@@ -51,7 +48,7 @@
           <select id="format"><option value="png">PNG</option><option value="jpeg">JPEG</option><option value="webp">WebP</option></select>
           <select id="scale"><option value="1">1×</option><option value="2" selected>2×</option><option value="3">3×</option></select>
           <input type="range" id="quality" min="0.7" max="1" step="0.01" value="0.95" title="Quality">
-          <span class="small">Drag BG/Logos • Pinch Zoom/Touch Zoom • Ctrl+Drag Circle</span>
+          <span class="small">Drag BG/Logos • Pinch Zoom • Ctrl+Drag Circle</span>
         </div>
         <button class="btn primary" id="download">⬇️ Download</button>
         <button class="btn" id="undoBtn">Undo</button>
@@ -62,10 +59,167 @@
     </div>
     <!-- CONTROLS -->
     <div class="controls">
-      <!-- ... all previous controls unchanged ... -->
+      <!-- BACKGROUND -->
+      <div class="section full">
+        <h3>Background</h3>
+        <div class="grid3">
+          <div><label>BG Image</label><input type="file" id="bgImageInput" accept="image/*"></div>
+          <div><label>Blend Order</label>
+            <select id="bgBlend">
+              <option value="under">Gradient over Image</option>
+              <option value="over">Image over Gradient</option>
+              <option value="imageOnly">Image Only</option>
+              <option value="gradientOnly">Gradient Only</option>
+            </select>
+          </div>
+          <div><label>BG Shape</label>
+            <select id="bgShape">
+              <option value="full" selected>Full</option>
+              <option value="circle">Circle</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid3" style="margin-top:8px">
+          <div><label>Image Opacity</label><input type="range" id="bgImgOpacity" min="0" max="1" step="0.05" value="1"></div>
+          <div><label>Image Scale</label><input type="range" id="bgImgScale" min="0.2" max="3" step="0.02" value="1"></div>
+          <div><label>Tint Color</label><input type="color" id="bgImgTint" value="#ffffff"></div>
+        </div>
+        <div class="grid3" style="margin-top:8px">
+          <div><label>Tint Mode</label>
+            <select id="bgTintMode">
+              <option value="none" selected>None</option>
+              <option value="multiply">Multiply</option>
+              <option value="screen">Screen</option>
+              <option value="overlay">Overlay</option>
+              <option value="soft-light">Soft Light</option>
+            </select>
+          </div>
+          <div><label>Vignette</label><input type="range" id="vignette" min="0" max="100" value="20"></div>
+          <div><label>Safe Padding (%)</label><input type="range" id="padding" min="0" max="15" value="5"></div>
+        </div>
+        <!-- Duplicate BG Blend Direction removed, now only below in grid2 -->
+        <!-- Gradient colors -->
+        <div class="grid3" style="margin-top:12px">
+          <div><label>Gradient Top</label><input type="color" id="bg1" value="#ffffff"></div>
+          <div><label>Gradient Mid</label><input type="color" id="bg2" value="#1976D2"></div>
+          <div><label>Gradient Bottom</label><input type="color" id="bg3" value="#000000"></div>
+        </div>
+        <div class="grid3" style="margin-top:8px">
+          <div><label>Gradient Angle</label><input type="range" id="bgAngle" min="0" max="360" value="90"></div>
+          <div><label>Gradient Opacity</label><input type="range" id="gradOpacity" min="0" max="1" step="0.05" value="0.6"></div>
+          <div>
+            <label>Gradient Blend</label>
+            <select id="gradBlend">
+              <option value="source-over" selected>Normal</option>
+              <option value="multiply">Multiply</option>
+              <option value="screen">Screen</option>
+              <option value="overlay">Overlay</option>
+              <option value="soft-light">Soft Light</option>
+              <option value="hard-light">Hard Light</option>
+            </select>
+          </div>
+        </div>
+        <!-- Canvas size -->
+        <div class="grid3" style="margin-top:8px">
+          <div><label>Canvas Preset</label>
+            <select id="preset">
+              <option value="1080x1080" selected>IG/FB Square — 1080×1080</option>
+              <option value="1080x1920">Story/Reel — 1080×1920</option>
+              <option value="1080x1350">IG Portrait — 1080×1350</option>
+              <option value="1640x924">FB Cover — 1640×924</option>
+              <option value="1280x720">YT/Telegram — 1280×720</option>
+              <option value="1280x1280">Telegram Square — 1280×1280</option>
+              <option value="custom">Custom…</option>
+            </select>
+          </div>
+          <div class="grid2">
+            <input id="cw" type="number" min="320" value="1080" title="Width (px)">
+            <input id="ch" type="number" min="320" value="1080" title="Height (px)">
+          </div>
+          <div></div>
+        </div>
+        <!-- Circle BG controls -->
+        <div id="circleControls" class="grid3" style="margin-top:12px; display:none">
+          <div><label>Circle X (%)</label><input type="range" id="circleX" min="10" max="90" value="50"></div>
+          <div><label>Circle Y (%)</label><input type="range" id="circleY" min="10" max="90" value="35"></div>
+          <div><label>Radius (%)</label><input type="range" id="circleR" min="10" max="45" value="28"></div>
+          <div><label>Circle Opacity</label><input type="range" id="circleOpacity" min="0.1" max="1" step="0.05" value="1"></div>
+        </div>
+        <!-- BG Blend Direction & Strength -->
+        <div class="grid2" style="margin-top:8px">
+          <div><label>BG Blend Direction</label>
+            <select id="bgBlendDir">
+              <option value="none" selected>None</option>
+              <option value="top">Top</option>
+              <option value="bottom">Bottom</option>
+              <option value="left">Left</option>
+              <option value="right">Right</option>
+            </select>
+          </div>
+          <div><label>BG Blend Strength</label>
+            <input type="range" id="bgBlendStrength" min="0" max="1" step="0.05" value="0">
+          </div>
+        </div>
+      </div>
+      <!-- TOP TITLE -->
+      <div class="section">
+        <h3>Top Title</h3>
+        <input id="topTitle" placeholder="Add top title…">
+        <div class="grid3" style="margin-top:8px">
+          <div><label>Font</label><select id="topFont"></select></div>
+          <div><label>Size</label><input type="range" id="topSize" min="20" max="100" value="48"></div>
+          <div><label>Y-pos %</label><input type="range" id="topY" min="6" max="30" value="12"></div>
+        </div>
+        <div class="grid3" style="margin-top:8px">
+          <div><label>Grad A</label><input type="color" id="top1" value="#ff3d00"></div>
+          <div><label>Grad B</label><input type="color" id="top2" value="#ffff00"></div>
+          <div><label>Angle</label><input type="range" id="topAngle" min="0" max="360" value="0"></div>
+        </div>
+        <h3>Bottom Branding</h3>
+        <input id="brand" placeholder="eg. Add Your Bottom Title">
+        <div class="grid3" style="margin-top:8px">
+          <div><label>Size</label><input type="range" id="brandSize" min="18" max="72" value="40"></div>
+          <div><label>Offset %</label><input type="range" id="brandOffset" min="2" max="15" value="6"></div>
+          <div><label>Glow</label><input type="range" id="bGlow" min="0" max="50" value="10"></div>
+        </div>
+        <div class="grid3" style="margin-top:8px">
+          <div><label>Grad A</label><input type="color" id="b1" value="#ff8a00"></div>
+          <div><label>Grad B</label><input type="color" id="b2" value="#ffd000"></div>
+          <div><label>Grad C</label><input type="color" id="b3" value="#ffa24c"></div>
+        </div>
+      </div>
+      <!-- MAIN HEADING -->
+      <div class="section">
+        <h3>Main Heading</h3>
+        <textarea id="title" placeholder="(Multi-line allowed)…"></textarea>
+        <div class="grid3" style="margin-top:8px">
+          <div><label>Font</label><select id="font"></select></div>
+          <div><label>Weight</label><select id="weight"><option>400</option><option selected>600</option><option>800</option></select></div>
+          <div><label>Base Size</label><input type="range" id="titleSize" min="28" max="160" value="96"></div>
+        </div>
+        <div class="grid3" style="margin-top:8px">
+          <div><label>Line Height</label><input type="range" id="lineHeight" min="1" max="1.6" step="0.02" value="1.15"></div>
+          <div><label>Letter Spacing</label><input type="range" id="letter" min="-1" max="4" step="0.1" value="0"></div>
+          <div><label>Align</label><select id="align"><option>center</option><option>left</option><option>right</option></select></div>
+        </div>
+        <div class="grid3" style="margin-top:8px">
+          <div><label>Text Grad A</label><input type="color" id="t1" value="#40c9ff"></div>
+          <div><label>Text Grad B</label><input type="color" id="t2" value="#f7b733"></div>
+          <div><label>Text Grad C</label><input type="color" id="t3" value="#7cffcb"></div>
+        </div>
+        <div class="grid3" style="margin-top:8px">
+          <div><label>Grad Angle</label><input type="range" id="tAngle" min="0" max="360" value="0"></div>
+          <div><label>Outline (px)</label><input type="range" id="outline" min="0" max="20" value="6"></div>
+          <div><label>Glow</label><input type="range" id="glow" min="0" max="60" value="22"></div>
+        </div>
+        <div class="grid2" style="margin-top:8px">
+          <div><label>Title Y-pos %</label><input type="range" id="titleY" min="25" max="70" value="40"></div>
+          <div><label>Indic Mode</label><select id="indicMode"><option value="auto" selected>Auto</option><option value="forceOn">Force ON</option><option value="forceOff">Force OFF</option></select></div>
+        </div>
+      </div>
       <!-- LOGOS -->
       <div class="section full">
-        <h3>Logos (Move, resize, border by touch/mouse)</h3>
+        <h3>Logos (auto circle + auto-contrast border)</h3>
         <div class="row">
           <input type="file" id="logoInput" accept="image/*" multiple />
           <button class="btn" id="clearLogos">❌ Remove All</button>
@@ -73,20 +227,40 @@
         <!-- Logo chips dynamically add होंगे -->
         <div id="logoList" class="grid1" style="margin-top:8px"></div>
         <div class="small" style="margin-top:6px">
-          Drag or touch logo chips, pinch/two-finger resize on mobile. Size can be set to zero (hide logo).
+          Drag logos • <b>Shift+Wheel</b> size • हर logo chip में अपने Blend controls होंगे
         </div>
       </div>
-      <!-- ... all previous controls unchanged ... -->
     </div>
   </div>
 <script>
 const c=document.getElementById('c'),ctx=c.getContext('2d');
 const $=id=>document.getElementById(id);
-let history = [], historyIndex = -1;
-function saveState() { history = history.slice(0, historyIndex+1); history.push(JSON.stringify(S)); historyIndex++; }
-function undo() { if (historyIndex > 0) { historyIndex--; S = JSON.parse(history[historyIndex]); rebuildLogoList(); draw(); }}
-function redo() { if (historyIndex < history.length-1) { historyIndex++; S = JSON.parse(history[historyIndex]); rebuildLogoList(); draw(); }}
 
+// Undo/Redo History
+let history = [], historyIndex = -1;
+function saveState() {
+  history = history.slice(0, historyIndex+1);
+  history.push(JSON.stringify(S));
+  historyIndex++;
+}
+function undo() {
+  if (historyIndex > 0) {
+    historyIndex--;
+    S = JSON.parse(history[historyIndex]);
+    rebuildLogoList();
+    draw();
+  }
+}
+function redo() {
+  if (historyIndex < history.length-1) {
+    historyIndex++;
+    S = JSON.parse(history[historyIndex]);
+    rebuildLogoList();
+    draw();
+  }
+}
+
+// Fonts
 const fonts=["Noto Sans Devanagari","Mukta","Hind","Karma","Martel","Poppins","Inter","Roboto","Montserrat","Merriweather","Lora","Playfair Display","Nunito","Manrope","Raleway","Oswald"];
 ["font","topFont"].forEach(id=>{
   const sel=$(id);
@@ -104,24 +278,96 @@ function loadFont(f){
   link.href=`https://fonts.googleapis.com/css2?family=${encodeURIComponent(f)}:wght@400;600;800&display=swap`;
   document.head.appendChild(link);
 }
+// BG + Logos state
 const BG={img:null,x:0,y:0,scale:1,blendDir:"none",blendStrength:0};
-let drag={mode:null,dx:0,dy:0,startScale:null,startDist:null,touchLogoIndex:null,touchLogoInit:null};
+let drag={mode:null,dx:0,dy:0};
 let S={logos:[]};
 
-function savePreset(name='default') { localStorage.setItem('preset_' + name, JSON.stringify(S)); }
-function loadPreset(name='default') { const p = localStorage.getItem('preset_' + name); if (p) { S = JSON.parse(p); rebuildLogoList(); draw(); } else { alert('No preset found!'); } }
-setInterval(() => localStorage.setItem('autosave', JSON.stringify(S)), 30000);
-window.addEventListener('load', () => { const autosaved = localStorage.getItem('autosave'); if (autosaved) { S = JSON.parse(autosaved); rebuildLogoList(); draw(); }});
+// Preset Save/Load
+function savePreset(name='default') {
+  localStorage.setItem('preset_' + name, JSON.stringify(S));
+}
+function loadPreset(name='default') {
+  const p = localStorage.getItem('preset_' + name);
+  if (p) {
+    S = JSON.parse(p);
+    rebuildLogoList();
+    draw();
+  } else {
+    alert('No preset found!');
+  }
+}
 
-// LOGO CHIP UI, min size now zero!
+// Auto-Save functionality
+setInterval(() => localStorage.setItem('autosave', JSON.stringify(S)), 30000);
+window.addEventListener('load', () => {
+  const autosaved = localStorage.getItem('autosave');
+  if (autosaved) { S = JSON.parse(autosaved); rebuildLogoList(); draw(); }
+});
+
+// Helpers
+function makeGrad(W,H,a,stops){
+  const rad=a*Math.PI/180,vx=Math.cos(rad),vy=Math.sin(rad);
+  const x0=W*(.5-.5*vx),y0=H*(.5-.5*vy),x1=W*(.5+.5*vx),y1=H*(.5+.5*vy);
+  const g=ctx.createLinearGradient(x0,y0,x1,y1);
+  stops.forEach(s=>g.addColorStop(s.pos,s.c));
+  return g;
+}
+function hexToRgb(h){h=h.replace('#','');if(h.length===3)h=[...h].map(x=>x+x).join('');const n=parseInt(h,16);return[n>>16&255,n>>8&255,n&255];}
+const HAS_DEV = s=>/[\u0900-\u097F]/.test(s);
+
+// Upload BG
+$('bgImageInput').addEventListener('change',e=>{
+  const f=e.target.files[0]; if(!f) return;
+  const img=new Image();
+  const url = URL.createObjectURL(f);
+  img.onload=()=>{
+    try {
+      const W=c.width,H=c.height;
+      BG.img=img;
+      BG.scale=Math.max(W/img.naturalWidth,H/img.naturalHeight);
+      BG.x=W/2; BG.y=H/2;
+      draw();
+      saveState();
+      URL.revokeObjectURL(url);
+    } catch (e) { alert('Image error: '+e); }
+  };
+  img.src=url; e.target.value='';
+});
+
+// Upload Logos
+$('logoInput').addEventListener('change',e=>{
+  for(const file of e.target.files){
+    const img=new Image();
+    const url = URL.createObjectURL(file);
+    img.onload=()=>{
+      try {
+        S.logos.push({
+          img,x:c.width*0.5,y:c.height*0.2+Math.random()*80,
+          scale:Math.min(400/img.naturalWidth,400/img.naturalHeight)*0.7,
+          opacity:1,bw:6,bcolor:'#ffffff',bopac:1,autoBorder:true,
+          blendDir:"none",blendStrength:0
+        });
+        addLogoChip(S.logos.length-1); draw(); saveState();
+        URL.revokeObjectURL(url);
+      } catch (e) { alert('Logo image error: '+e);}
+    };
+    img.src=url;
+  }
+  e.target.value='';
+});
+$('clearLogos').onclick=()=>{
+  S.logos=[]; rebuildLogoList(); draw(); saveState();
+};
+// Logo UI
 function addLogoChip(i){
   const L=S.logos[i];
   const row=document.createElement('div');
   row.className='chip';
   row.innerHTML=`
     <span class="small">Logo ${i+1}</span>
-    <input type="range" min="0" max="2" step="0.01" value="${L.scale}" data-k="scale" title="Size">
-    <input type="range" min="0" max="1" step="0.01" value="${L.opacity}" data-k="opacity" title="Opacity">
+    <input type="range" min="0.05" max="2" step="0.01" value="${L.scale}" data-k="scale" title="Size">
+    <input type="range" min="0.1" max="1" step="0.01" value="${L.opacity}" data-k="opacity" title="Opacity">
     <select data-k="snap" title="Snap">
       <option value="">Free</option><option>TL</option><option>TC</option><option>TR</option>
       <option>CL</option><option selected>CC</option><option>CR</option>
@@ -130,6 +376,7 @@ function addLogoChip(i){
     <label class="small"><input type="checkbox" data-k="auto" ${L.autoBorder?'checked':''}/> Auto Border</label>
     <input type="color" value="${L.bcolor}" data-k="bcolor" title="Border Color">
     <input type="range" min="0" max="20" step="1" value="${L.bw}" data-k="bw" title="Border Width">
+    <!-- ✅ Blend Controls per Logo -->
     <label class="small">Blend Dir
       <select data-k="blendDir">
         <option value="none" ${L.blendDir==="none"?"selected":""}>None</option>
@@ -172,152 +419,7 @@ function snapLogo(L,pos){
   const map={TL:[pad,pad],TC:[W/2,pad],TR:[W-pad,pad],CL:[pad,H/2],CC:[W/2,H/2],CR:[W-pad,H/2],BL:[pad,H-pad],BC:[W/2,H-pad],BR:[W-pad,H-pad]};
   if(map[pos]){L.x=map[pos][0];L.y=map[pos][1];}
 }
-
-function makeGrad(W,H,a,stops){
-  const rad=a*Math.PI/180,vx=Math.cos(rad),vy=Math.sin(rad);
-  const x0=W*(.5-.5*vx),y0=H*(.5-.5*vy),x1=W*(.5+.5*vx),y1=H*(.5+.5*vy);
-  const g=ctx.createLinearGradient(x0,y0,x1,y1);
-  stops.forEach(s=>g.addColorStop(s.pos,s.c));
-  return g;
-}
-function hexToRgb(h){h=h.replace('#','');if(h.length===3)h=[...h].map(x=>x+x).join('');const n=parseInt(h,16);return[n>>16&255,n>>8&255,n&255];}
-const HAS_DEV = s=>/[\u0900-\u097F]/.test(s);
-
-// Upload BG
-$('bgImageInput')?.addEventListener('change',e=>{
-  const f=e.target.files[0]; if(!f) return;
-  const img=new Image();
-  const url = URL.createObjectURL(f);
-  img.onload=()=>{
-    try {
-      const W=c.width,H=c.height;
-      BG.img=img;
-      BG.scale=Math.max(W/img.naturalWidth,H/img.naturalHeight);
-      BG.x=W/2; BG.y=H/2;
-      draw(); saveState();
-      URL.revokeObjectURL(url);
-    } catch (e) { alert('Image error: '+e); }
-  };
-  img.src=url; e.target.value='';
-});
-$('logoInput')?.addEventListener('change',e=>{
-  for(const file of e.target.files){
-    const img=new Image();
-    const url = URL.createObjectURL(file);
-    img.onload=()=>{
-      try {
-        S.logos.push({
-          img,x:c.width*0.5,y:c.height*0.2+Math.random()*80,
-          scale:Math.min(400/img.naturalWidth,400/img.naturalHeight)*0.7,
-          opacity:1,bw:6,bcolor:'#ffffff',bopac:1,autoBorder:true,
-          blendDir:"none",blendStrength:0
-        });
-        addLogoChip(S.logos.length-1); draw(); saveState();
-        URL.revokeObjectURL(url);
-      } catch (e) { alert('Logo image error: '+e);}
-    };
-    img.src=url;
-  }
-  e.target.value='';
-});
-$('clearLogos').onclick=()=>{ S.logos=[]; rebuildLogoList(); draw(); saveState(); };
-
-// Mouse and Touch handling for MOVE/RESIZE logos and BG
-// Mouse
-c.addEventListener('mousedown',e=>{
-  const r=c.getBoundingClientRect(), mx=(e.clientX-r.left)*(c.width/r.width), my=(e.clientY-r.top)*(c.height/r.height);
-  if($('bgShape').value==='circle' && e.ctrlKey){ drag={mode:'CIRCLE',dx:mx,dy:my}; return; }
-  for(let i=S.logos.length-1;i>=0;i--){
-    const L=S.logos[i], iw=L.img.naturalWidth*L.scale, ih=L.img.naturalHeight*L.scale;
-    if(mx> L.x-iw/2 && mx< L.x+iw/2 && my> L.y-ih/2 && my< L.y+ih/2){ drag={mode:'LOGO:'+i,dx:mx-L.x,dy:my-L.y}; return; }
-  }
-  if(BG.img){
-    const iw=BG.img.naturalWidth*BG.scale, ih=BG.img.naturalHeight*BG.scale;
-    if(mx>BG.x-iw/2 && mx<BG.x+iw/2 && my>BG.y-ih/2 && my<BG.y+ih/2){ drag={mode:'BG',dx:mx-BG.x,dy:my-BG.y}; return; }
-  }
-  drag={mode:null};
-});
-window.addEventListener('mousemove',e=>{
-  if(!drag.mode) return;
-  const r=c.getBoundingClientRect(), mx=(e.clientX-r.left)*(c.width/r.width), my=(e.clientY-r.top)*(c.height/r.height);
-  if(drag.mode==='BG'){ BG.x=mx-drag.dx; BG.y=my-drag.dy; draw(); saveState(); }
-  else if(drag.mode && drag.mode.startsWith('LOGO:')){ const i=+drag.mode.split(':')[1]; const L=S.logos[i]; L.x=mx-drag.dx; L.y=my-drag.dy; draw(); saveState(); }
-  else if(drag.mode==='CIRCLE'){ $('circleX').value = Math.round(100*mx/c.width); $('circleY').value = Math.round(100*my/c.height); draw(); saveState(); }
-});
-window.addEventListener('mouseup',()=> drag.mode=null);
-// Mouse wheel zoom/scaling for logo & BG
-c.addEventListener('wheel',e=>{
-  const r=c.getBoundingClientRect(), mx=(e.clientX-r.left)*(c.width/r.width), my=(e.clientY-r.top)*(c.height/r.height);
-  for(let i=S.logos.length-1;i>=0;i--){
-    const L=S.logos[i], iw=L.img.naturalWidth*L.scale, ih=L.img.naturalHeight*L.scale;
-    if(mx> L.x-iw/2 && mx< L.x+iw/2 && my> L.y-ih/2 && my< L.y+ih/2){
-      L.scale=Math.max(0, Math.min(2, L.scale*(1 - e.deltaY*0.0015))); draw(); e.preventDefault(); saveState(); return;
-    }
-  }
-  if(BG.img){ BG.scale=Math.max(0, Math.min(3, BG.scale*(1 - e.deltaY*0.0015))); $('bgImgScale').value=BG.scale.toFixed(2); draw(); e.preventDefault(); saveState(); }
-},{passive:false});
-
-// TOUCH: drag and pinch on mobile for move/resize
-function getTouchPos(e) {
-  const rect = c.getBoundingClientRect();
-  let x = null, y = null;
-  if (e.touches && e.touches.length) { x = (e.touches[0].clientX - rect.left) * (c.width / rect.width); y = (e.touches[0].clientY - rect.top) * (c.height / rect.height); }
-  return [x, y];
-}
-c.addEventListener('touchstart',e=>{
-  let [mx,my]=getTouchPos(e);
-  if(mx==null) return;
-  drag.mode = null;
-  drag.touchLogoIndex = null;
-  drag.touchLogoInit = null;
-  if($('bgShape').value==='circle' && e.ctrlKey){ drag={mode:'CIRCLE',dx:mx,dy:my}; return; }
-  for(let i=S.logos.length-1;i>=0;i--){
-    const L=S.logos[i], iw=L.img.naturalWidth*L.scale, ih=L.img.naturalHeight*L.scale;
-    if(mx> L.x-iw/2 && mx< L.x+iw/2 && my> L.y-ih/2 && my< L.y+ih/2){
-      if (e.touches.length === 1) { drag={mode:'LOGO:'+i,dx:mx-L.x,dy:my-L.y}; drag.touchLogoIndex = i; drag.touchLogoInit = {...L}; e.preventDefault(); }
-      else if(e.touches.length===2) {
-        // pinch for resize
-        const tx1 = (e.touches[0].clientX - c.getBoundingClientRect().left)*(c.width/c.getBoundingClientRect().width);
-        const ty1 = (e.touches[0].clientY - c.getBoundingClientRect().top)*(c.height/c.getBoundingClientRect().height);
-        const tx2 = (e.touches[1].clientX - c.getBoundingClientRect().left)*(c.width/c.getBoundingClientRect().width);
-        const ty2 = (e.touches[1].clientY - c.getBoundingClientRect().top)*(c.height/c.getBoundingClientRect().height);
-        drag={mode:'LOGO:'+i,startDist:Math.hypot(tx1-tx2,ty1-ty2),startScale:S.logos[i].scale,dx:mx-S.logos[i].x,dy:my-S.logos[i].y};
-        drag.touchLogoIndex = i; drag.touchLogoInit = {...S.logos[i]};
-        e.preventDefault();
-      }
-      return;
-    }
-  }
-  if (BG.img) {
-    const iw=BG.img.naturalWidth*BG.scale, ih=BG.img.naturalHeight*BG.scale;
-    if(mx>BG.x-iw/2 && mx<BG.x+iw/2 && my>BG.y-ih/2 && my<BG.y+ih/2) { drag={mode:'BG',dx:mx-BG.x,dy:my-BG.y}; }
-  }
-});
-c.addEventListener('touchmove',e=>{
-  let [mx,my]=getTouchPos(e);
-  if(mx==null) return;
-  // Pinch gesture
-  if (e.touches.length===2 && drag.mode && drag.mode.startsWith('LOGO:') && drag.touchLogoIndex!=null) {
-    const tx1 = (e.touches[0].clientX - c.getBoundingClientRect().left)*(c.width/c.getBoundingClientRect().width);
-    const ty1 = (e.touches[0].clientY - c.getBoundingClientRect().top)*(c.height/c.getBoundingClientRect().height);
-    const tx2 = (e.touches[1].clientX - c.getBoundingClientRect().left)*(c.width/c.getBoundingClientRect().width);
-    const ty2 = (e.touches[1].clientY - c.getBoundingClientRect().top)*(c.height/c.getBoundingClientRect().height);
-    let dist = Math.hypot(tx1-tx2,ty1-ty2);
-    let i = drag.touchLogoIndex; let initS = drag.startScale || S.logos[i].scale;
-    S.logos[i].scale=Math.max(0,Math.min(2,initS*dist/drag.startDist));
-    draw(); saveState();
-    e.preventDefault();
-    return;
-  }
-  if(drag.mode==='BG'){ BG.x=mx-drag.dx; BG.y=my-drag.dy; draw(); saveState(); }
-  else if(drag.mode && drag.mode.startsWith('LOGO:') && drag.touchLogoIndex!=null){
-    let i=drag.touchLogoIndex; let L=S.logos[i];
-    L.x=mx-drag.dx; L.y=my-drag.dy;
-    draw(); saveState(); e.preventDefault();
-  }
-});
-c.addEventListener('touchend',()=>{ drag.mode=null; drag.touchLogoIndex=null; drag.touchLogoInit = null; });
-
+// Blend mask
 function applyBlendMask(x,y,w,h,dir,str){
   if(!dir||dir==="none"||str<=0) return;
   ctx.save();
@@ -331,6 +433,7 @@ function applyBlendMask(x,y,w,h,dir,str){
   ctx.fillStyle=g; ctx.fillRect(x,y,w,h);
   ctx.restore();
 }
+// Draw BG
 function drawBG(W,H,shape){
   if(!BG.img) return;
   try {
@@ -359,27 +462,63 @@ function drawBG(W,H,shape){
     applyBlendMask(0,0,W,H,BG.blendDir,BG.blendStrength);
   } catch(e){console.error('drawBG error:',e);}
 }
+// Dragging
+c.addEventListener('mousedown',e=>{
+  const r=c.getBoundingClientRect(), mx=(e.clientX-r.left)*(c.width/r.width), my=(e.clientY-r.top)*(c.height/r.height);
+  if($('bgShape').value==='circle' && e.ctrlKey){ drag={mode:'CIRCLE',dx:mx,dy:my}; return; }
+  for(let i=S.logos.length-1;i>=0;i--){
+    const L=S.logos[i], iw=L.img.naturalWidth*L.scale, ih=L.img.naturalHeight*L.scale;
+    if(mx> L.x-iw/2 && mx< L.x+iw/2 && my> L.y-ih/2 && my< L.y+ih/2){ drag={mode:'LOGO:'+i,dx:mx-L.x,dy:my-L.y}; return; }
+  }
+  if(BG.img){
+    const iw=BG.img.naturalWidth*BG.scale, ih=BG.img.naturalHeight*BG.scale;
+    if(mx>BG.x-iw/2 && mx<BG.x+iw/2 && my>BG.y-ih/2 && my<BG.y+ih/2){ drag={mode:'BG',dx:mx-BG.x,dy:my-B.y}; return; }
+  }
+  drag={mode:null};
+});
+window.addEventListener('mousemove',e=>{
+  if(!drag.mode) return;
+  const r=c.getBoundingClientRect(), mx=(e.clientX-r.left)*(c.width/r.width), my=(e.clientY-r.top)*(c.height/r.height);
+  if(drag.mode==='BG'){ BG.x=mx-drag.dx; BG.y=my-dy; draw(); saveState(); }
+  else if(drag.mode.startsWith('LOGO:')){ const i=+drag.mode.split(':')[1]; const L=S.logos[i]; L.x=mx-drag.dx; L.y=my-dy; draw(); saveState(); }
+  else if(drag.mode==='CIRCLE'){ $('circleX').value = Math.round(100*mx/c.width); $('circleY').value = Math.round(100*my/c.height); draw(); saveState(); }
+});
+window.addEventListener('mouseup',()=> drag.mode=null);
+// Mouse wheel zoom
+c.addEventListener('wheel',e=>{
+  if(!e.shiftKey) return;
+  const r=c.getBoundingClientRect(), mx=(e.clientX-r.left)*(c.width/r.width), my=(e.clientY-r.top)*(c.height/r.height);
+  for(let i=S.logos.length-1;i>=0;i--){
+    const L=S.logos[i], iw=L.img.naturalWidth*L.scale, ih=L.img.naturalHeight*L.scale;
+    if(mx> L.x-iw/2 && mx< L.x+iw/2 && my> L.y-ih/2 && my< L.y+ih/2){
+      L.scale=Math.max(0.05, Math.min(2, L.scale*(1 - e.deltaY*0.0015))); draw(); saveState(); e.preventDefault(); return;
+    }
+  }
+  if(BG.img){ BG.scale=Math.max(0.2, Math.min(3, BG.scale*(1 - e.deltaY*0.0015))); $('bgImgScale').value=BG.scale.toFixed(2); draw(); saveState(); e.preventDefault(); }
+},{passive:false});
+// Draw text with spacing
 function drawWithLetterSpacing(mode, text, x, y, spacing, align){
   ctx.save(); const w = ctx.measureText(text).width + spacing*(text.length-1);
   if(align==='center') x -= w/2; else if(align==='right') x -= w;
   for(let i=0;i<text.length;i++){ const ch=text[i]; ctx[mode+'Text'](ch, x, y); x += ctx.measureText(ch).width + spacing; }
   ctx.restore();
 }
+// DRAW main
 function draw(){
-  const W=+$('cw')?.value||1080, H=+$('ch')?.value||1080;
+  const W=+$('cw').value, H=+$('ch').value;
   c.width=W; c.height=H;
-  const pad=Math.round(Math.min(W,H)*(+$('padding')?.value||5/100));
-  if(BG.img) BG.scale = +$('bgImgScale')?.value||BG.scale;
-  const blend=$('bgBlend')?.value||'under', shape=$('bgShape')?.value||'full';
+  const pad=Math.round(Math.min(W,H)*(+$('padding').value/100));
+  if(BG.img) BG.scale = +$('bgImgScale').value;
+  const blend=$('bgBlend').value, shape=$('bgShape').value;
   ctx.clearRect(0,0,W,H);
   if((blend==='under'||blend==='imageOnly')) drawBG(W,H,shape);
   if(blend!=='imageOnly'){
-    const gradFill = makeGrad(W,H,+$('bgAngle')?.value||90,[{c:$('bg1')?.value||'#fff',pos:0},{c:$('bg2')?.value||'#1976D2',pos:.5},{c:$('bg3')?.value||'#000',pos:1}]);
-    ctx.save(); ctx.globalAlpha = +$('gradOpacity')?.value||0.6; ctx.globalCompositeOperation = $('gradBlend')?.value||'source-over';
+    const gradFill = makeGrad(W,H,+$('bgAngle').value,[{c:$('bg1').value,pos:0},{c:$('bg2').value,pos:.5},{c:$('bg3').value,pos:1}]);
+    ctx.save(); ctx.globalAlpha = +$('gradOpacity').value; ctx.globalCompositeOperation = $('gradBlend').value;
     ctx.fillStyle = gradFill; ctx.fillRect(0,0,W,H); ctx.restore();
   }
   if(blend==='over') drawBG(W,H,shape);
-  const vig=+$('vignette')?.value/100||0.2;
+  const vig=+$('vignette').value/100;
   if(vig>0){
     const g=ctx.createRadialGradient(W/2,H/2,Math.min(W,H)*(0.6-0.6*vig),W/2,H/2,Math.max(W,H)*0.8);
     g.addColorStop(0,'rgba(0,0,0,0)');
@@ -387,26 +526,26 @@ function draw(){
     ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
   }
   // Top Title
-  const topText=$('topTitle')?.value.trim();
+  const topText=$('topTitle').value.trim();
   if(topText){
-    const f=$('topFont')?.value; loadFont(f);
+    const f=$('topFont').value; loadFont(f);
     ctx.save(); ctx.textAlign='center'; ctx.textBaseline='middle';
-    ctx.font=`800 ${+$('topSize')?.value||48}px "${f}"`;
-    const tg=makeGrad(W,H,+$('topAngle')?.value||0,[{c:$('top1')?.value||'#ff3d00',pos:0},{c:$('top2')?.value||'#ffff00',pos:1}]);
-    ctx.fillStyle=tg; ctx.fillText(topText,W/2,H*(+$('topY')?.value||12/100));
+    ctx.font=`800 ${+$('topSize').value}px "${f}"`;
+    const tg=makeGrad(W,H,+$('topAngle').value,[{c:$('top1').value,pos:0},{c:$('top2').value,pos:1}]);
+    ctx.fillStyle=tg; ctx.fillText(topText,W/2,H*(+$('topY').value/100));
     ctx.restore();
   }
   // Main Heading
-  const text=$('title')?.value;
-  if(text && text.trim()){
-    const fam=$('font')?.value; loadFont(fam);
-    const base=+$('titleSize')?.value||96, lh=+$('lineHeight')?.value||1.15, wght=$('weight')?.value||600;
-    const align=$('align')?.value||'center', x= align==='left'? pad : (align==='right'? W-pad : W/2);
-    const y0= H*(+$('titleY')?.value||40/100);
-    const outline=+$('outline')?.value||6, glow=+$('glow')?.value||22;
-    const tg=makeGrad(W,H,+$('tAngle')?.value||0,[{c:$('t1')?.value||'#40c9ff',pos:0},{c:$('t2')?.value||'#f7b733',pos:.5},{c:$('t3')?.value||'#7cffcb',pos:1}]);
-    const isIndic = $('indicMode')?.value==='forceOn' ? true : ($('indicMode')?.value==='forceOff' ? false : HAS_DEV(text));
-    const letter = isIndic ? 0 : +$('letter')?.value||0;
+  const text=$('title').value;
+  if(text.trim()){
+    const fam=$('font').value; loadFont(fam);
+    const base=+$('titleSize').value, lh=+$('lineHeight').value, wght=$('weight').value;
+    const align=$('align').value, x= align==='left'? pad : (align==='right'? W-pad : W/2);
+    const y0= H*(+$('titleY').value/100);
+    const outline=+$('outline').value, glow=+$('glow').value;
+    const tg=makeGrad(W,H,+$('tAngle').value,[{c:$('t1').value,pos:0},{c:$('t2').value,pos:.5},{c:$('t3').value,pos:1}]);
+    const isIndic = $('indicMode').value==='forceOn' ? true : ($('indicMode').value==='forceOff' ? false : HAS_DEV(text));
+    const letter = isIndic ? 0 : +$('letter').value;
     ctx.save(); ctx.textAlign=align; ctx.textBaseline='alphabetic';
     ctx.shadowBlur=glow; ctx.shadowColor='rgba(0,0,0,0.55)'; ctx.lineJoin="round"; ctx.miterLimit=2;
     const lines=text.split('\n');
@@ -425,24 +564,25 @@ function draw(){
     $('letter').disabled = isIndic;
   }
   // Branding
-  const brand=$('brand')?.value.trim();
+  const brand=$('brand').value.trim();
   if(brand){
-    const size=+$('brandSize')?.value||40, off=+$('brandOffset')?.value/100*H||6/100*H;
-    const bg=makeGrad(W,H,0,[{c:$('b1')?.value||'#ff8a00',pos:0},{c:$('b2')?.value||'#ffd000',pos:.5},{c:$('b3')?.value||'#ffa24c',pos:1}]);
-    const fam=$('font')?.value; loadFont(fam);
+    const size=+$('brandSize').value, off=+$('brandOffset').value/100*H;
+    const bg=makeGrad(W,H,0,[{c:$('b1').value,pos:0},{c:$('b2').value,pos:.5},{c:$('b3').value,pos:1}]);
+    const fam=$('font').value; loadFont(fam);
     ctx.save(); ctx.textAlign='center'; ctx.textBaseline='bottom';
-    ctx.font=`600 ${size}px "${fam}"`; ctx.shadowBlur=+$('bGlow')?.value||10; ctx.shadowColor='rgba(0,0,0,0.35)';
+    ctx.font=`600 ${size}px "${fam}"`; ctx.shadowBlur=+$('bGlow').value; ctx.shadowColor='rgba(0,0,0,0.35)';
     ctx.fillStyle=bg; ctx.fillText(brand, W/2, H-off); ctx.restore();
   }
   // Logos
   S.logos.forEach(L=>{
-    if(!L.img.complete || L.scale<=0) return;
+    if(!L.img.complete)return;
     try {
       const iw=L.img.naturalWidth*L.scale, ih=L.img.naturalHeight*L.scale;
       ctx.save();
       const r=Math.min(iw,ih)/2;
       ctx.beginPath(); ctx.arc(L.x,L.y,r,0,Math.PI*2); ctx.clip();
-      ctx.globalAlpha=L.opacity; ctx.drawImage(L.img, L.x - iw/2, L.y - ih/2, iw, ih); ctx.restore();
+      ctx.globalAlpha=L.opacity; ctx.drawImage(L.img, L.x - iw/2, L.y - ih/2, iw, ih);
+      ctx.restore();
       applyBlendMask(L.x - iw/2, L.y - ih/2, iw, ih, L.blendDir, L.blendStrength);
 
       let borderColor=L.bcolor;
@@ -460,35 +600,40 @@ function draw(){
     } catch(e){console.error('draw logos error:',e);}
   });
 }
+// Bind Inputs
 document.querySelectorAll('input,select,textarea').forEach(el=>el.addEventListener('input',()=>{
   if(el.id==='font'||el.id==='topFont') loadFont(el.value);
   if(el.id==='bgShape'){ document.getElementById('circleControls').style.display = el.value==='circle'?'grid':'none'; }
-  BG.blendDir=$('bgBlendDir')?.value; BG.blendStrength=+$('bgBlendStrength')?.value;
+  BG.blendDir=$('bgBlendDir').value; BG.blendStrength=+$('bgBlendStrength').value;
   draw(); saveState();
 }));
-$('preset')?.addEventListener('change',()=>{
-  const v=$('preset')?.value;
-  if(v!=='custom' && v){ const [w,h]=v.split('x').map(Number); $('cw').value=w; $('ch').value=h; }
+document.getElementById('preset').addEventListener('change',()=>{
+  const v=$('preset').value;
+  if(v!=='custom'){ const [w,h]=v.split('x').map(Number); $('cw').value=w; $('ch').value=h; }
   draw(); saveState();
 });
+// Download
 $('download').onclick=()=>{
-  const scale=+$('scale')?.value||1, fmt=$('format')?.value||'png', q=+$('quality')?.value||0.95;
+  const scale=+$('scale').value, fmt=$('format').value, q=+$('quality').value;
   const tmp=document.createElement('canvas'); tmp.width=c.width*scale; tmp.height=c.height*scale;
   const t=tmp.getContext('2d'); t.imageSmoothingQuality='high'; t.drawImage(c,0,0,tmp.width,tmp.height);
   const mime= fmt==='png'?'image/png':(fmt==='jpeg'?'image/jpeg':'image/webp');
   const url=tmp.toDataURL(mime,q); const a=document.createElement('a'); a.href=url; a.download=`post_${tmp.width}x${tmp.height}.${fmt}`; a.click();
 };
+// Preset Save/Load Logic
 $('savePreset').onclick=()=> { savePreset(prompt("Preset name?") || "default"); alert('Preset saved'); }
 $('loadPreset').onclick=()=> { loadPreset(prompt("Preset name?") || "default"); }
+// Undo/Redo UI
 $('undoBtn').onclick=()=>undo();
 $('redoBtn').onclick=()=>redo();
+// Keyboard shortcuts
 document.addEventListener('keydown',e=>{
   if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='z'){ undo(); }
   if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='y'){ redo(); }
 });
 // Init
 loadFont("Noto Sans Devanagari"); loadFont("Poppins");
-document.getElementById('circleControls')?.style.display = $('bgShape')?.value==='circle'?'grid':'none';
+document.getElementById('circleControls').style.display = $('bgShape').value==='circle'?'grid':'none';
 draw();
 saveState();
 </script>
