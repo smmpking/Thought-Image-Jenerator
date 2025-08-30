@@ -415,16 +415,34 @@ function snapLogo(L,pos){
 
 // Blend mask
 function applyBlendMask(x,y,w,h,dir,str){
-  if(!dir||dir==="none"||str<=0) return;
+  if(!dir || dir==="none" || str<=0) return;
   ctx.save();
+
   let g;
   if(dir==="top"||dir==="bottom") g=ctx.createLinearGradient(x,y,x,y+h);
   else g=ctx.createLinearGradient(x,y,x+w,y);
-  if(dir==="top"){ g.addColorStop(0,"rgba(0,0,0,"+str+")"); g.addColorStop(1,"transparent"); }
-  if(dir==="bottom"){ g.addColorStop(0,"transparent"); g.addColorStop(1,"rgba(0,0,0,"+str+")"); }
-  if(dir==="left"){ g.addColorStop(0,"rgba(0,0,0,"+str+")"); g.addColorStop(1,"transparent"); }
-  if(dir==="right"){ g.addColorStop(0,"transparent"); g.addColorStop(1,"rgba(0,0,0,"+str+")"); }
-  ctx.fillStyle=g; ctx.fillRect(x,y,w,h);
+
+  if(dir==="top"){ 
+    g.addColorStop(0, "rgba(0,0,0,0)"); 
+    g.addColorStop(str, "rgba(0,0,0,1)"); 
+  }
+  if(dir==="bottom"){ 
+    g.addColorStop(1-str, "rgba(0,0,0,1)"); 
+    g.addColorStop(1, "rgba(0,0,0,0)"); 
+  }
+  if(dir==="left"){ 
+    g.addColorStop(0, "rgba(0,0,0,0)"); 
+    g.addColorStop(str, "rgba(0,0,0,1)"); 
+  }
+  if(dir==="right"){ 
+    g.addColorStop(1-str, "rgba(0,0,0,1)"); 
+    g.addColorStop(1, "rgba(0,0,0,0)"); 
+  }
+
+  // ✅ Masking mode
+  ctx.globalCompositeOperation = "destination-in";
+  ctx.fillStyle = g;
+  ctx.fillRect(x,y,w,h);
   ctx.restore();
 }
 
