@@ -461,6 +461,95 @@
     });
   }
 
+
+
+
+
+
+// --- TOUCH HANDLERS --- //
+let touchState = { mode: null, id: null, startDist: 0, startScale: 1 };
+
+c.addEventListener("touchstart", e => {
+  if (e.touches.length === 1) {
+    const t = e.touches[0];
+    const r = c.getBoundingClientRect();
+    const mx = (t.clientX - r.left) * (c.width / r.width);
+    const my = (t.clientY - r.top) * (c.height / r.height);
+
+    // logo check
+    for (let i = S.logos.length - 1; i >= 0; i--) {
+      const L = S.logos[i], iw = L.img.naturalWidth * L.scale, ih = L.img.naturalHeight * L.scale;
+      if (mx > L.x - iw/2 && mx < L.x + iw/2 && my > L.y - ih/2 && my < L.y + ih/2) {
+        touchState = { mode: "LOGO:"+i, id: t.identifier, dx: mx-L.x, dy: my-L.y };
+        return;
+      }
+    }
+    // else BG
+    if (BG.img) {
+      const iw = BG.img.naturalWidth * BG.scale, ih = BG.img.naturalHeight * BG.scale;
+      if (mx > BG.x - iw/2 && mx < BG.x + iw/2 && my > BG.y - ih/2 && my < BG.y + ih/2) {
+        touchState = { mode: "BG", id: t.identifier, dx: mx-BG.x, dy: my-BG.y };
+        return;
+      }
+    }
+  } else if (e.touches.length === 2) {
+    const [t1,t2] = e.touches;
+    const dx = t2.clientX - t1.clientX, dy = t2.clientY - t1.clientY;
+    const dist = Math.sqrt(dx*dx+dy*dy);
+    touchState = { mode: "PINCH", startDist: dist, startScale: BG.scale };
+    // अगर दोनों logo पर हैं तो logo pinch mode
+    for (let i=S.logos.length-1;i>=0;i--){
+      const L=S.logos[i], iw=L.img.naturalWidth*L.scale, ih=L.img.naturalHeight*L.scale;
+      const r=c.getBoundingClientRect();
+      const mx1=(t1.clientX-r.left)*(c.width/r.width), my1=(t1.clientY-r.top)*(c.height/r.height);
+      const mx2=(t2.clientX-r.left)*(c.width/r.width), my2=(t2.clientY-r.top)*(c.height/r.height);
+      if(mx1> L.x-iw/2 && mx1<L.x+iw/2 && my1> L.y-ih/2 && my1<L.y+ih/2 &&
+         mx2> L.x-iw/2 && mx2<L.x+iw/2 && my2> L.y-ih/2 && my2<L.y+ih/2){
+        touchState = { mode:"PINCH_LOGO:"+i, startDist: dist, startScale:L.scale };
+        break;
+      }
+    }
+  }
+});
+
+c.addEventListener("touchmove", e => {
+  e.preventDefault();
+  if (touchState.mode && e.touches.length===1 && !touchState.mode.startsWith("PINCH")) {
+    const t = e.touches[0];
+    const r = c.getBoundingClientRect();
+    const mx = (t.clientX - r.left) * (c.width / r.width);
+    const my = (t.clientY - r.top) * (c.height / r.height);
+    if (touchState.mode==="BG"){ BG.x=mx-touchState.dx; BG.y=my-touchState.dy; draw(); }
+    else if (touchState.mode.startsWith("LOGO:")){
+      const i=+touchState.mode.split(":")[1]; const L=S.logos[i];
+      L.x=mx-touchState.dx; L.y=my-touchState.dy; draw();
+    }
+  } else if (touchState.mode && e.touches.length===2 && touchState.mode.startsWith("PINCH")) {
+    const [t1,t2] = e.touches;
+    const dx = t2.clientX - t1.clientX, dy = t2.clientY - t1.clientY;
+    const dist = Math.sqrt(dx*dx+dy*dy);
+    const scale = dist / touchState.startDist;
+    if (touchState.mode==="PINCH"){ 
+      BG.scale = Math.max(0.2, Math.min(3, touchState.startScale*scale));
+      $("bgImgScale").value = BG.scale.toFixed(2);
+      draw();
+    } else if (touchState.mode.startsWith("PINCH_LOGO:")) {
+      const i=+touchState.mode.split(":")[1]; const L=S.logos[i];
+      L.scale=Math.max(0.05, Math.min(2, touchState.startScale*scale));
+      draw();
+    }
+  }
+},{passive:false});
+
+c.addEventListener("touchend", ()=> touchState={mode:null,id:null});
+
+
+
+
+
+
+
+
   function drawBG(W,H,shape){
     if(!BG.img) return;
     const iw=BG.img.naturalWidth*BG.scale, ih=BG.img.naturalHeight*BG.scale;
